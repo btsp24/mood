@@ -1,32 +1,38 @@
 {
-    "name": "mood",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "start": "node ./bin/www",
-        "dev": "nodemon ./bin/www"
-    },
-    "dependencies": {
-        "bcryptjs": "^2.4.3",
-        "bootstrap": "^5.0.1",
-        "cookie-parser": "~1.4.4",
-        "debug": "~2.6.9",
-        "ejs": "~2.6.1",
-        "express": "~4.16.1",
-        "express-session": "^1.17.2",
-        "http-errors": "~1.6.3",
-        "morgan": "~1.9.1",
-        "passport": "^0.4.1",
-        "passport-local": "^1.0.0",
-        "pg": "^8.6.0",
-        "pg-hstore": "^2.3.4",
-        "sequelize": "^6.6.2",
-        "socket.io": "^4.1.2"
-    },
-    "devDependencies": {
-        "faker": "^5.5.3",
-        "nodemon": "^2.0.7",
-        "sequelize-cli": "^6.2.0",
-        "sqlite3": "^5.0.2"
-    }
+  "name": "mood",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.0.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.2",
+    "socket.io": "^4.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "prettier": "^2.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "faker": "^5.5.3",
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0"
+  }
 }
