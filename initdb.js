@@ -9,5 +9,3 @@ async function main() {
 }
 
 main();
-
-console.log(a);
