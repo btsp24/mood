@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+  <%- include('../partials/header', {title}); %>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h2><%= userName %></h2>
+    <%- include('../partials/footer') %>
+    <script src="../javascripts/host.js"></script>
   </body>
 </html>

@@ -29,12 +29,18 @@ module.exports = (sequelize, DataTypes) => {
 
   Answer.associate = function (models) {
     Answer.belongsTo(models.Question, {
-      foreignKey: 'questionId',
+      foreignKey: {
+        name: 'questionId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
 
     Answer.hasMany(models.PlayerAnswer, {
-      foreignKey: 'answerId',
+      foreignKey: {
+        name: 'answerId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
   };

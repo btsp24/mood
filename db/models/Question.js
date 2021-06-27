@@ -46,7 +46,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Question.associate = function (models) {
     Question.hasMany(models.Answer, {
-      foreignKey: 'questionId',
+      foreignKey: {
+        name: 'questionId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
 
@@ -61,12 +64,18 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Question.hasMany(models.PlayerAnswer, {
-      foreignKey: 'questionId',
+      foreignKey: {
+        name: 'questionId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
 
     Question.belongsTo(models.Quiz, {
-      foreignKey: 'quizId',
+      foreignKey: {
+        name: 'quizId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
   };

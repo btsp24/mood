@@ -34,22 +34,34 @@ module.exports = (sequelize, DataTypes) => {
 
   PlayerAnswer.associate = function (models) {
     PlayerAnswer.belongsTo(models.Answer, {
-      foreignKey: 'answerId',
+      foreignKey: {
+        name: 'answerId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
 
     PlayerAnswer.belongsTo(models.Question, {
-      foreignKey: 'questionId',
+      foreignKey: {
+        name: 'questionId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
 
     PlayerAnswer.belongsTo(models.Player, {
-      foreignKey: 'playerId',
+      foreignKey: {
+        name: 'playerId',
+        type: DataTypes.UUID
+      },
       target: 'playerId',
     });
 
     PlayerAnswer.belongsTo(models.Player, {
-      foreignKey: 'gameId',
+      foreignKey: {
+        name: 'gameId',
+        type: DataTypes.UUID
+      },
       target: 'gameId',
     });
   };

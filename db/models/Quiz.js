@@ -1,4 +1,5 @@
 'use strict';
+const Question = require('./Question');
 module.exports = (sequelize, DataTypes) => {
   const Quiz = sequelize.define(
     'Quiz',
@@ -42,16 +43,34 @@ module.exports = (sequelize, DataTypes) => {
       isDraft: {
         type: DataTypes.BOOLEAN,
       },
+      /* questionCount: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return `${this.getQuestionCount().questionCount}`;
+        },
+      }, */
     },
     {
       timestamps: true,
       paranoid: true,
     }
   );
+  /*   Quiz.getQuestionCount = async function () {
+    return await Question.findAll({
+      where: {
+        quizId: this.id,
+      },
+      attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'questionCount']],
+      group: ['quizId'],
+    });
+  }; */
 
   Quiz.associate = function (models) {
     Quiz.belongsTo(models.User, {
-      foreignKey: 'composerId',
+      foreignKey: {
+        name: 'composerId',
+        type: DataTypes.UUID,
+      },
       target: 'id',
     });
 
@@ -61,12 +80,18 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Quiz.hasMany(models.Game, {
-      foreignKey: 'quizId',
+      foreignKey: {
+        name: 'quizId',
+        type: DataTypes.UUID,
+      },
       target: 'id',
     });
 
     Quiz.hasMany(models.Question, {
-      foreignKey: 'quizId',
+      foreignKey: {
+        name: 'quizId',
+        type: DataTypes.UUID,
+      },
       target: 'id',
     });
   };

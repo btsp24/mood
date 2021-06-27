@@ -33,12 +33,18 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function (models) {
     User.hasMany(models.Game, {
-      foreignKey: 'hostedBy',
+      foreignKey: {
+        name: 'hostedBy',
+        type: DataTypes.UUID,
+      },
       target: 'id',
     });
 
     User.hasMany(models.Quiz, {
-      foreignKey: 'composerId',
+      foreignKey: {
+        name: 'composerId',
+        type: DataTypes.UUID,
+      },
       target: 'id',
     });
   };

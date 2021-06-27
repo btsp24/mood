@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        unique: 'DataTypes.UUIDV4',
+        unique: true,
       },
       audioURL: {
         type: DataTypes.STRING,

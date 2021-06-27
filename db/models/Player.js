@@ -31,17 +31,26 @@ module.exports = (sequelize, DataTypes) => {
 
   Player.associate = function (models) {
     Player.belongsTo(models.Game, {
-      foreignKey: 'gameId',
+      foreignKey: {
+        name:'gameId',
+        type: DataTypes.UUID
+      },
       target: 'id',
     });
 
     Player.hasMany(models.PlayerAnswer, {
-      foreignKey: 'playerId',
+      foreignKey: {
+        name: 'playerId',
+        type: DataTypes.UUID
+      },
       target: 'playerId',
     });
 
     Player.hasMany(models.PlayerAnswer, {
-      foreignKey: 'gameId',
+      foreignKey: {
+        name: 'gameId',
+        type: DataTypes.UUID
+      },
       target: 'gameId',
     });
   };

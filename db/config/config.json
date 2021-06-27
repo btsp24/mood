@@ -1,20 +1,24 @@
 {
-    "development": {
-        "storage": "./db/database.sqlite",
-        "dialect": "sqlite"
-    },
-    "test": {
-        "username": "postgres",
-        "password": "pgs",
-        "database": "database_moodv2",
-        "host": "127.0.0.1",
-        "dialect": "postgres"
-    },
-    "production": {
-        "username": "root",
-        "password": null,
-        "database": "database_production",
-        "host": "127.0.0.1",
-        "dialect": "mysql"
-    }
+  "development": {
+    "storage": "./db/database.sqlite",
+    "dialect": "sqlite"
+  },
+  "test": {
+    "storage": "./triage.sqlite",
+    "dialect": "sqlite"
+  },
+  "testorig": {
+    "username": "postgres",
+    "password": "pgs",
+    "database": "database_moodv2",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
 }

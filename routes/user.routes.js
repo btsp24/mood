@@ -4,20 +4,20 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
 // Load User model
-// const User = require("../uScheme");
+
 const { User } = require('../db/models');
-const { forwardAuthenticated } = require('../isAuth');
+const { ensureAuthenticated, forwardAuthenticated } = require('../isAuth');
 
 /* login page */
-router.get('/login', forwardAuthenticated, (req, res) =>
+router.get('/login', forwardAuthenticated, (req, res) => {
   res.render('user/login', {
     title: 'login page for teacher',
-  })
-);
+  });
+});
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/home',
+    successRedirect: req.session.returnTo, //'/home',
     failureRedirect: '/login',
     failureFlash: true,
   })(req, res, next);
@@ -82,7 +82,7 @@ router.post('/register', async (req, res) => {
         password: hash,
       }).then(user => {
         req.flash('success_msg', 'You are now registered and can log in');
-        res.redirect('/users/login');
+        res.redirect('/login');
       });
     }
   }
@@ -103,23 +103,24 @@ router.get('/logout', function (req, res, next) {
 });
 
 /* home page  for teacher */
-router.get('/home', function (req, res, next) {
+router.get('/home', ensureAuthenticated, (req, res) => {
+  res.app.locals.user = req.user;
   res.render('user/home', {
     title: 'home page for teacher',
   });
 });
 
 /* compose quiz page for teacher */
-router.get('/home/compose', function (req, res, next) {
+router.get('/home/compose', ensureAuthenticated, (req, res) =>
   res.render('user/compose', {
     title: 'compose for teacher',
-  });
-});
+  })
+);
 
 /* edit quiz page for teacher */
-router.get('/home/edit', function (req, res, next) {
+router.get('/home/edit', ensureAuthenticated, (req, res) =>
   res.render('user/edit', {
     title: 'edit quiz for teacher',
-  });
-});
+  })
+);
 module.exports = router;
