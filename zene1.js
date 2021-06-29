@@ -11,10 +11,15 @@ async function main() {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-  const userId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
+  // const userId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
   const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
-  const result = getQuestionsOfTheQuiz(aQuizId);
-  console.log('result :>> ', result);
+  const result = await getQuestionsOfTheQuiz(aQuizId);
+  for (const que of result) {
+    for (const ans of await getAnswersOfTheQuestion(que.id)) {
+      console.log('answer :>> ', ans);
+    }
+  }
+
   /*  super oldu silme  */
   /* const quizListOfUser = await getQuizList(userId);
   for (const quiz of quizListOfUser) {
@@ -92,6 +97,18 @@ async function main() {
   // console.log(aQuiz[0].Answers[1]);
 }
 
+async function getAnswersOfTheQuestion(theQuestionId) {
+  if (theQuestionId == null) {
+    throw new Error('no questionId is given');
+  }
+  const theQuestion = await Question.findByPk(theQuestionId);
+  const answerArray = [];
+  for (const answer of await theQuestion.getAnswers({ order: sequelize.random() })) {
+    answerArray.push(answer.toJSON());
+  }
+  return answerArray;
+}
+
 async function getQuestionsOfTheQuiz(theQuizId) {
   if (theQuizId == null) {
     throw new Error('no quizId is given');
@@ -134,10 +151,12 @@ async function getQuestionsOfTheQuiz(theQuizId) {
     order: ['questionOrder'],
   })) {
     const answerArray = [];
+    let ansNum = 1;
     for (const answer of await question.getAnswers({ order: sequelize.random() })) {
+      console.log(ansNum++, ' answer.title :>>', answer.title, answer.isCorrect);
       answerArray.push(answer.toJSON());
     }
-    question.answers = answerArray;
+    question['answers'] = answerArray;
     questionArray.push(question.toJSON());
   }
   return questionArray;
@@ -171,7 +190,7 @@ async function getQuizzesOfTheUser(theUserId) {
     group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
     order: ['createdAt', 'DESC'],
   })) {
-    quizArray.push(quiz.toJSON())
+    quizArray.push(quiz.toJSON());
   }
   return quizArray;
   // return Sequelize.getValues(quizList);
@@ -184,32 +203,32 @@ async function getQuizzesOfOtherUsers(theUserId) {
   const theUser = await User.findByPk(theUserId);
   const quizArray = [];
   for (const quiz of await theUser.getQuizzes({
-      where: {
-        composerId: {
-          [Op.ne]: theUserId,
-        },
-        isDraft: false,
-        isVisible: true,
+    where: {
+      composerId: {
+        [Op.ne]: theUserId,
       },
-      attributes: [
-        'id',
-        'title',
-        'imgURL',
-        'createdAt',
-        'composerId',
-        [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
-      ],
-      include: [
-        {
-          model: Question,
-          attributes: [],
-        },
-      ],
-      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
-      order: ['createdAt', 'DESC'],
-    }) {
-      quizArray.push(quiz.toJSON())
-    };
+      isDraft: false,
+      isVisible: true,
+    },
+    attributes: [
+      'id',
+      'title',
+      'imgURL',
+      'createdAt',
+      'composerId',
+      [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
+    ],
+    include: [
+      {
+        model: Question,
+        attributes: [],
+      },
+    ],
+    group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
+    order: ['createdAt', 'DESC'],
+  })) {
+    quizArray.push(quiz.toJSON());
+  }
   return quizArray;
 }
 

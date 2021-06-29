@@ -14,7 +14,7 @@ klasik seçilince pin oluşturuluyor
 router.get('/', ensureAuthenticated, function (req, res, next) {
   res.app.locals.user = req.user;
   console.log('req.user :>> ', req.user);
-  res.render('host/index', { title: 'Teacher init game settings page', userName: req.user.userName });
+  res.render('host/index', { title: 'Start a Kahoot Game', userName: req.user.userName });
 });
 
 /* host game lobby
