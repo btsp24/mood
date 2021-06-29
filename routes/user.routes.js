@@ -17,12 +17,12 @@ router.get('/login', forwardAuthenticated, (req, res) => {
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: req.session.returnTo, //'/home',
+    successRedirect: '/home', // req.session.returnTo,
     failureRedirect: '/login',
     failureFlash: true,
   })(req, res, next);
 });
-
+//
 router.post('/register', async (req, res) => {
   const { name, userName, email, password, password2 } = req.body;
   const errors = [];

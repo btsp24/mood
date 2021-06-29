@@ -2,7 +2,7 @@ const path = require('path');
 
 const { User, Quiz, Question, Answer, QuestionType, TimeLimit, sequelize } = require('./db/models');
 const { Op } = require('sequelize');
-// const Sequelize = require('sequelize-values')();
+const Sequelize = require('sequelize-values')();
 
 async function main() {
   try {
@@ -14,9 +14,11 @@ async function main() {
   // const userId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
   const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
   const result = await getQuestionsOfTheQuiz(aQuizId);
+  // console.log('result :>> ', result);
   for (const que of result) {
+    console.log(que.id, 'que.title :>> ', que.title);
     for (const ans of await getAnswersOfTheQuestion(que.id)) {
-      console.log('answer :>> ', ans);
+      console.log('   answer :>> ', ans);
     }
   }
 
@@ -152,14 +154,19 @@ async function getQuestionsOfTheQuiz(theQuizId) {
   })) {
     const answerArray = [];
     let ansNum = 1;
-    for (const answer of await question.getAnswers({ order: sequelize.random() })) {
-      console.log(ansNum++, ' answer.title :>>', answer.title, answer.isCorrect);
-      answerArray.push(answer.toJSON());
+    for (const answer of await getAnswersOfTheQuestion(question.id)) {
+      // console.log(ansNum++, ' answer.title :>>', answer.title, answer.isCorrect);
+      answerArray.push(answer);
     }
-    question['answers'] = answerArray;
+    // for (const answer of await question.getAnswers({ order: sequelize.random() })) {
+    //   // console.log(ansNum++, ' answer.title :>>', answer.title, answer.isCorrect);
+    //   answerArray.push(answer.toJSON());
+    // }
+    question.answers = answerArray;
     questionArray.push(question.toJSON());
   }
   return questionArray;
+  // return Sequelize.getValues(questionArray);
 }
 
 async function getQuizzesOfTheUser(theUserId) {
@@ -193,7 +200,7 @@ async function getQuizzesOfTheUser(theUserId) {
     quizArray.push(quiz.toJSON());
   }
   return quizArray;
-  // return Sequelize.getValues(quizList);
+  // return Sequelize.getValues(quizArray);
 }
 
 async function getQuizzesOfOtherUsers(theUserId) {
@@ -230,6 +237,7 @@ async function getQuizzesOfOtherUsers(theUserId) {
     quizArray.push(quiz.toJSON());
   }
   return quizArray;
+  // return Sequelize.getValues(quizArray);
 }
 
 async function getQuiz(quizId) {
@@ -273,8 +281,8 @@ async function getQuiz(quizId) {
   } catch (error) {
     console.log('error :>> ', error);
   }
-  return questionList;
-  // return Sequelize.getValues(questionList);
+  // return questionList;
+  return Sequelize.getValues(questionList);
 }
 
 main();

@@ -20,13 +20,42 @@ const userRouter = require('./routes/user.routes');
 const hostRouter = require('./routes/host.routes');
 const playerRouter = require('./routes/player.routes');
 
+//Import classes
+const { LiveGames } = require('./utils/liveGames');
+const { Players } = require('./utils/players');
+const { Query } = require('./utils/queries');
+
+async function aa() {
+  const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
+  let result;
+  try {
+    result = await Query.getQuestionsOfTheQuiz(aQuizId);
+
+    console.log('result :>> ', result);
+    for (const que of result) {
+      console.log(que.id, 'que.title :>> ', que.title);
+      for (const ans of await Query.getAnswersOfTheQuestion(que.id)) {
+        console.log('   answer :>> ', ans);
+      }
+    }
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
+}
+
+aa();
+
 const app = express();
 
 // share public dir
 app.use(express.static(path.join(__dirname, 'public')));
 // cookie setup
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 app.use(cookieParser());
 
 // session cookie
@@ -89,7 +118,7 @@ connectToDatabase();
 const port = process.env.PORT || 3000;
 
 server.listen(port, function () {
-  debug(`http://localhost:${port}`);
+  console.log(`http://localhost:${port}`);
 });
 
 io.on('connection', socket => {
@@ -99,7 +128,10 @@ io.on('connection', socket => {
   // other methods will come here
 
   socket.on('UUID-request', () => {
-    console.log({ old: socket.conn.id, new: app.locals.User.id });
+    console.log({
+      old: socket.conn.id,
+      new: app.locals.User.id,
+    });
     socket.conn.id = app.locals.User.id;
     socket.emit('UUID-response', app.locals.User.id);
   });
@@ -110,10 +142,8 @@ io.on('connection', socket => {
     const result = quizzes.map(async quiz => {
       quiz.questionCount = await quiz.countQuestions();
       return quiz;
-    })
-    
-    
-    socket.emit('quizList-response', quizzes)
     });
+
+    socket.emit('quizList-response', quizzes);
   });
 });
