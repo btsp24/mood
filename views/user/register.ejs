@@ -48,9 +48,9 @@
     }
   </style>
   <body>
-    <form class="form-signin text-center" action="/login" method="POST">
+    <form class="form-signin text-center" action="/register" method="POST">
       <i class="fas fa-sign-in-alt fa-5x"></i>
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
         type="email"
@@ -70,9 +70,35 @@
         placeholder="Password"
         required
       />
-      <div class="checkbox mb-3">
-        <label> <input type="checkbox" value="remember-me" /> Remember me </label>
-      </div>
+      <label for="retypePassword" class="sr-only">Password</label>
+      <input
+        type="password"
+        id="retypePassword"
+        class="form-control"
+        name="password2"
+        placeholder="Password"
+        required
+      />
+      <label for="userName" class="sr-only">User Name</label>
+      <input
+        type="text"
+        id="userName"
+        name="userName"
+        class="form-control"
+        placeholder="Enter Username"
+        required
+        autofocus
+      />
+      <label for="name" class="sr-only">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="form-control"
+        placeholder="Enter your name"
+        required
+        autofocus
+      />
       <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">Sign in</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
     </form>

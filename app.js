@@ -10,7 +10,7 @@ const flash = require('connect-flash');
 
 const socketIO = require('socket.io');
 const passport = require('passport');
-const { sequelize, User } = require('./db/models');
+const { sequelize } = require('./db/models');
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -24,26 +24,6 @@ const playerRouter = require('./routes/player.routes');
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
 const { Query } = require('./utils/queries');
-
-async function aa() {
-  const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
-  let result;
-  try {
-    result = await Query.getQuestionsOfTheQuiz(aQuizId);
-
-    console.log('result :>> ', result);
-    for (const que of result) {
-      console.log(que.id, 'que.title :>> ', que.title);
-      for (const ans of await Query.getAnswersOfTheQuestion(que.id)) {
-        console.log('   answer :>> ', ans);
-      }
-    }
-  } catch (error) {
-    console.log('error :>> ', error);
-  }
-}
-
-aa();
 
 const app = express();
 
@@ -110,10 +90,7 @@ app.use(function (err, req, res, next) {
 });
 
 // connect db
-async function connectToDatabase() {
-  await sequelize.authenticate();
-}
-connectToDatabase();
+Query.connectToDatabase();
 
 const port = process.env.PORT || 3000;
 
@@ -127,22 +104,17 @@ io.on('connection', socket => {
 
   // other methods will come here
 
-  socket.on('UUID-request', () => {
-    console.log({
-      old: socket.conn.id,
-      new: app.locals.User.id,
-    });
-    socket.conn.id = app.locals.User.id;
-    socket.emit('UUID-response', app.locals.User.id);
-  });
+  // socket.on('UUID-request', () => {
+  //   console.log({
+  //     old: socket.conn.id,
+  //     new: app.locals.user.id,
+  //   });
+  //   socket.conn.id = app.locals.user.id;
+  //   socket.emit('UUID-response', app.locals.user.id);
+  // });
 
   socket.on('quizList-request', async function () {
-    const currentUser = await User.findByPk(app.locals.user.id);
-    const quizzes = await currentUser.getQuizzes();
-    const result = quizzes.map(async quiz => {
-      quiz.questionCount = await quiz.countQuestions();
-      return quiz;
-    });
+    const quizzes = await Query.getQuizzesOfTheUser(app.locals.user.id);
 
     socket.emit('quizList-response', quizzes);
   });

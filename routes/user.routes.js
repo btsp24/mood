@@ -69,21 +69,20 @@ router.post('/register', async (req, res) => {
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(password, salt, (err, hash) => {
             if (err) throw err;
+            User.create({
+              userName,
+              name,
+              email,
+              password: hash,
+            }).then(user => {
+              req.flash('success_msg', 'You are now registered and can log in');
+              res.redirect('/login');
+            });
           });
         });
       } catch (error) {
         console.log('error :>> ', error);
       }
-
-      User.create({
-        userName,
-        name,
-        email,
-        password: hash,
-      }).then(user => {
-        req.flash('success_msg', 'You are now registered and can log in');
-        res.redirect('/login');
-      });
     }
   }
 });

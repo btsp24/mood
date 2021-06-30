@@ -7,6 +7,10 @@ const { User, Quiz, Question, Answer, QuestionType, TimeLimit, sequelize } = req
 const { Op } = require('sequelize');
 
 class Query {
+  static async connectToDatabase() {
+    await sequelize.authenticate();
+  }
+
   static async getQuizzesOfTheUser(theUserId) {
     if (theUserId == null) {
       throw new Error('no userId is given');
@@ -32,7 +36,7 @@ class Query {
         },
       ],
       group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
-      order: ['createdAt', 'DESC'],
+      order: [['createdAt', 'DESC']],
     })) {
       quizArray.push(quiz.toJSON());
     }
@@ -134,7 +138,9 @@ class Query {
     return answerArray;
   }
 }
-module.exports = { Query };
+module.exports = {
+  Query,
+};
 /* 
 {
 getQuizzesOfTheUser,

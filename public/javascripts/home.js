@@ -3,21 +3,23 @@ const socket = io();
 const quizList = [];
 
 socket.on('connect', () => {
-  console.log('connected :>> ', socket.io.engine.id);
+  // console.log('connected :>> ', socket.io.engine.id);
 
   // set socketid to actual userid for host
-  socket.emit('UUID-request');
+  // socket.emit('UUID-request');
 
-  socket.on('UUID-response', newUUID => {
-    console.log({ old: socket.io.engine.id, new: newUUID });
-    socket.io.engine.id = newUUID;
-  });
+  // socket.on('UUID-response', newUUID => {
+  //   console.log({ old: socket.io.engine.id, new: newUUID });
+  //   socket.io.engine.id = newUUID;
+  // });
   // ask my quiz list
   socket.emit('quizList-request');
 
   socket.on('quizList-response', quizzes => {
-    quizzes.forEach(quiz => {
-      quizList.append(quiz);
-    });
+    if (quizzes != null) {
+      quizzes.forEach(quiz => {
+        quizList.append(quiz);
+      });
+    }
   });
 });
