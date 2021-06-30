@@ -36,18 +36,20 @@
         </div>
       </div>
       <br />
-      <button onclick="addQuestion()">Add another question</button>
+      <button type="button" class="btn btn-primary" onclick="addQuestion()">Add another question</button>
 
       <br />
       <br />
 
       <div class="form-field">
-        <button onclick="updateDatabase()">Create Quiz</button>
+        <button type="button" class="btn btn-success" onclick="updateDatabase()">Create Quiz</button>
       </div>
 
       <br />
 
-      <button onclick="cancelQuiz()">Cancel quiz and return to quiz selection</button>
+      <button type="button" class="btn btn-warning" onclick="cancelQuiz()">
+        Cancel quiz and return to quiz selection
+      </button>
     </div>
 
     <%- include('../partials/footer') %>

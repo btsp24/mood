@@ -15,7 +15,7 @@ const { sequelize } = require('./db/models');
 const { v4: uuidv4 } = require('uuid');
 
 // Uri Routers
-require('./auth');
+require('./utils/auth');
 const userRouter = require('./routes/user.routes');
 const hostRouter = require('./routes/host.routes');
 const playerRouter = require('./routes/player.routes');
@@ -26,7 +26,6 @@ const { Players } = require('./utils/players');
 const { Query } = require('./utils/queries');
 
 const app = express();
-
 // share public dir
 app.use(express.static(path.join(__dirname, 'public')));
 // cookie setup
@@ -97,25 +96,147 @@ const port = process.env.PORT || 3000;
 server.listen(port, function () {
   console.log(`http://localhost:${port}`);
 });
+// hold game and player list on memory
+const games = new LiveGames();
+const players = new Players();
 
 io.on('connection', socket => {
-  // console.log('socket.conn.id :>> ', socket.conn.id);
-  // console.log('req.user :>> ', app.locals.user.id);
+  /*
+      console.log('socket.conn.id :>> ', socket.conn.id);
+  console.log('req.user :>> ', app.locals.user.id);
 
-  // other methods will come here
+  other methods will come here
 
-  // socket.on('UUID-request', () => {
-  //   console.log({
-  //     old: socket.conn.id,
-  //     new: app.locals.user.id,
-  //   });
-  //   socket.conn.id = app.locals.user.id;
-  //   socket.emit('UUID-response', app.locals.user.id);
-  // });
+  socket.on('UUID-request', () => {
+    console.log({
+      old: socket.conn.id,
+      new: app.locals.user.id,
+    });
+    socket.conn.id = app.locals.user.id;
+    socket.emit('UUID-response', app.locals.user.id);
+  }); 
+  */
 
+  // host connects for the first time
+  socket.on('host-join', async function (data) {
+    try {
+      const questions = await Query.getQuestionsOfTheQuiz(data.id);
+      if (!questions) {
+        // new pin for the given game
+        const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
+        games.addGame(gamePin, socket.id, false, {
+          gameid: data.id,
+          questionLive: false,
+          questionCount: questions.length,
+          question: 1,
+          playersAnswered: 0,
+        });
+        const game = games.getGame(socket.id);
+        // host joins a pin named socket room
+        socket.join(game.pin);
+        socket.emit('showGamePin', { pin: game.pin });
+      } else {
+        socket.emit('noGameFound');
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+  });
+
+  // host connects from the game view
+  socket.on('host-join-game', data => {
+    const oldHostId = data.id;
+    const game = games.getGame(oldHostId);
+    if (game) {
+      game.hostId = socket.id;
+      const playerData = players.getPlayers(oldHostId);
+      for (const player of players) {
+        if (player.hostId === oldHostId) {
+          player.hostId = socket.id;
+        }
+      }
+      const currentQuestion = Query.getOneQuestionWithAnswers(game.gameData.gameid, game.gameData.question);
+      /* GAMEQUESTION!S */
+      socket.emit('gameQuestion', { ...currentQuestion, playersInGame: playerData.length });
+      // ** neden farklı
+      io.to(game.pin).emit('gameStartedPlayer');
+      game.gameData.questionLive = true;
+    } else {
+      socket.emit('noGameFound');
+    }
+  });
+
+  // player first time connect
+  socket.on('player-join', params => {
+    let gameFound = false;
+
+    for (const game of games) {
+      if (params.pin === game.pin) {
+        const hostId = game.hostId;
+        players.addPlayer(hostId, socket.id, params.name, {
+          gameScore: 0,
+          answer: 0,
+        });
+        socket.join(params.pin);
+        const playersInGame = players.getPlayers(hostId);
+        io.to(params.pin).emit('updatePlayerLobby', playersInGame);
+        gameFound = true;
+      }
+    }
+    if (!gameFound) {
+      socket.emit('noGameFound');
+    }
+  });
+
+  // player connects from the game view
+  socket.on('player-join-game', data => {
+    const player = players.getPlayer(data.id);
+    if (player) {
+      const game = games.getGame(player.hostId);
+      socket.join(game.pin);
+      player.playerId = socket.id;
+      const playerData = player.getPlayers(game.hostId);
+      socket.emit('playerGameData', playerData);
+    } else {
+      socket.emit('noGameFound');
+    }
+  });
+
+  // host or player disconnects
+  socket.on('disconnect', () => {
+    const game = games.getGame(socket.id);
+    if (game) {
+      if (!game.gameLive) {
+        games.removeGame(socket.id);
+
+        // here is one of the places to store player score
+        const playersToRemove = players.getPlayers(game.hostId);
+        playersToRemove.forEach(exPlayer => {
+          players.removePlayer(exPlayer.playerId);
+        });
+        io.to(game.pin).emit('hostDisconnect');
+        socket.leave(game.pin);
+      }
+    } else {
+      const player = players.getPlayer(socket.id);
+      if (player) {
+        const hostId = player.hostId;
+        const game = games.getGame(hostId);
+        const pin = game.pin;
+        if (!game.gameLive) {
+          players.removePlayer(socket.id);
+          const playersInGame = players.getPlayers(hostId);
+          io.to(pin).emit('updatePlayerLobby', playersInGame);
+          socket.leave(pin);
+        }
+      }
+    }
+  });
+  /* 
   socket.on('quizList-request', async function () {
     const quizzes = await Query.getQuizzesOfTheUser(app.locals.user.id);
 
     socket.emit('quizList-response', quizzes);
   });
+  */
 });

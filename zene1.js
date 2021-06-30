@@ -2,7 +2,8 @@ const path = require('path');
 
 const { User, Quiz, Question, Answer, QuestionType, TimeLimit, sequelize } = require('./db/models');
 const { Op } = require('sequelize');
-const Sequelize = require('sequelize-values')();
+const { Query } = require('./utils/queries');
+// const Sequelize = require('sequelize-values')();
 
 async function main() {
   try {
@@ -12,18 +13,27 @@ async function main() {
     console.error('Unable to connect to the database:', error);
   }
   // const userId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
+  // const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
+  // const result = await getQuestionsOfTheQuiz(aQuizId);
+  // // console.log('result :>> ', result);
+  // for (const que of result) {
+  //   console.log(que.id, 'que.title :>> ', que.title);
+  //   for (const ans of await getAnswersOfTheQuestion(que.id)) {
+  //     console.log('   answer :>> ', ans);
+  //   }
+  // }
   const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
-  const result = await getQuestionsOfTheQuiz(aQuizId);
-  // console.log('result :>> ', result);
-  for (const que of result) {
-    console.log(que.id, 'que.title :>> ', que.title);
-    for (const ans of await getAnswersOfTheQuestion(que.id)) {
-      console.log('   answer :>> ', ans);
-    }
+  const source = await Query.getQuestionsOfTheQuiz(aQuizId);
+  if (!!source) {
+    console.log('source.length :>> ', source.length);
   }
+  // for (const q of source) {
+  //   console.log(`${q.questionOrder} :>>`, q);
+  // }
+}
 
-  /*  super oldu silme  */
-  /* const quizListOfUser = await getQuizList(userId);
+/*  super oldu silme  */
+/* const quizListOfUser = await getQuizList(userId);
   for (const quiz of quizListOfUser) {
     console.log('quiz.title :>>', quiz.title, quiz.id);
     for (const question of await quiz.getQuestions({ order: ['questionOrder'] })) {
@@ -35,82 +45,82 @@ async function main() {
     }
   } */
 
-  // console.log(await quizListOfUser[0].getQuestions());
-  // console.log(Sequelize.getValues(await quizListOfUser[0].getQuestions()));
-  // console.log(await getQuizList(userId));
+// console.log(await quizListOfUser[0].getQuestions());
+// console.log(Sequelize.getValues(await quizListOfUser[0].getQuestions()));
+// console.log(await getQuizList(userId));
 
-  // console.log(await getSharedQuizList(userId));
+// console.log(await getSharedQuizList(userId));
 
-  // grab full details of a given quiz including answers
-  // const aQuiz = await Quiz.findByPk(aQuizId);
-  // const questions = [];
-  // console.log('aQuiz :>>', aQuiz.title, '***');
+// grab full details of a given quiz including answers
+// const aQuiz = await Quiz.findByPk(aQuizId);
+// const questions = [];
+// console.log('aQuiz :>>', aQuiz.title, '***');
 
-  // for (const question of await aQuiz.getQuestions({
-  //   attributes: [
-  //     'id',
-  //     'questionOrder',
-  //     'title',
-  //     'imgURL',
-  //     'createdAt',
-  //     // 'questionTypeId',
-  //     [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
-  //     [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
-  //     [sequelize.fn('MAX', sequelize.col('QuestionType.title')), 'qType'],
-  //   ],
-  //   include: [
-  //     {
-  //       model: Answer,
-  //       // attributes: [],
-  //     },
-  //     {
-  //       model: QuestionType,
-  //       attributes: [],
-  //     },
-  //     {
-  //       model: TimeLimit,
-  //       attributes: [],
-  //     },
-  //   ],
-  //   group: [
-  //     'Question.id',
-  //     'Question.questionOrder',
-  //     'Question.title',
-  //     'Question.imgURL',
-  //     'Question.createdAt',
-  //   ],
-  // })) {
-  // for (const question of await aQuiz.getQuestions({
-  //   include: [{ model: Answer }, { model: QuestionType }, { model: TimeLimit }],
-  //   order: ['questionOrder'],
-  // })) {
-  // questions.push(question.toJSON());
-  // console.log('item:>> ', question.toJSON());
-  // console.log('#', question.questionOrder, ' question.title :>>', question.title, question.id);
-  // let ansNum = 1;
-  // for (const answer of await question.getAnswers()) {
-  //   console.log(ansNum++, ' answer.title :>>', answer.title, answer.isCorrect);
-  // }
+// for (const question of await aQuiz.getQuestions({
+//   attributes: [
+//     'id',
+//     'questionOrder',
+//     'title',
+//     'imgURL',
+//     'createdAt',
+//     // 'questionTypeId',
+//     [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
+//     [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
+//     [sequelize.fn('MAX', sequelize.col('QuestionType.title')), 'qType'],
+//   ],
+//   include: [
+//     {
+//       model: Answer,
+//       // attributes: [],
+//     },
+//     {
+//       model: QuestionType,
+//       attributes: [],
+//     },
+//     {
+//       model: TimeLimit,
+//       attributes: [],
+//     },
+//   ],
+//   group: [
+//     'Question.id',
+//     'Question.questionOrder',
+//     'Question.title',
+//     'Question.imgURL',
+//     'Question.createdAt',
+//   ],
+// })) {
+// for (const question of await aQuiz.getQuestions({
+//   include: [{ model: Answer }, { model: QuestionType }, { model: TimeLimit }],
+//   order: ['questionOrder'],
+// })) {
+// questions.push(question.toJSON());
+// console.log('item:>> ', question.toJSON());
+// console.log('#', question.questionOrder, ' question.title :>>', question.title, question.id);
+// let ansNum = 1;
+// for (const answer of await question.getAnswers()) {
+//   console.log(ansNum++, ' answer.title :>>', answer.title, answer.isCorrect);
+// }
 
-  // console.log('questions :>> ', questions);
-  // console.log('questions :>> ', questions[0].Answers[0].title);
+// console.log('questions :>> ', questions);
+// console.log('questions :>> ', questions[0].Answers[0].title);
 
-  // console.log(aQuiz[2].dataValues.Answers.length);
-  // console.log(aQuiz[0].Answers[1]);
-}
+// console.log(aQuiz[2].dataValues.Answers.length);
+// console.log(aQuiz[0].Answers[1]);
 
-async function getAnswersOfTheQuestion(theQuestionId) {
-  if (theQuestionId == null) {
-    throw new Error('no questionId is given');
-  }
-  const theQuestion = await Question.findByPk(theQuestionId);
-  const answerArray = [];
-  for (const answer of await theQuestion.getAnswers({ order: sequelize.random() })) {
-    answerArray.push(answer.toJSON());
-  }
-  return answerArray;
-}
+// async function getAnswersOfTheQuestion(theQuestionId) {
+//   if (theQuestionId == null) {
+//     throw new Error('no questionId is given');
+//   }
+//   const theQuestion = await Question.findByPk(theQuestionId);
+//   const answerArray = [];
+//   for (const answer of await theQuestion.getAnswers({ order: sequelize.random() })) {
+//     answerArray.push(answer.toJSON());
+//   }
+//   return answerArray;
+// }
 
+/*
 async function getQuestionsOfTheQuiz(theQuizId) {
   if (theQuizId == null) {
     throw new Error('no quizId is given');
@@ -284,5 +294,5 @@ async function getQuiz(quizId) {
   // return questionList;
   return Sequelize.getValues(questionList);
 }
-
+ */
 main();

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated, forwardAuthenticated } = require('../isAuth');
+const { ensureAuthenticated, forwardAuthenticated } = require('../utils/isAuth');
 
 /* 
     hepsi quizId=uuid değeri alıyor

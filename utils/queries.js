@@ -17,6 +17,9 @@ class Query {
     }
     const theUser = await User.findByPk(theUserId);
     const quizArray = [];
+    if (!theUser) {
+      return null;
+    }
     for (const quiz of await theUser.getQuizzes({
       where: {
         composerId: theUserId,
@@ -47,9 +50,9 @@ class Query {
     if (theUserId == null) {
       throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(theUserId);
+    // const theUser = await User.findByPk(theUserId);
     const quizArray = [];
-    for (const quiz of await theUser.getQuizzes({
+    for (const quiz of await User.getQuizzes({
       where: {
         composerId: {
           [Op.ne]: theUserId,
@@ -85,6 +88,9 @@ class Query {
     }
     const theQuiz = await Quiz.findByPk(theQuizId);
     const questionArray = [];
+    if (!theQuiz) {
+      return null;
+    }
     for (const question of await theQuiz.getQuestions({
       attributes: [
         'id',
@@ -124,6 +130,17 @@ class Query {
     return questionArray;
   }
 
+  /* 
+  static async quizExists(theQuizId) {
+    try {
+      const result = await Quiz.findByPk(theQuizId);
+      return !!result;
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+  }
+ */
+
   static async getAnswersOfTheQuestion(theQuestionId) {
     if (theQuestionId == null) {
       throw new Error('no questionId is given');
@@ -137,6 +154,25 @@ class Query {
     }
     return answerArray;
   }
+
+  static async getQuestionsWithAnswers(theQuizId) {
+    const questionList = await this.getQuestionsOfTheQuiz(theQuizId);
+    for (const question of questionList) {
+      question.answers = await this.getAnswersOfTheQuestion(question.id);
+    }
+    return questionList;
+  }
+
+  static async getOneQuestionWithAnswers(theQuizId, qNumber) {
+    const questionList = await this.getQuestionsOfTheQuiz(theQuizId);
+    for (const question of questionList) {
+      question.answers = await this.getAnswersOfTheQuestion(question.id);
+    }
+    if (qNumber > questionList.length) {
+      return null;
+    }
+    return questionList[qNumber - 1];
+  }
 }
 module.exports = {
   Query,
@@ -148,4 +184,4 @@ getQuizzesOfOtherUsers,
 getQuestionsOfTheQuiz,
 getAnswersOfTheQuestion,
 };
- */
+*/

@@ -3,12 +3,12 @@
   <%- include('../partials/header', {title}); %>
   <body>
     <h1><%= title %></h1>
-    <button id="cancel">Cancel Game</button>
+    <button id="cancel" type="button" class="btn btn-warning">Cancel Game</button>
     <h2 id="title">Join this Game using the Game Pin:</h2>
     <h1 id="gamePinText"></h1>
     <textarea style="width: 700px; height: 500px" readonly id="players"></textarea>
     <br />
-    <button id="start" onclick="startGame()">Start Game</button>
+    <button id="start" type="button" class="btn btn-success" onclick="startGame()">Start Game</button>
     <br />
     <br />
     <%- include('../partials/footer') %>

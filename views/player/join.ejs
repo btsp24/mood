@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <h1><%= title %></h1>
+    <h1 id="title"><%= title %></h1>
 
     <form action="/ingame/">
       <div class="form-field">
@@ -14,8 +14,8 @@
       </div>
       <br />
 
-      <div class="form-field">
-        <button id="submit">Join</button>
+      <div class="d-grid gap-2 form-field">
+        <button id="submit" class="btn btn-lg btn-primary" type="button">Join</button>
       </div>
     </form>
   </body>
