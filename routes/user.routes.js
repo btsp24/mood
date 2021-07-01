@@ -6,7 +6,7 @@ const passport = require('passport');
 // Load User model
 
 const { User } = require('../db/models');
-const { ensureAuthenticated, forwardAuthenticated } = require('../utils/isAuth');
+const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
 
 /* login page */
 router.get('/login', forwardAuthenticated, (req, res) => {
@@ -17,7 +17,7 @@ router.get('/login', forwardAuthenticated, (req, res) => {
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/home', // req.session.returnTo,
+    successRedirect: '/home',
     failureRedirect: '/login',
     failureFlash: true,
   })(req, res, next);

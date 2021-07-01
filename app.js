@@ -14,7 +14,7 @@ const passport = require('passport');
 const { v4: uuidv4 } = require('uuid');
 
 // Uri Routers
-require('./utils/auth');
+require('./routes/auth');
 const userRouter = require('./routes/user.routes');
 const hostRouter = require('./routes/host.routes');
 const playerRouter = require('./routes/player.routes');
@@ -233,5 +233,5 @@ io.on('connection', socket => {
   });
 
   // set player data from given answer
-  socket.on('playerAnswer', function)
+  socket.on('playerAnswer', playerAnswer => {});
 });
