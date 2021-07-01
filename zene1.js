@@ -296,3 +296,11 @@ async function getQuiz(quizId) {
 }
  */
 main();
+
+/* 
+  socket.on('quizList-request', async function () {
+    const quizzes = await Query.getQuizzesOfTheUser(app.locals.user.id);
+
+    socket.emit('quizList-response', quizzes);
+  });
+  */

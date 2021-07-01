@@ -10,7 +10,6 @@ const flash = require('connect-flash');
 
 const socketIO = require('socket.io');
 const passport = require('passport');
-const { sequelize } = require('./db/models');
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -20,7 +19,7 @@ const userRouter = require('./routes/user.routes');
 const hostRouter = require('./routes/host.routes');
 const playerRouter = require('./routes/player.routes');
 
-//Import classes
+// Import classes
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
 const { Query } = require('./utils/queries');
@@ -232,11 +231,7 @@ io.on('connection', socket => {
       }
     }
   });
-  /* 
-  socket.on('quizList-request', async function () {
-    const quizzes = await Query.getQuizzesOfTheUser(app.locals.user.id);
 
-    socket.emit('quizList-response', quizzes);
-  });
-  */
+  // set player data from given answer
+  socket.on('playerAnswer', function)
 });

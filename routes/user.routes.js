@@ -80,8 +80,8 @@ router.post('/register', async (req, res) => {
             });
           });
         });
-      } catch (error) {
-        console.log('error :>> ', error);
+      } catch (err) {
+        console.log('error :>> ', err);
       }
     }
   }
@@ -94,7 +94,6 @@ router.get('/register', forwardAuthenticated, (req, res) =>
   })
 );
 
-/* TODO:logout page */
 router.get('/logout', function (req, res, next) {
   res.render('user/logout', {
     title: 'succesfully logged out',

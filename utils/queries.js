@@ -8,7 +8,12 @@ const { Op } = require('sequelize');
 
 class Query {
   static async connectToDatabase() {
-    await sequelize.authenticate();
+    try {
+      await sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
   }
 
   static async getQuizzesOfTheUser(theUserId) {
