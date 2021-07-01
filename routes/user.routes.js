@@ -9,11 +9,14 @@ const { User } = require('../db/models');
 const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
 
 /* login page */
-router.get('/login', forwardAuthenticated, (req, res) => {
-  res.render('user/login', {
-    title: 'login page for teacher',
-  });
-});
+router.get(
+  '/login',
+  /*  forwardAuthenticated, */ (req, res) => {
+    res.render('user/login', {
+      title: 'login page for teacher',
+    });
+  }
+);
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
@@ -88,10 +91,12 @@ router.post('/register', async (req, res) => {
 });
 
 /* register page */
-router.get('/register', forwardAuthenticated, (req, res) =>
-  res.render('user/register', {
-    title: 'register page for teacher',
-  })
+router.get(
+  '/register',
+  /* forwardAuthenticated, */ (req, res) =>
+    res.render('user/register', {
+      title: 'register page for teacher',
+    })
 );
 
 router.get('/logout', function (req, res, next) {
@@ -101,24 +106,31 @@ router.get('/logout', function (req, res, next) {
 });
 
 /* home page  for teacher */
-router.get('/home', ensureAuthenticated, (req, res) => {
-  res.app.locals.user = req.user;
-  res.render('user/home', {
-    title: 'home page for teacher',
-  });
-});
+router.get(
+  '/home',
+  /* ensureAuthenticated, */ (req, res) => {
+    res.app.locals.user = req.user;
+    res.render('user/home', {
+      title: 'home page for teacher',
+    });
+  }
+);
 
 /* compose quiz page for teacher */
-router.get('/home/compose', ensureAuthenticated, (req, res) =>
-  res.render('user/compose', {
-    title: 'compose for teacher',
-  })
+router.get(
+  '/home/compose',
+  /* ensureAuthenticated, */ (req, res) =>
+    res.render('user/compose', {
+      title: 'compose for teacher',
+    })
 );
 
 /* edit quiz page for teacher */
-router.get('/home/edit', ensureAuthenticated, (req, res) =>
-  res.render('user/edit', {
-    title: 'edit quiz for teacher',
-  })
+router.get(
+  '/home/edit',
+  /* ensureAuthenticated, */ (req, res) =>
+    res.render('user/edit', {
+      title: 'edit quiz for teacher',
+    })
 );
 module.exports = router;
