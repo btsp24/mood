@@ -3,8 +3,8 @@ class Players {
     this.players = [];
   }
 
-  addPlayer(hostId, playerId, name, gameData) {
-    const player = { hostId, playerId, name, gameData };
+  addPlayer(hostId, playerId, name, values) {
+    const player = { hostId, playerId, name, values };
     this.players.push(player);
     return player;
   }

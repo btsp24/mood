@@ -3,8 +3,8 @@ class LiveGames {
     this.games = [];
   }
 
-  addGame(pin, hostId, gameLive, gameData) {
-    const game = { pin, hostId, gameLive, gameData };
+  addGame(pin, hostId, gameLive, values) {
+    const game = { pin, hostId, gameLive, values };
     this.games.push(game);
     return game;
   }

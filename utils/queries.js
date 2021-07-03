@@ -3,7 +3,16 @@
  * quizzes, questions, answers
  */
 
-const { User, Quiz, Question, Answer, QuestionType, TimeLimit, sequelize } = require('../db/models');
+const {
+  User,
+  Quiz,
+  Question,
+  Answer,
+  QuestionType,
+  TimeLimit,
+  PlayerAnswer,
+  sequelize,
+} = require('../db/models');
 const { Op } = require('sequelize');
 
 class Query {
@@ -41,6 +50,7 @@ class Query {
       include: [
         {
           model: Question,
+          attributes: [],
         },
       ],
       group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
@@ -168,15 +178,56 @@ class Query {
     return questionList;
   }
 
+  static async getOneQuestion(theQuizId, qNumber) {
+    const theQuestion = await Question.findOne({ where: { quizId: theQuizId, questionNumber: qNumber } });
+    return theQuestion.toJSON();
+  }
+
   static async getOneQuestionWithAnswers(theQuizId, qNumber) {
-    const questionList = await this.getQuestionsOfTheQuiz(theQuizId);
-    for (const question of questionList) {
-      question.answers = await this.getAnswersOfTheQuestion(question.id);
+    const theQuestion = await Question.findOne({
+      where: { quizId: theQuizId, questionNumber: qNumber },
+    }).toJSON();
+    theQuestion.answers = await this.getAnswersOfTheQuestion(theQuestion.id);
+    return theQuestion;
+  }
+
+  static async getAnswersOfAQuestion(theQuizId, qNumber) {
+    if (theQuestionId == null) {
+      throw new Error('no questionId is given');
     }
-    if (qNumber > questionList.length) {
-      return null;
+    const theQuestion = await Question.findOne({ where: { quizId: theQuizId, questionNumber: qNumber } });
+    const answerArray = [];
+    for (const answer of await theQuestion.getAnswers({
+      order: sequelize.random(),
+    })) {
+      answerArray.push(answer.toJSON());
     }
-    return questionList[qNumber - 1];
+    return answerArray;
+  }
+
+  static async isAnswerCorrect(theAnswerId) {
+    if (theAnswerId == null) {
+      throw new Error('no AnswerId is given');
+    }
+    const result = await Answer.findByPk(theAnswerId);
+    return result.isCorrect;
+  }
+
+  static async savePlayerQuestionScore(playerId, gameId, questionId, answerId, questionScore) {
+    try {
+      const playerAnswer = await PlayerAnswer.create({
+        playerId,
+        gameId,
+        questionId,
+        answerId,
+        questionScore,
+      });
+      await playerAnswer.save();
+      return true;
+    } catch (error) {
+      console.log('error :>> ', error);
+      return false;
+    }
   }
 }
 module.exports = {
