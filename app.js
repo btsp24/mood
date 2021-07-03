@@ -100,6 +100,7 @@ const games = new LiveGames();
 const players = new Players();
 
 io.on('connection', socket => {
+  console.log('client connected socket.id :>>', socket.id);
   /*
       console.log('socket.conn.id :>> ', socket.conn.id);
   console.log('req.user :>> ', app.locals.user.id);
@@ -118,24 +119,34 @@ io.on('connection', socket => {
 
   // host connects for the first time
   socket.on('host-join', async function (data) {
+    console.log('host-join with data :>>', data);
     try {
-      const questions = await Query.getQuestionsOfTheQuiz(data.id);
-      if (!questions) {
-        // new pin for the given game
-        const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
-        games.addGame(gamePin, socket.id, false, {
-          gameid: data.id,
-          questionLive: false,
-          questionCount: questions.length,
-          question: 1,
-          playersAnswered: 0,
-        });
-        const game = games.getGame(socket.id);
-        // host joins a pin named socket room
-        socket.join(game.pin);
-        socket.emit('showGamePin', { pin: game.pin });
-      } else {
+      if (!data) {
         socket.emit('noGameFound');
+      } else {
+        const questions = await Query.getQuestionsOfTheQuiz(data.id);
+        console.log('questions :>> ', questions);
+        if (!questions) {
+          // new pin for the given game
+          const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
+          games.addGame(gamePin, socket.id, false, {
+            gameId: await uuidv4(),
+            quizId: data.id,
+            questionLive: false,
+            questionCount: questions.length,
+            questionNumber: 1,
+            playersAnswered: 0,
+          });
+          const game = games.getGame(socket.id);
+          console.log('recently added game :>> ', game);
+          // host joins a pin named socket room
+          socket.join(game.pin);
+          socket.emit('showGamePin', {
+            pin: game.pin,
+          });
+        } else {
+          socket.emit('noGameFound');
+        }
       }
     } catch (error) {
       console.log('error :>> ', error);
@@ -144,6 +155,7 @@ io.on('connection', socket => {
 
   // host connects from the game view
   socket.on('host-join-game', data => {
+    console.log('host-join-game with data :>>', data);
     const oldHostId = data.id;
     const game = games.getGame(oldHostId);
     if (game) {
@@ -154,12 +166,21 @@ io.on('connection', socket => {
           player.hostId = socket.id;
         }
       }
-      const currentQuestion = Query.getOneQuestionWithAnswers(game.gameData.gameid, game.gameData.question);
+      const currentQuestion = Query.getOneQuestionWithAnswers(game.values.quizId, game.values.questionNumber);
+      console.log('currentQuestion :>> ', currentQuestion);
       /* GAMEQUESTION!S */
-      socket.emit('gameQuestion', { ...currentQuestion, playersInGame: playerData.length });
-      // ** neden farklı
+      socket.emit('gameQuestion', {
+        ...currentQuestion,
+        playersInGame: playerData.length,
+      });
+      /*
+      ** neden farklı
       io.to(game.pin).emit('gameStartedPlayer');
-      game.gameData.questionLive = true;
+      */
+      if (game.pin) {
+        io.emit('gameStartedPlayer');
+      }
+      game.values.questionLive = true;
     } else {
       socket.emit('noGameFound');
     }
@@ -173,8 +194,9 @@ io.on('connection', socket => {
       if (params.pin === game.pin) {
         const hostId = game.hostId;
         players.addPlayer(hostId, socket.id, params.name, {
+          questionScore: 0,
+          answerId: null,
           gameScore: 0,
-          answer: 0,
         });
         socket.join(params.pin);
         const playersInGame = players.getPlayers(hostId);
@@ -195,7 +217,7 @@ io.on('connection', socket => {
       socket.join(game.pin);
       player.playerId = socket.id;
       const playerData = player.getPlayers(game.hostId);
-      socket.emit('playerGameData', playerData);
+      socket.emit('playervalues', playerData);
     } else {
       socket.emit('noGameFound');
     }
@@ -233,5 +255,57 @@ io.on('connection', socket => {
   });
 
   // set player data from given answer
-  socket.on('playerAnswer', playerAnswer => {});
+  socket.on('playerAnswer', async givenAnswer => {
+    const player = players.getPlayer(socket.id);
+    const hostId = player.hostId;
+    console.log('player :>> ', player);
+    console.log('givenAnswer :>> ', givenAnswer);
+    const playerCount = players.getPlayers(hostId).length;
+    const game = games.getGame(hostId);
+    if (game.values.questionLive) {
+      player.values.answerId = givenAnswer;
+      game.values.playersAnswered += 1;
+      const answersOfQuestion = await Query.getAnswersOfAQuestion(
+        game.values.gameId,
+        game.values.questionNumber
+      );
+      const correctAnswer = answersOfQuestion.filter(a => {
+        return a.isCorrect === true;
+      });
+      if (givenAnswer === correctAnswer) {
+        player.values.questionScore += 100;
+        io.to(game.pin).emit('getTime', socket.id);
+        socket.emit('answerResult', true);
+      }
+      if (game.values.playersAnswered === playerCount) {
+        game.values.questionLive = false;
+        const playerData = players.getPlayers(game.hostId);
+        io.to(game.pin).emit('questionOver', playerData, correctAnswer);
+      }
+    }
+  });
+
+  socket.on('getScore', async () => {
+    const player = players.getPlayer(socket.id);
+    player.values.quizScore += player.values.questionScore;
+    const hostId = player.hostId;
+    const gameId = games.getGame(hostId).values.gameId;
+    const questionId = await Query.getOneQuestion(gameId, player.values.questionNumber).id;
+
+    await Query.savePlayerQuestionScore(
+      socket.id,
+      gameId,
+      questionId,
+      player.values.answerId,
+      player.values.questionScore
+    );
+    player.values.questionScore = 0;
+  });
+
+  socket.on('quizList-request', async function () {
+    const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
+    const quizzes = await Query.getQuizzesOfTheUser(aUserId /* app.locals.user.id */);
+
+    socket.emit('quizList-response', quizzes);
+  });
 });

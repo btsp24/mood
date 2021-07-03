@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <%- include('../partials/header', {title}); %>
+  <%- include('../partials/headerhome', {title}); %>
   <body>
     <h1><%= title %></h1>
 
@@ -47,7 +47,9 @@
 
       <br />
 
-      <button type="button" class="btn btn-warning" onclick="cancelQuiz()">Cancel quiz and return to quiz selection</button>
+      <button type="button" class="btn btn-warning" onclick="cancelQuiz()">
+        Cancel quiz and return to quiz selection
+      </button>
     </div>
     <%- include('../partials/footer') %>
     <script src="../javascripts/edit.js"></script>

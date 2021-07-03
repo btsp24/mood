@@ -11,22 +11,28 @@ const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
 klasik seçilince pin oluşturuluyor
 */
 
-router.get('/', ensureAuthenticated, function (req, res, next) {
-  res.app.locals.user = req.user;
-  console.log('req.user :>> ', req.user);
-  res.render('host/index', { title: 'Start a Kahoot Game', userName: req.user.userName });
-});
+router.get(
+  '/',
+  /* ensureAuthenticated, */ function (req, res, next) {
+    res.app.locals.user = req.user;
+    console.log('req.user :>> ', req.user);
+    res.render('host/index', { title: 'Start a Kahoot Game', userName: req.user.userName });
+  }
+);
 
 /* host game lobby
 pin ekranda sergileniyor
 katılanlar gösteriliyor
 */
 
-router.get('/lobby', ensureAuthenticated, function (req, res, next) {
-  res.app.locals.user = req.user;
-  console.log('req.user :>> ', req.user);
-  res.render('host/lobby', { title: 'Teacher game lobby page' });
-});
+router.get(
+  '/lobby',
+  /* ensureAuthenticated, */ function (req, res, next) {
+    res.app.locals.user = req.user;
+    console.log('req.user :>> ', req.user);
+    res.render('host/lobby', { title: 'Teacher game lobby page' });
+  }
+);
 
 /* host game start 
 öğretmen oyunu başlat düğmesine tıklayınca gelen ekran

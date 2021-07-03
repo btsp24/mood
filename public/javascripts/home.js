@@ -18,7 +18,7 @@ socket.on('connect', () => {
   socket.on('quizList-response', quizzes => {
     if (quizzes != null) {
       quizzes.forEach(quiz => {
-        quizList.append(quiz);
+        console.log('quiz :>> ', quiz);
       });
     }
   });
