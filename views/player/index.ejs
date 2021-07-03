@@ -1,16 +1,29 @@
   <%- include('../partials/header', {title}); %>
   <body>
     <h1 id="title">Join a Game</h1>
-    <form action="/join/">
+    <form action="/join/" method="POST">
       <div class="form-field">
         <label id="label">Game Pin</label>
         <input id="pin" type="number" name="pin" autofocus />
       </div>
       <br />
       <div class="d-grid gap-2 form-field">
-        <button id="submit" class="btn btn-lg btn-primary" type="button">Enter</button>
+        <button id="submit" class="btn btn-lg btn-primary" type="submit">Enter</button>
       </div>
     </form>
     <%- include('../partials/footer') %>
   </body>
+<!--   <script>
+$( "form" ).submit(function( event ) {
+  const formData = new FormData(event.target);
+  const data = new URLSearchParams(formData.entries());
+  if ( data ) {
+    alert(data);
+    $.post('/join',data)
+    window.location.href = "/join"
+    return;  }
+
+  event.preventDefault();
+});
+  </script> -->
 </html>

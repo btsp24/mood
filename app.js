@@ -56,7 +56,9 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 io.engine.generateId = async req => {
-  return await uuidv4();
+  const newUUID = uuidv4();
+  console.log('io generated newUUID :>> ', newUUID);
+  return /* await */ newUUID;
 };
 
 // Connect flash
@@ -101,21 +103,23 @@ const players = new Players();
 
 io.on('connection', socket => {
   console.log('client connected socket.id :>>', socket.id);
-  /*
-      console.log('socket.conn.id :>> ', socket.conn.id);
+
+  console.log('socket.conn.id :>> ', socket.conn.id);
+  if (!app.locals.user) {
+    socket.emit('redirect', '/login');
+  }
   console.log('req.user :>> ', app.locals.user.id);
 
-  other methods will come here
+  // other methods will come here
 
   socket.on('UUID-request', () => {
-    console.log({
+    console.log('s: UUID', {
       old: socket.conn.id,
       new: app.locals.user.id,
     });
     socket.conn.id = app.locals.user.id;
     socket.emit('UUID-response', app.locals.user.id);
-  }); 
-  */
+  });
 
   // host connects for the first time
   socket.on('host-join', async function (data) {
@@ -303,9 +307,21 @@ io.on('connection', socket => {
   });
 
   socket.on('quizList-request', async function () {
-    const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
-    const quizzes = await Query.getQuizzesOfTheUser(aUserId /* app.locals.user.id */);
+    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+    const quizzes = await Query.getQuizzesOfTheUser(/* aUserId */ app.locals.user.id);
 
     socket.emit('quizList-response', quizzes);
+  });
+  socket.on('shared-quizList-request', async function () {
+    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+    const quizzes = await Query.getQuizzesOfOtherUsers(/* aUserId */ app.locals.user.id);
+
+    socket.emit('shared-quizList-response', quizzes);
+  });
+  socket.on('draft-quizList-request', async function () {
+    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+    const quizzes = await Query.getQuizzesOfTheUser(/* aUserId */ app.locals.user.id);
+
+    socket.emit('draft-quizList-response', quizzes);
   });
 });

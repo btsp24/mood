@@ -61,6 +61,42 @@ class Query {
     return quizArray;
   }
 
+  static async getDraftQuizzesOfTheUser(theUserId) {
+    if (theUserId == null) {
+      throw new Error('no userId is given');
+    }
+    const theUser = await User.findByPk(theUserId);
+    const quizArray = [];
+    if (!theUser) {
+      return null;
+    }
+    for (const quiz of await theUser.getQuizzes({
+      where: {
+        composerId: theUserId,
+        isDraft: true,
+      },
+      attributes: [
+        'id',
+        'title',
+        'imgURL',
+        'createdAt',
+        'composerId',
+        [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
+      ],
+      include: [
+        {
+          model: Question,
+          attributes: [],
+        },
+      ],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
+      order: [['createdAt', 'DESC']],
+    })) {
+      quizArray.push(quiz.toJSON());
+    }
+    return quizArray;
+  }
+
   static async getQuizzesOfOtherUsers(theUserId) {
     if (theUserId == null) {
       throw new Error('no userId is given');
