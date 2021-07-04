@@ -45,11 +45,16 @@ class Query {
         'imgURL',
         'createdAt',
         'composerId',
+        [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
       ],
       include: [
         {
           model: Question,
+          attributes: [],
+        },
+        {
+          model: User,
           attributes: [],
         },
       ],
@@ -81,11 +86,16 @@ class Query {
         'imgURL',
         'createdAt',
         'composerId',
+        [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
       ],
       include: [
         {
           model: Question,
+          attributes: [],
+        },
+        {
+          model: User,
           attributes: [],
         },
       ],
@@ -101,9 +111,9 @@ class Query {
     if (theUserId == null) {
       throw new Error('no userId is given');
     }
-    // const theUser = await User.findByPk(theUserId);
+    const theUser = await User.findByPk(theUserId);
     const quizArray = [];
-    for (const quiz of await User.getQuizzes({
+    for (const quiz of await Quiz.findAll({
       where: {
         composerId: {
           [Op.ne]: theUserId,
@@ -117,6 +127,7 @@ class Query {
         'imgURL',
         'createdAt',
         'composerId',
+        [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
       ],
       include: [
@@ -124,9 +135,13 @@ class Query {
           model: Question,
           attributes: [],
         },
+        {
+          model: User,
+          attributes: [],
+        },
       ],
       group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
-      order: ['createdAt', 'DESC'],
+      order: [['createdAt', 'DESC']],
     })) {
       quizArray.push(quiz.toJSON());
     }

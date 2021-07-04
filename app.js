@@ -108,7 +108,7 @@ io.on('connection', socket => {
   if (!app.locals.user) {
     socket.emit('redirect', '/login');
   }
-  console.log('req.user :>> ', app.locals.user.id);
+  // console.log('req.user :>> ', app.locals.user.id);
 
   // other methods will come here
 
@@ -312,16 +312,16 @@ io.on('connection', socket => {
 
     socket.emit('quizList-response', quizzes);
   });
+  socket.on('draft-quizList-request', async function () {
+    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+    const quizzes = await Query.getDraftQuizzesOfTheUser(/* aUserId */ app.locals.user.id);
+
+    socket.emit('draft-quizList-response', quizzes);
+  });
   socket.on('shared-quizList-request', async function () {
     /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
     const quizzes = await Query.getQuizzesOfOtherUsers(/* aUserId */ app.locals.user.id);
 
     socket.emit('shared-quizList-response', quizzes);
-  });
-  socket.on('draft-quizList-request', async function () {
-    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizzes = await Query.getQuizzesOfTheUser(/* aUserId */ app.locals.user.id);
-
-    socket.emit('draft-quizList-response', quizzes);
   });
 });

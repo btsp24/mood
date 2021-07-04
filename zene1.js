@@ -12,9 +12,12 @@ async function main() {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-  // const userId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
+  const userId = 'e87dd769-b724-4117-9838-0e9fe42951e7';
   // const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
-  // const result = await getQuestionsOfTheQuiz(aQuizId);
+  const result = await Query.getQuizzesOfOtherUsers(userId);
+  // const result = await Query.getQuizzesOfTheUser(userId);
+  // const result = await Query.getDraftQuizzesOfTheUser(userId);
+  console.log('result :>> ', result);
   // // console.log('result :>> ', result);
   // for (const que of result) {
   //   console.log(que.id, 'que.title :>> ', que.title);
@@ -22,11 +25,11 @@ async function main() {
   //     console.log('   answer :>> ', ans);
   //   }
   // }
-  const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
-  const source = await Query.getQuestionsOfTheQuiz(aQuizId);
-  if (!!source) {
-    console.log('source.length :>> ', source.length);
-  }
+  // const aQuizId = '3e439775-8cba-43c4-b1c2-949ef219da9b';
+  // const source = await Query.getQuestionsOfTheQuiz(aQuizId);
+  // if (!!source) {
+  //   console.log('source.length :>> ', source.length);
+  // }
   // for (const q of source) {
   //   console.log(`${q.questionOrder} :>>`, q);
   // }

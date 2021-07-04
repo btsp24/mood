@@ -3,11 +3,82 @@
   <%- include('../partials/headerhome', {title}); %>
   <body>
     <h1><%= title %></h1>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a
+          class="nav-item nav-link active"
+          id="nav-home-tab"
+          data-toggle="tab"
+          href="#nav-home"
+          role="tab"
+          aria-controls="nav-home"
+          aria-selected="true"
+          >Quizzes</a
+        >
+        <a
+          class="nav-item nav-link"
+          id="nav-profile-tab"
+          data-toggle="tab"
+          href="#nav-profile"
+          role="tab"
+          aria-controls="nav-profile"
+          aria-selected="false"
+          >Shared</a
+        >
+        <a
+          class="nav-item nav-link"
+          id="nav-contact-tab"
+          data-toggle="tab"
+          href="#nav-contact"
+          role="tab"
+          aria-controls="nav-contact"
+          aria-selected="false"
+          >Draft</a
+        >
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div
+        class="tab-pane fade show active"
+        id="nav-home"
+        role="tabpanel"
+        aria-labelledby="nav-home-tab"
+      ></div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"></div>
+      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"></div>
+    </div>
     <%- include('../partials/footer') %>
     <script>
       console.log('from :>> ', '🏡');
       const socket = io();
       const quizList = [];
+      function quizCard(data) {
+        return (
+          '<div class="card mb-12" >' /* style="max-width: 720px;" */ +
+          '<div class="row no-gutters">' +
+          '<div class="col-md-3">' +
+          '<img src=' +
+          `${data.imgURL}` +
+          ' class="card-img" style="width:300px" alt="...">' +
+          '</div>' +
+          '<div class="col-md-9">' +
+          '<div class="card-body">' +
+          '<h5 class="card-title">' +
+          `${data.title}` +
+          '</h5>' +
+          '<p class="card-text">' +
+          `${data.numberOfQuestions}` +
+          '</br>' +
+          `${data.composerName}` +
+          '</p>' +
+          '<a href="#" data-id=' +
+          `${data.id}` +
+          ' class="btn btn-primary">Play</a>' +
+          '<p class="card-text"><small class="text-muted">' +
+          `${data.createdAt}` +
+          '</small></p></div></div></div></div>'
+        );
+      }
 
       socket.on('connect', () => {
         socket.on('redirect', destination => {
@@ -17,19 +88,38 @@
         console.log('connected :>> ', socket.io.engine.id);
 
         // set socketid to actual userid for host
-        socket.emit('UUID-request');
+        // socket.emit('UUID-request');
 
-        socket.on('UUID-response', newUUID => {
-          console.log({ old: socket.io.engine.id, new: newUUID });
-          socket.io.engine.id = newUUID;
-        });
+        // socket.on('UUID-response', newUUID => {
+        //   console.log({ old: socket.io.engine.id, new: newUUID });
+        //   socket.io.engine.id = newUUID;
+        // });
         // ask my quiz list
         socket.emit('quizList-request');
+        socket.emit('draft-quizList-request');
+        socket.emit('shared-quizList-request');
 
         socket.on('quizList-response', quizzes => {
           if (quizzes != null) {
             quizzes.forEach(quiz => {
               console.log('quiz :>> ', quiz);
+              $('#nav-home').append(quizCard(quiz));
+            });
+          }
+        });
+        socket.on('shared-quizList-response', quizzes => {
+          if (quizzes != null) {
+            quizzes.forEach(quiz => {
+              //console.log("quiz :>> ", quiz);
+              $('#nav-profile').append(quizCard(quiz));
+            });
+          }
+        });
+        socket.on('draft-quizList-response', quizzes => {
+          if (quizzes != null) {
+            quizzes.forEach(quiz => {
+              console.log('quiz :>> ', quiz);
+              $('#nav-contact').append(quizCard(quiz));
             });
           }
         });

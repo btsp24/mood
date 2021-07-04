@@ -1,7 +1,7 @@
   <%- include('../partials/header', {title}); %>
   <body>
     <h1 id="title">Join a Game</h1>
-    <form action="/join/" method="POST">
+    <form action="#">
       <div class="form-field">
         <label id="label">Game Pin</label>
         <input id="pin" type="number" name="pin" autofocus />
@@ -13,17 +13,18 @@
     </form>
     <%- include('../partials/footer') %>
   </body>
-<!--   <script>
+  <script>
 $( "form" ).submit(function( event ) {
   const formData = new FormData(event.target);
   const data = new URLSearchParams(formData.entries());
+  event.preventDefault();
   if ( data ) {
     alert(data);
-    $.post('/join',data)
+    //$.get('/join',data) ;
+    socket.emit('player-join', {pin: formData.pin});
     window.location.href = "/join"
-    return;  }
+    return false;  }
 
-  event.preventDefault();
 });
-  </script> -->
+  </script>
 </html>
