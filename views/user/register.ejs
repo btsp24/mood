@@ -1,107 +1,32 @@
 <html>
-  <%- include('../partials/headerhome', {title}); %>
+<%- include('../partials/headerhome', {title}); %>
 
-  <style>
-    html,
-    body {
-      height: 100%;
-    }
+  <body class="body" id="signinbody">
+    <div class="row d-flex justify-content-center">
+      <div class="col-lg-6 mx-md-2 mx-lg-auto my-5 ">
+        <div class="login-box" id="login-box">
+          <div class="login-snip">
+            <div><img id="logogreen" class="img-thumbnail" src="./images/logogreen.png" style="height: 2.0rem;"></span>MOOD-SIGNUP</div>
+            <div class="login-space" id="login-space">
+              <div class="sign-up-form" id="signupform">
+                <div class="group"> <label for="user" class="label">Username</label> <input id="user" type="text"
+                    class="input" placeholder="Create your Username"> </div>
+                <div class="group"> <label for="pass" class="label">Email Address</label> <input id="pass" type="text"
+                    class="input" placeholder="Enter your email address"> </div>
+                <div class="group"> <label for="pass" class="label">Password</label> <input id="pass" type="password"
+                    class="input" data-type="password" placeholder="Create your password"> </div>
+                <div class="group"> <label for="pass" class="label">Repeat Password</label> <input id="pass"
+                    type="password" class="input" data-type="password" placeholder="Repeat your password"> </div>
+                <div class="group"> <input id="sign" type="submit" class="button" value="Sign Up"> </div>
+                <div class="hr"></div>
+                <div class="foot"> <label for="tab" id="loginlink">Already Member?</label> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    body {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-align: center;
-      align-items: center;
-      padding-top: 40px;
-      padding-bottom: 40px;
-      background-color: #f5f5f5;
-    }
-
-    .form-signin {
-      width: 100%;
-      max-width: 330px;
-      padding: 15px;
-      margin: auto;
-    }
-    .form-signin .checkbox {
-      font-weight: 400;
-    }
-    .form-signin .form-control {
-      position: relative;
-      box-sizing: border-box;
-      height: auto;
-      padding: 10px;
-      font-size: 16px;
-    }
-    .form-signin .form-control:focus {
-      z-index: 2;
-    }
-    .form-signin input[type='email'] {
-      margin-bottom: -1px;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-    .form-signin input[type='password'] {
-      margin-bottom: 10px;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-  </style>
-  <body>
-    <form class="form-signin text-center" action="/register" method="POST">
-      <i class="fas fa-sign-in-alt fa-5x"></i>
-      <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input
-        type="email"
-        id="inputEmail"
-        name="email"
-        class="form-control"
-        placeholder="Email address"
-        required
-        autofocus
-      />
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="inputPassword"
-        class="form-control"
-        name="password"
-        placeholder="Password"
-        required
-      />
-      <label for="retypePassword" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="retypePassword"
-        class="form-control"
-        name="password2"
-        placeholder="Password"
-        required
-      />
-      <label for="userName" class="sr-only">User Name</label>
-      <input
-        type="text"
-        id="userName"
-        name="userName"
-        class="form-control"
-        placeholder="Enter Username"
-        required
-        autofocus
-      />
-      <label for="name" class="sr-only">Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        class="form-control"
-        placeholder="Enter your name"
-        required
-        autofocus
-      />
-      <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">Sign in</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
-    </form>
-    <%- include('../partials/footer') %>
+      <%- include('../partials/footer') %>
   </body>
+
 </html>

@@ -145,3 +145,448 @@ h2 {
   font-size: 20px;
   /* background-color: #3a3b3a; */
 }
+
+/*-------------------------------------------------------------------------*/
+/* login style*/
+
+
+#loginbody {
+  margin: auto;
+  background: white;
+  font: 500 14px/16px 'Open Sans', sans-serif
+}
+
+.login-box {
+  width: 100%;
+ margin: auto ;
+  max-width: 400px;
+  min-height: 500px;
+  position: relative;
+  border: 1px  solid rgba(13, 131, 139, 0.24)
+}
+
+.login-snip {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 40px 70px 50px 70px;
+}
+
+.login-snip .login {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+
+.login-space .group .check {
+  display: none
+}
+
+.login-snip .tab,
+.login-space .group .label,
+.login-space .group .but {
+  text-transform: uppercase
+}
+
+
+.login-space .group .but:active {
+  transform: translateY(4px);
+}
+
+
+.login-snip .tab {
+  font-size: 15px;
+  margin-right: 15px;
+  padding-bottom: 5px;
+  margin: 0 15px 10px 0;
+  display: inline-block;
+  border-bottom: 2px solid transparent
+}
+
+
+.login-space {
+  min-height: 300px;
+  position: relative;
+  perspective: 1000px;
+}
+
+.login-space .group {
+  margin-top: 20px
+}
+
+
+.login-space .group .label,
+.login-space .group .input
+ {
+  width: 100%;
+ color: rgb(0, 0, 0);
+  display: block;
+  border-radius: 4px;
+  border-color: rgb(219, 230, 235);
+}
+
+.login-space .group .but {
+  width: 100%;
+ color: whitesmoke;
+  display: block;
+  border-radius:4px;
+  border:none
+}
+
+
+.login-space .group .input,
+.login-space .group .but {
+  
+  padding: 8px 8px;
+  outline-color: rgba(13, 131, 139, 0.534);
+}
+
+
+.login-space .group input {
+margin-top: 8px;
+}
+
+.login-space .group .label {
+  color: black;
+  font-size: 11px
+}
+
+.login-space .group .but {
+  background: rgba(13, 131, 139, 0.534);
+}
+
+.login-space .group label .icon {
+  width: 15px;
+  height: 15px;
+  border-radius: 2px;
+  position: relative;
+  display: inline-block;
+  border:solid 0.05px
+}
+
+.login-space .group label .icon:before,
+.login-space .group label .icon:after {
+  content: '';
+  width: 8px;
+  height: 1.5px;
+  background: whitesmoke;
+  position: absolute;
+  transition: all .2s ease-in-out 0s; 
+}
+
+.login-space .group label .icon:before {
+  left: 2px;
+  width: 5px;
+  bottom: 6px;
+  transform: scale(0) rotate(0)
+}
+
+.login-space .group label .icon:after {
+  top: 6px;
+  right: 1px;
+  transform: scale(0) rotate(0)
+}
+
+.login-space .group .check:checked+label {
+  color: black;
+}
+
+.login-space .group .check:checked+label .icon:before {
+  transform: scale(1) rotate(45deg)
+}
+
+.login-space .group .check:checked+label .icon:after {
+  transform: scale(1) rotate(-45deg)
+}
+
+.login-space .group .check:checked+label .icon {
+  background: rgba(13, 131, 139, 0.534)
+}
+
+.clearfix:after,
+.clearfix:before {
+  content: '';
+  display: table
+}
+
+.clearfix:after {
+  clear: both;
+  display: block
+}
+.foot a:hover {
+  color: darkslategrey;
+}
+
+.foot a{
+  color:rgba(13, 131, 139, 0.534)
+}
+
+.hr {
+  height: 2px;
+  margin: 48px 0 40px 0;
+  background: rgba(13, 131, 139, 0.534)
+}
+
+.foot {
+  text-align: center;
+  color:grey
+}
+
+.login ::placeholder {
+  color: #b3b3b3
+}
+
+/*-------------------------------------------------------------------------*/
+
+/* signin style*/
+  
+#signinbody {
+    margin: auto;
+    font: 500 14px/16px 'Open Sans', sans-serif;
+  }
+  
+  .signin-box {
+    width: 100%;
+   margin: auto ;
+    max-width: 405px;
+    min-height: 600px;
+    position: relative;
+    border: 1px  solid rgba(13, 131, 139, 0.24)
+  }
+  
+  .signin-snip {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 40px 70px 50px 70px;
+  }
+  
+  .signin-snip .sign-up-form {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+  }
+  
+  .signin-snip .tab,
+  .signin-space .group .label,
+  .signin-space .group .button {
+    text-transform: uppercase
+  }
+  
+  
+  .signin-space .group .button:active {
+    transform: translateY(4px);
+  }
+  
+  .signin-snip .tab {
+    font-size: 15px;
+    margin-right: 15px;
+    padding-bottom: 5px;
+    margin: 0 15px 10px 0;
+    display: inline-block;
+    border-bottom: 2px solid transparent
+  }
+  
+  .signin-space {
+    min-height: 300px;
+    position: relative;
+    perspective: 1000px;
+    
+  }
+  
+  .signin-space .group {
+    margin-top: 20px;
+  }
+  
+  .signin-space .group .label,
+  .signin-space .group .input
+   {
+    width: 100%;
+    color: black;
+  }
+
+  .signin-space .group .input
+   {
+   border-radius: 4px;
+   border-color: rgb(219, 230, 235);
+  }
+  
+  .signin-space .group .button {
+    
+    padding: 8px 8px;
+    background:rgba(13, 131, 139, 0.534);
+    color: whitesmoke;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    display: block;
+  }
+  
+  .signin-space .group .input {
+    padding: 8px 8px;
+    outline-color: rgba(13, 131, 139, 0.534);
+  }
+  
+  .signin-space .group input {
+  margin-top: 8px;
+  }
+  
+  .signin-space .group .label {
+    color: black;
+    font-size: 11px
+  }
+  
+  .signhr {
+    height: 2px;
+    margin: 48px 0 40px 0;
+    background: rgba(13, 131, 139, 0.534)
+  }
+  
+  .signfoot{
+    text-align: center;
+    color: grey;
+  }
+  
+  #loginlink:hover {
+    color: rgba(13, 131, 139, 0.705);
+  }
+  
+  .sign-up-form ::placeholder {
+    color: #b3b3b3
+  }
+  
+/*-------------------------------------------------------------------------*/
+
+
+/* mood compose style*/
+
+.aborder {border-style: solid} 
+#btn-settings {
+    font-weight: bold ; letter-spacing: 0.1rem;
+}
+.bborder {border-style: dashed; border-radius:15px} 
+.cborder {border-style:outset; box-shadow: 0.5px 1px 2px #888888; border-radius: 15px; }
+
+#borderred:focus-within{background-color: #eb1c1c;}
+#borderblue:focus-within{background-color: rgb(3, 81, 182);}
+#borderyellow:focus-within{background-color: #fcce00;}
+#bordergreen:focus-within{background-color: #228b03;}
+
+#inputa{
+border-radius: 5px;
+
+}
+#inputd{
+  border-radius: 5px;
+ }
+#inputb{
+  border-radius: 5px;
+    }
+#inputc{
+border-radius: 5px;
+      }
+#inputa:focus {
+    border-color: #eb1c1c;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(255, 0, 0, 0.6);
+    background-color: #eb1c1c;
+    color: #fff;
+  }
+  #inputb:focus {
+    border-color: rgb(3, 81, 182);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(0, 68, 255, 0.904);
+    background-color: rgb(3, 81, 182);
+    color: #fff;
+  }
+  #inputc:focus {
+    border-color: #fcce00;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(255, 251, 0, 0.918);
+    background-color:  #fcce00;
+    color: #fff;
+  }
+  #inputd:focus {
+    border-color: #228b03;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(0, 255, 0, 0.6);
+    background-color: #228b03;
+    color: #fff;
+  }
+
+.gear:hover{
+ fill: rgb(14, 241, 204);
+}
+
+#checka {
+width: 50px; height: 2.5rem; background-color: #eb1c1c; border-radius: 20px;margin-left: 5px;
+}
+#checkb {
+  width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182);; border-radius: 20px;margin-left: 5px;
+  }
+#checkc {
+    width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px;margin-left: 5px;
+    }
+#checkd {
+      width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px;
+      }
+
+      
+.sidebar {
+	width: 15%; height: 100vh; position: fixed; top: 55px; right: -15%; z-index: 999; 
+	background:#fff; color: #fff; transition: all .3s; 
+  border-left:rgb(4, 24, 88) solid ;
+  border-width: thin;
+}
+
+.sidebar.active { 
+  right: 0
+}
+
+.dismiss {
+	width: 2rem; height: 2x; position: absolute; top: 10px; left: 10px; transition: all .3s; 
+	background: #444; border-radius: 4px; text-align: center; line-height: 35px; cursor: pointer;
+}
+
+.dismiss:hover, .dismiss:focus { background: #555; color: #fff; }
+
+
+.selectlabel{
+color: rgba(0, 0, 0, 0.747);
+}
+.selectlabel:hover{
+  color:rgb(22, 163, 144);
+}
+
+.sidegrp {
+  margin-top:3.5rem;
+  text-align: center;
+}
+
+.btngroup{
+display: inline;
+justify-content: center;
+}
+
+.open-menu { 
+  position: fixed; top: 20px; right: 10px;  
+  box-shadow: 3px 3px 3px rgba(51, 51, 51, 0.2); 
+}
+
+a.btn-customized {
+	margin-top: 150px ; margin-right: 5px; margin-right: 5px; padding: .75rem 1.5rem; 
+	; border: 0; border-radius: 4px; 
+	font-size: 12px; font-weight: 500; color: #fff; box-shadow: none;
+}
+
+a.btn-customized:hover, 
+a.btn-customized:active, 
+a.btn-customized:focus, 
+a.btn-customized:active:focus, 
+a.btn-customized.active:focus,
+a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active,
+a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active:focus {
+	outline: 0; background: #18bc9c; 
+  background: #18bc9c; border: 0; color: #fff; box-shadow: none;
+}
