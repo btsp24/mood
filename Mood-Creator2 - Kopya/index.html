@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Mood Creator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.0.2/dist/lumen/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="./logo.png" type="img">
+</head>
+
+<body>
+    <nav class="sidebar" id="mySidebar">
+
+        <div class="dismiss">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+
+        <aside class="aside">
+
+            <div class="sidegrp">
+                <label for="Question Type" class="for selectlabel">Question Type</label>
+                <select class="form-select" id="Question Type">
+                    <option selected>Quiz</option>
+                    <option value="1">True or False</option>
+
+                </select>
+
+                <hr style="color: rgb(22, 163, 144);">
+
+                <label for="Time Limit" class="for selectlabel">Time Limit</label>
+                <select class="form-select" id="Time Limit">
+
+                    <option value="1">10 seconds</option>
+                    <option value="1">20 seconds</option>
+                    <option value="1">30 seconds</option>
+                    <option selected>1 minute</option>
+                    <option value="1">1 minute 30 seconds</option>
+                    <option value="1">2 minutes</option>
+                    <option value="1">3 minutes</option>
+                    <option value="1">4 minutes</option>
+
+                </select>
+
+                <hr style="color: rgb(22, 163, 144);">
+                <div>
+                    <label for="Music" class="for selectlabel">Music</label>
+                    <select class="form-select" id="Music">
+
+                        <option value="1">Music-1</option>
+                        <option value="1">Music-2</option>
+                        <option value="1">Music-3</option>
+                        <option value="1">Music-4</option>
+
+                    </select>
+
+                    <hr style="color: rgb(22, 163, 144) ">
+                </div>
+
+                <div class="btngroup row">
+
+                    <hr>
+
+                    <button class=" btn btn-primary" type="button" style="margin-top: 60px;"> <span
+                            style="font-weight:bold">Add Question </span></button>
+
+                    <hr>
+                    <hr style="color: rgb(22, 163, 144)">
+
+
+                    <button class=" btn btn-danger" type="button" style="margin-top: 10px;"> <span
+                            style="font-weight:bold; ">Delete </span> </button>
+                    <hr>
+
+                </div>
+        </aside>
+
+    </nav>
+    <!-- End sidebar -->
+
+    <div class="content">
+
+        <a class="btn btn-primary  btn-customized open-menu" href="#" role="button" style="margin-top: 4.5rem;">
+            <i class="fas fa-align-right"></i> <span>Menu</span>
+        </a>
+
+    </div>
+
+
+
+    <!-- navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary text-uppercase" id="mainNav"
+        >
+        <div class="container-fluid">
+            <div>
+                <img class="img-thumbnail" src="assets/img/logo.png" style="height: 2.70rem;">
+               
+            </div>
+
+     
+     <div>
+             
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+              
+                  <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Settings
+                            </a>
+                          </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" href="#">Exıt
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" href="#">Done</a>
+                      </li>
+           
+                      </li>
+                     
+                    </ul>
+                  
+                  </div>
+                </div>
+              </nav>
+
+
+
+    
+    <section class=" container-fluid px-0" style="padding-top: 4.5rem;" >
+        <div class="container-fluid visible">
+
+            <div class="row">
+
+                <div id="main" class="col-lg-10 offset-lg-0 text-center d-flex flex-column">
+                    <input class="border rounded border-success shadow-sm form-control-lg d-lg-flex required"
+                        type="text" placeholder="Start typing your question" maxlength="120">
+                    <div class="row">
+                        <div class="col-6 col-lg-6 offset-3 offset-lg-3 bborder border-success border-1"
+                            style="margin-top: 10px">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="grey"
+                                class="bi bi-file-earmark-play" viewBox="0 0 16 16" style="margin-top: 80px">
+                                <path
+                                    d="M6 6.883v4.234a.5.5 0 0 0 .757.429l3.528-2.117a.5.5 0 0 0 0-.858L6.757 6.454a.5.5 0 0 0-.757.43z" />
+                                <path
+                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                            </svg>
+                            <span style="margin-left: 20px;"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="grey"
+                                class="bi bi-image" viewBox="0 0 16 16" style="margin-top: 80px">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                <path
+                                    d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                            </svg>
+                            <div class="row">
+                                <div class="col"><button class="btn btn-primary" type="button"
+                                        style="margin-top: 50px">Add Media</button></div>
+                                <span style="margin-top: 5px" style="font-size: small;">Drag and drop image from your computer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Answer Choices -->
+                    <div class="row" style="margin-top: 50px;">
+                        <div class="col-lg-6 ">
+                            <div id="borderred" class="row cborder">
+
+                                <div class="col-1"><i> <img src="./kirmizi.PNG" alt=""></i></div>
+
+                                <div class="col-11 align-self-center ">
+                                    <div class=" input-group px-lg-2">
+
+                                        <input id="inputa" class="col-11 form-control form-control-lg " type="text"
+                                            placeholder="Add answer 1 (required)" for="checka">
+
+                                        <input id="checka" type="checkbox" class="form-check-input" value="">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-6 ">
+                            <div id="borderblue" class="row cborder">
+                                <div class="col-1"><i><img src="./Mavi.PNG" alt=""></i></div>
+                                <div class="col-11 align-self-center  ">
+                                    <div class=" input-group px-lg-2">
+                                        <input id="inputb" class="col-11 form-control form-control-lg required"
+                                            placeholder="Add answer 2 (required)" for="checkb">
+                                        <input id="checkb" type="checkbox" class="form-check-input" value="">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-lg-6  ">
+                            <div class="row cborder" id="borderyellow" >
+                                <div class="col-1"><i><img src="./sari.PNG" alt=""></i></div>
+                                <div class="col-11 align-self-center">
+                                    <div class=" input-group px-lg-2 ">
+                                        <input id="inputc" class="col-11 form-control form-control-lg required "
+                                            type="text" placeholder="Add answer 3 (optional)" for="checkc">
+                                        <input id="checkc" type="checkbox" class="form-check-input" value="">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 ">
+                            <div id="bordergreen" class="row cborder">
+                                <div class="col-1"><i><img src="./yeşil.PNG" alt=""></i></div>
+                                <div class="col-11 align-self-center">
+                                    <div class=" input-group px-lg-2">
+                                        <input id="inputd" class="form-control form-control-lg" type="text"
+                                            placeholder="Add answer 4 (optional)" for="checkd">
+                                        <input id="checkd" type="checkbox" class="form-check-input" value="">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    
+
+
+   
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+  
+  <script src="assets/js/scripts.js"></script>
+
+
+</body>
+
+</html>
