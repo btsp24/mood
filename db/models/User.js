@@ -1,4 +1,6 @@
-'use strict';
+const bCrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs/dist/bcrypt');
+('use strict');
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -18,35 +20,36 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       userName: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-      },
-      name: {
         type: DataTypes.STRING(30),
+        allowNull: false,
       },
     },
     {
       timestamps: true,
       paranoid: true,
+      hooks: {
+        beforeCreate: async function (user) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        },
+      },
     }
   );
 
   User.associate = function (models) {
     User.hasMany(models.Game, {
-      foreignKey: {
-        name: 'hostedBy',
-        type: DataTypes.UUID,
-      },
+      foreignKey: 'hostedBy',
       target: 'id',
     });
 
     User.hasMany(models.Quiz, {
-      foreignKey: {
-        name: 'composerId',
-        type: DataTypes.UUID,
-      },
+      foreignKey: 'composerId',
       target: 'id',
     });
+  };
+
+  User.prototype.validPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
   };
 
   return User;

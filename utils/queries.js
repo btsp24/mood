@@ -234,11 +234,22 @@ class Query {
     return theQuestion.toJSON();
   }
 
-  static async getOneQuestionWithAnswers(theQuizId, qNumber) {
-    const theQuestion = await Question.findOne({
-      where: { quizId: theQuizId, questionNumber: qNumber },
-    }).toJSON();
+  static async getOneQuestionWithAnswersOfAQuiz(theQuizId, qNumber) {
+    const theQuestion = (
+      await Question.findOne({
+        where: { quizId: theQuizId, questionNumber: qNumber },
+      })
+    ).toJSON();
     theQuestion.answers = await this.getAnswersOfTheQuestion(theQuestion.id);
+    return theQuestion;
+  }
+
+  static async getOneQuestionWithAnswers(theQuestionId) {
+    if (theQuestionId == null) {
+      throw new Error('no questionId is given');
+    }
+    const theQuestion = (await Question.findByPk(theQuestionId)).toJSON();
+    theQuestion.answers = await this.getAnswersOfTheQuestion(theQuestionId);
     return theQuestion;
   }
 

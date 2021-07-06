@@ -5,6 +5,12 @@
             "driver": "SQLite",
             "database": "${workspaceFolder:mood}/db/database.sqlite",
             "name": "dbsqlite"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:mood}/triage.sqlite",
+            "name": "triage wsl"
         }
     ]
 }

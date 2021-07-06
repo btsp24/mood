@@ -16,11 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       questionId: {
         type: DataTypes.UUID,
         allowNull: false,
+        unique: true,
         defaultValue: DataTypes.UUIDV4,
       },
       answerId: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       questionScore: {
         type: DataTypes.INTEGER,
@@ -34,34 +35,22 @@ module.exports = (sequelize, DataTypes) => {
 
   PlayerAnswer.associate = function (models) {
     PlayerAnswer.belongsTo(models.Answer, {
-      foreignKey: {
-        name: 'answerId',
-        type: DataTypes.UUID
-      },
-      target: 'id',
+      foreignKey: 'questionId',
+      target: 'questionId',
     });
 
-    PlayerAnswer.belongsTo(models.Question, {
-      foreignKey: {
-        name: 'questionId',
-        type: DataTypes.UUID
-      },
+    PlayerAnswer.belongsTo(models.Answer, {
+      foreignKey: 'answerId',
       target: 'id',
     });
 
     PlayerAnswer.belongsTo(models.Player, {
-      foreignKey: {
-        name: 'playerId',
-        type: DataTypes.UUID
-      },
+      foreignKey: 'playerId',
       target: 'playerId',
     });
 
     PlayerAnswer.belongsTo(models.Player, {
-      foreignKey: {
-        name: 'gameId',
-        type: DataTypes.UUID
-      },
+      foreignKey: 'gameId',
       target: 'gameId',
     });
   };

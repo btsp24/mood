@@ -24,10 +24,10 @@ router.post('/login', (req, res, next) => {
 });
 //
 router.post('/register', async (req, res) => {
-  const { name, userName, email, password, password2 } = req.body;
+  const { userName, email, password, password2 } = req.body;
   const errors = [];
 
-  if (!name || !email || !password || !password2) {
+  if (!userName || !email || !password || !password2) {
     errors.push({
       msg: 'Please enter all fields',
     });
@@ -59,13 +59,13 @@ router.post('/register', async (req, res) => {
       });
       res.render('register', {
         errors,
-        name,
+        userName,
         email,
         password,
         password2,
       });
     } else {
-      try {
+      /*       try {
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(password, salt, (err, hash) => {
             if (err) throw err;
@@ -79,6 +79,17 @@ router.post('/register', async (req, res) => {
             });
           });
         });
+      } catch (err) {
+        console.log('error :>> ', err);
+      } */
+      try {
+        await User.create({
+          userName,
+          email,
+          password,
+        });
+        req.flash('success_msg', 'You are now registered and can log in');
+        res.redirect('/login');
       } catch (err) {
         console.log('error :>> ', err);
       }

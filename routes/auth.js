@@ -9,7 +9,7 @@ passport.use(
       usernameField: 'email',
       passwordField: 'password',
     },
-    async (email, password, done) => {
+    /*     async (email, password, done) => {
       const isValidPassword = function (userpass, password) {
         return bCrypt.compareSync(password, userpass);
       };
@@ -26,6 +26,20 @@ passport.use(
         }
 
         return done(null, user, { message: 'Successfully logged In' });
+      } catch (error) {
+        return done(error);
+      }
+    } */
+    async (email, password, done) => {
+      try {
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+          return done(null, false, { message: 'User not Found' });
+        } else if (!(await user.validPassword(password))) {
+          return done(null, false, { message: 'Wrong Password' });
+        } else {
+          return done(null, user, { message: 'Successfully logged In' });
+        }
       } catch (error) {
         return done(error);
       }

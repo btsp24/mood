@@ -5,14 +5,14 @@ module.exports = (sequelize, DataTypes) => {
     {
       questionId: {
         type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        defaultValue: DataTypes.UUIDV4,
       },
       title: {
         type: DataTypes.STRING(75),
@@ -29,18 +29,17 @@ module.exports = (sequelize, DataTypes) => {
 
   Answer.associate = function (models) {
     Answer.belongsTo(models.Question, {
-      foreignKey: {
-        name: 'questionId',
-        type: DataTypes.UUID
-      },
+      foreignKey: 'questionId',
       target: 'id',
     });
 
     Answer.hasMany(models.PlayerAnswer, {
-      foreignKey: {
-        name: 'answerId',
-        type: DataTypes.UUID
-      },
+      foreignKey: 'questionId',
+      target: 'questionId',
+    });
+
+    Answer.hasMany(models.PlayerAnswer, {
+      foreignKey: 'answerId',
       target: 'id',
     });
   };

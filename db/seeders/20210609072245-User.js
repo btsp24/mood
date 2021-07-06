@@ -6,30 +6,28 @@ const faker = require('faker');
 const PASSWORD_HASH = '$2b$05$6UxTrmDoyCCld.QiCv/sdu3nj2RPcMQrxlDLueEYEgdxCIQaSssca';
 
 module.exports = {
-    up: async (queryInterface, Sequelize) => {
-        let usersData = [];
+  up: async (queryInterface, Sequelize) => {
+    let usersData = [];
 
-        for (let index = 0; index < 5; index++) {
-            faker.locale = 'tr';
-            let uName = faker.name.findName();
-            faker.locale = 'en';
-            let date = new Date();
-            let userData = {
-                id: uuidv4(),
-                userName: faker.internet.userName(),
-                email: faker.internet.email(),
-                name: uName,
-                password: PASSWORD_HASH,
-                createdAt: date,
-                updatedAt: date,
-            };
-            usersData.push(userData);
-        }
+    for (let index = 0; index < 7; index++) {
+      faker.locale = 'tr';
+      faker.locale = 'en';
+      let date = new Date();
+      let userData = {
+        id: uuidv4(),
+        userName: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: PASSWORD_HASH,
+        createdAt: date,
+        updatedAt: date,
+      };
+      usersData.push(userData);
+    }
 
-        await queryInterface.bulkInsert('Users', usersData, {});
-    },
+    await queryInterface.bulkInsert('Users', usersData, {});
+  },
 
-    down: async (queryInterface, Sequelize) => {
-        await queryInterface.bulkDelete('Users', null, {});
-    },
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('Users', null, {});
+  },
 };
