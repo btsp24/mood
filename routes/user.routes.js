@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const { validate: uuidValidate } = require('uuid');
 
 // Load User model
 
 const { User } = require('../db/models');
 const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
+const { Query } = require('../utils/queries');
 
 /* login page */
 router.get('/login', forwardAuthenticated, (req, res) => {
@@ -110,6 +112,26 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+router.get(
+  '/z/:quizId',
+  /* ensureAuthenticated, */ async (req, res) => {
+    let data;
+    // sample quizId from dummy data
+    const quizId = req.params.quizId || '20434cf9-331a-4932-af41-d24b5b5175d4';
+    const userId = !!req.user
+      ? req.user.id || '394d6af2-e6bd-4e55-a278-d7e1c59269bb'
+      : '394d6af2-e6bd-4e55-a278-d7e1c59269bb';
+    if (!!quizId && uuidValidate(quizId) && (await Query.isQuizEditable(quizId, userId))) {
+      console.log('quizId  :>> ', quizId);
+      data = await Query.getQuestionsWithAnswers(quizId, false);
+    }
+    // console.log('data :>> ', data);
+    res.render('user/z', {
+      title: 'z quiz composer page',
+      data,
+    });
+  }
+);
 /* home page  for teacher */
 router.get('/home', ensureAuthenticated, (req, res) => {
   res.app.locals.user = req.user;

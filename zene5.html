@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <label for="tik1">Check me</label>
+    <input type="checkbox" name="tik" id="tik1" />
+    <ol>
+      <li></li>
+    </ol>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+<script>
+  $(document).ready(function () {
+    $('input[type="checkbox"]').change(function () {
+      const input = $(this);
+      console.log('$(this).prop("checked") :>> ', input.prop('checked'));
+    });
+  });
+</script>

@@ -1,6 +1,6 @@
-const bCrypt = require('bcryptjs');
+'use strict';
 const bcrypt = require('bcryptjs/dist/bcrypt');
-('use strict');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -40,11 +40,13 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Game, {
       foreignKey: 'hostedBy',
       target: 'id',
+      onDelete: 'cascade',
     });
 
     User.hasMany(models.Quiz, {
       foreignKey: 'composerId',
       target: 'id',
+      onDelete: 'cascade',
     });
   };
 

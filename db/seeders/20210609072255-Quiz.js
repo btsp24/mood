@@ -19,13 +19,13 @@ module.exports = {
         let quizId = uuidv4();
         let quiz = {
           id: quizId,
-          title: faker.lorem.words().slice(0, 95),
+          text: faker.lorem.words().slice(0, 95),
           description: faker.commerce.productDescription(),
           composerId: usi.id,
           isVisible: !Math.floor(Math.random() * 2),
-          imgURL: 'http://placeimg.com/480/320',
-          imgAltText: 'downloaded from placeimg.com',
-          imgCredit: 'placeimg.com',
+          imgURL: 'https://picsum.photos/180/120?random=2',
+          imgAltText: 'picsum.photos/',
+          imgCredit: 'downloaded from https://picsum.photos',
           lobbyMusicId: Math.floor(1 + Math.random() * 14),
           isDraft: !Math.floor(Math.random() * 2),
           createdAt: date,

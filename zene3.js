@@ -3,7 +3,11 @@ const path = require('path');
 const { User, Quiz, Question, Answer, QuestionType, TimeLimit, sequelize } = require('./db/models');
 const { Op } = require('sequelize');
 const { Query } = require('./utils/queries');
-// const Sequelize = require('sequelize-values')();
+
+const userId = 'ab9e21ea-ff11-47ff-9d8a-23c2f71f3eaa';
+const aQuizId = 'c82f173a-a479-4d75-96de-a9bc88a27ed9';
+const aQuestionId = '43664bf2-9f42-4bc4-a9cf-e73241aa4a3e';
+const anAnswerId = '2';
 
 async function main() {
   try {
@@ -12,14 +16,27 @@ async function main() {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-  const userId = '7b52372c-2d61-481b-b101-4607e018b2e3';
-  const aQuizId = '4f0cabab-0a13-4353-b754-0fe60c9082bb6';
-  const aQuestionId = 'cebb9525-69e3-4dee-8a6b-c8228649a4c1';
-  const anAnswerId = '1';
 
   try {
-    const anAnswer = await Answer.findOne({ where: { questionId: aQuestionId, id: anAnswerId }, raw: true });
-    console.log('anAnswer :>> ', anAnswer);
+    // const anAnswer = await Answer.findOne({ where: { questionId: aQuestionId, id: anAnswerId }, raw: true });
+    // console.log('anAnswer :>> ', anAnswer);
+    const { count, rows } = await Query.getQuestionsOfQuizWithAnswers(aQuizId, false);
+    console.log('question count :>> ', count);
+    for (const r of rows) {
+      console.log('r:>> ', r);
+      // r.title = 'qqqqqqqqqqqqqq';
+      console.log('questtion :>> ', r.questionOrder, r.text);
+      // for (const a of r.Answers) {
+      // if (a.isCorrect) {
+      // }
+      // a.title = 'hahahaaaa';
+      // console.log('answer :>> ', a.title, a.isCorrect ? '✅' : '');
+      // }
+    }
+    /*   await Question.bulkCreate(rows, {
+      updateOnDuplicate: ['title'],
+      include: [{ model: Answer, updateOnDuplicate: ['title'] }],
+    }); */
     // console.log('anAnswer.getQuestion() :>>', await anAnswer.getQuestion());
     // const qu = await Question.findOrCreate({
     //   where: { title: '22my new Question3' },

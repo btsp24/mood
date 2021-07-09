@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.bulkInsert(
       'QuestionTypes',
       [
-        { id: 1, title: 'True-False' },
-        { id: 2, title: 'Multiple choice' },
+        { id: 1, value: 'True-False' },
+        { id: 2, value: 'Multiple choice' },
       ],
       {}
     );

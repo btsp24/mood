@@ -4,7 +4,7 @@
     "dialect": "sqlite"
   },
   "test": {
-    "storage": "./triage.sqlite",
+    "storage": "./db/database2.sqlite",
     "dialect": "sqlite",
     "logging": false
   },

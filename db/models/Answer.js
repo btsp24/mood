@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      title: {
+      text: {
         type: DataTypes.STRING(75),
       },
       isCorrect: {
@@ -36,11 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     Answer.hasMany(models.PlayerAnswer, {
       foreignKey: 'questionId',
       target: 'questionId',
+      onDelete: 'cascade',
     });
 
     Answer.hasMany(models.PlayerAnswer, {
       foreignKey: 'answerId',
       target: 'id',
+      onDelete: 'cascade',
     });
   };
 

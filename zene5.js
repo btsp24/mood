@@ -13,16 +13,23 @@ async function main() {
     // const aUser = User.build({ userName: 'Osman Tas', email: 'tasosman@gmail.com', password: 'Password' });
     // await aUser.save();
     // console.log('aUser :>> ', aUser);
-    const { info, count, rows } = await Query.getQuizDataset(aQuizId);
+    // const { info, count, rows } = await Query.getQuizDataset(aQuizId);
     // console.log('info :>> ', info);
     // console.log('---------');
     // console.log('count :>> ', count);
-    console.log('===========');
-    for (const q of rows) {
-      for (const a of q.Answers) {
-        console.log('answer :>>', a.id, a.text, a.isCorrect);
-      }
-    }
+    // console.log('===========');
+    // for (const q of rows) {
+    //   for (const a of q.Answers) {
+    //     console.log('answer :>>', a.id, a.text, a.isCorrect);
+    //   }
+    // }
+    const deleteList = [
+      '27e0733c-fee8-4b3b-a5bc-cf4f5830168e',
+      '287c070b-ba20-431d-ac6b-86d058c819b3',
+      '2c89f303-c4ae-4f59-ab14-5ae5bc858302',
+    ];
+    await Query.deleteQuizzes(deleteList);
+    console.log('deleted :>>');
   } catch (error) {
     console.log('---------');
     console.log('⛔ error :>> ', error);

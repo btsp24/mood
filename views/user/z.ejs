@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<%- include('../partials/headerhome', {title}); %>
+
+<body>
+  <label for="tik">Check me</label>
+  <input type="checkbox" name="tik" id="tik1">
+
+  <nav class="sidebar" id="mySidebar">
+
+    <div class="dismiss">
+      <i class="fas fa-arrow-right" id="closesign"></i>
+    </div>
+
+    <aside class="aside">
+
+      <div class="sidegrp" id="sidegrp">
+        <label for="Question Type" class="for selectlabel" id="qtype">Question Type</label>
+        <select class="form-select" id="Question Type">
+          <option selected>Quiz</option>
+          <option value="1">True or False</option>
+
+        </select>
+
+        <hr style="color: rgb(22, 163, 144);">
+
+        <label for="Time Limit" class="for selectlabel" id="tlimit">Time Limit</label>
+        <select class="form-select" id="Time Limit">
+
+          <option value="1" id="10s">10 seconds</option>
+          <option value="1" id="20s">20 seconds</option>
+          <option value="1" id="30s">30 seconds</option>
+          <option selected id="1m">1 minute</option>
+          <option value="1" id="1m30s">1 minute 30 seconds</option>
+          <option value="1" id="2m">2 minutes</option>
+          <option value="1" id="3m">3 minutes</option>
+          <option value="1" id="4m">4 minutes</option>
+
+        </select>
+
+        <hr style="color: rgb(22, 163, 144);">
+        <div>
+          <label for="Music" class="for selectlabel">Music</label>
+          <select class="form-select" id="Music">
+
+            <option value="1" id="music1">Music-1</option>
+            <option value="1" id="music2">Music-2</option>
+            <option value="1" id="music3">Music-3</option>
+            <option value="1" id="music4">Music-4</option>
+
+          </select>
+
+          <hr style="color: rgb(22, 163, 144) ">
+        </div>
+
+        <div class="btngroup row" id="sidebtn">
+
+          <hr>
+
+          <button class=" btn btn-primary" type="button" style="margin-top: 60px;" id="addquestion"> <span
+              style="font-weight:bold">Add Question </span></button>
+
+          <hr>
+          <hr style="color: rgb(22, 163, 144)">
+
+
+          <button class=" btn btn-danger" type="button" style="margin-top: 10px;" id="delete"> <span
+              style="font-weight:bold; ">Delete </span> </button>
+          <hr>
+
+        </div>
+    </aside>
+
+  </nav>
+  <!-- End sidebar -->
+
+  <div class="content">
+
+    <a class="btn btn-primary  btn-customized open-menu" href="#" role="button" style="margin-top: 4.5rem;"
+      id="menubtn">
+      <i class="fas fa-align-right"></i> <span>Menu</span>
+    </a>
+
+  </div>
+  <!-- navigation -->
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase" id="mainNav"
+    style="padding-top: 0.1rem; padding-bottom: 0.1rem;">
+    <div class="container-fluid">
+      <div>
+        <img class="img-thumbnail" src="../images/logo.png" style="height: 2.70rem;" id="logo">
+        <!-- settings button -->
+        <button class="btn  mx-sm-1 navbar-toggler " data-toggle="collapse" data-target="#SETTINGS" id="gearbtn"
+          aria-label="Toggle navigation" style="border: 0rem ">
+          <style>
+            .btn:active {
+              transform: translateY(4px);
+            }
+          </style>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="azure" class="bi bi-gear-fill gear"
+            viewBox="0 0 16 16">
+            <path
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+
+          </svg>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="SETTINGS">
+        <button
+          class="btn btn-primary text-uppercase bg-primary bg-gradient border rounded shadow align-self-end py-1 px-0 px-lg-2 mx-lg-4 "
+          id="btn-settings" type="button">
+          <span>SETTINGS</span>
+        </button>
+      </div>
+      <!-- Nav Links -->
+      <button data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" id="toggle"><i
+          class="fa fa-bars"></i></button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+
+          <li class="nav-item mx-0 mx-lg-1" id="exit"><a
+              class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#">Exıt</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1" id="done"><a
+              class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#c">Done</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <section class=" container-fluid px-0" style="padding-top: 4.5rem;" id="seciton">
+    <div class="container-fluid visible">
+
+      <div class="row">
+
+        <div id="main" class="col-lg-10 offset-lg-0 text-center d-flex flex-column">
+          <input id="qinput" class="border rounded border-success shadow-sm form-control-lg d-lg-flex required"
+            type="text" placeholder="Start typing your question" maxlength="120">
+          <div class="row">
+            <div class="col-6 col-lg-6 offset-3 offset-lg-3 bborder border-success border-1" style="margin-top: 10px">
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="grey" class="bi bi-file-earmark-play"
+                viewBox="0 0 16 16" style="margin-top: 80px">
+                <path
+                  d="M6 6.883v4.234a.5.5 0 0 0 .757.429l3.528-2.117a.5.5 0 0 0 0-.858L6.757 6.454a.5.5 0 0 0-.757.43z" />
+                <path
+                  d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+              </svg>
+              <span style="margin-left: 20px;"></span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="grey" class="bi bi-image"
+                viewBox="0 0 16 16" style="margin-top: 80px">
+                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                <path
+                  d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+              </svg>
+              <div class="row">
+                <div class="col"><button id="addmedia" class="btn btn-primary" type="button"
+                    style="margin-top: 50px">Add Media</button></div>
+                <span style="margin-top: 5px" style="font-size: small;">Drag and drop image from your computer</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Choices -->
+          <div class="row" style="margin-top: 50px;">
+            <div class="col-lg-6 ">
+              <div id="borderred" class="row cborder">
+
+                <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
+
+                <div class="col-11 align-self-center ">
+                  <div class=" input-group px-lg-2">
+
+                    <input id="inputa" class="col-11 form-control form-control-lg " type="text"
+                      placeholder="Add answer 1 (required)" for="checka">
+
+                    <input id="checka" type="checkbox" class="form-check-input" value="">
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6 ">
+              <div id="borderblue" class="row cborder">
+                <div class="col-1"><i><img src="../images/mavi.png" alt=""></i></div>
+                <div class="col-11 align-self-center  ">
+                  <div class=" input-group px-lg-2">
+                    <input id="inputb" class="col-11 form-control form-control-lg required"
+                      placeholder="Add answer 2 (required)" for="checkb">
+                    <input id="checkb" type="checkbox" class="form-check-input" value="">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-lg-6  ">
+              <div class="row cborder" id="borderyellow">
+                <div class="col-1"><i><img src="../images/sari.png" alt=""></i></div>
+                <div class="col-11 align-self-center">
+                  <div class=" input-group px-lg-2 ">
+                    <input id="inputc" class="col-11 form-control form-control-lg required " type="text"
+                      placeholder="Add answer 3 (optional)" for="checkc">
+                    <input id="checkc" type="checkbox" class="form-check-input" value="">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 ">
+              <div id="bordergreen" class="row cborder">
+                <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
+                <div class="col-11 align-self-center">
+                  <div class=" input-group px-lg-2">
+                    <input id="inputd" class="form-control form-control-lg" type="text"
+                      placeholder="Add answer 4 (optional)" for="checkd">
+                    <input id="checkd" type="checkbox" class="form-check-input" value="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <%- include('../partials/footer') %>
+  <ol></ol>
+</body>
+
+</html>
+<script>
+  jQuery(document).ready(function () {
+    $('.dismiss, .overlay').on('click', function () {
+      $('.sidebar').removeClass('active');
+    });
+    $('.open-menu').on('click', function (e) {
+      e.preventDefault();
+      $('.sidebar').addClass('active');
+
+      // close opened sub-menus
+      $('.collapse.show').toggleClass('show');
+      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    });
+  });
+
+  const questionArray = <%- JSON.stringify(data) %>
+    $(document).ready(function () {
+      questionArray.forEach(q => {
+        console.log('q :>> ', q);
+        $("ol").append(`<li>${q.title}</li>`);
+        $("ol li:last").append(`<ul>answer choices is ${q.numberOfChoices}</br></ul>`);
+        q.answers.forEach(a => {
+          $("ul:last").append(`<li>${a.title}</li>`)
+        })
+      });
+    });
+</script>

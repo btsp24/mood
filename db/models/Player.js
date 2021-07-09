@@ -38,11 +38,13 @@ module.exports = (sequelize, DataTypes) => {
     Player.hasMany(models.PlayerAnswer, {
       foreignKey: 'playerId',
       target: 'playerId',
+      onDelete: 'cascade',
     });
 
     Player.hasMany(models.PlayerAnswer, {
       foreignKey: 'gameId',
       target: 'gameId',
+      onDelete: 'cascade',
     });
   };
 
