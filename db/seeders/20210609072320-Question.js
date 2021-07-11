@@ -19,7 +19,7 @@ module.exports = {
           id: questionId,
           questionTypeId,
           text: faker.lorem.text().slice(0, 119) + '?',
-          imgURL: 'https://picsum.photos/360/240?random=1',
+          imgURL: `https://picsum.photos/180/120?random=${qId}`,
           imgAltText: 'picsum.photos/',
           imgCredit: 'downloaded from https://picsum.photos',
           timeLimitId: Math.floor(1 + Math.random() * 8),

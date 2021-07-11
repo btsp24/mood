@@ -115,18 +115,18 @@
             });
           }
         });
-        socket.on('shared-quizList-response', quizData => {
-          if (quizData != null) {
-            quizData.rows.forEach(quiz => {
-              //console.log("quiz :>> ", quiz);
-              $('#drafts').append(quizCard(quiz));
-            });
-          }
-        });
         socket.on('draft-quizList-response', quizData => {
           if (quizData != null) {
             quizData.rows.forEach(quiz => {
               console.log('quiz :>> ', quiz);
+              $('#drafts').append(quizCard(quiz));
+            });
+          }
+        });
+        socket.on('shared-quizList-response', quizData => {
+          if (quizData != null) {
+            quizData.rows.forEach(quiz => {
+              //console.log("quiz :>> ", quiz);
               $('#shared').append(quizCard(quiz));
             });
           }

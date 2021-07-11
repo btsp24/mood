@@ -1,175 +1,578 @@
 <!DOCTYPE html>
 <html lang="tr">
-  <%- include('../partials/headerhome', {title}); %>
-  <body>
-    <h1><%= title %></h1>
+<%- include('../partials/headerhome', {title}); %>
+<link rel="stylesheet" href="../stylesheets/stylecompose.css" />
 
-    <div class="container" onload="setBGColor()">
-      <h1 id="title">Kahoot Quiz Creator Studio</h1>
+<body>
+  <nav class=" navbar-light bg-light sidebar" id="mySidebar">
 
-      <div class="form-field">
-        <label id="quizTitle">Quiz Title</label>
-        <input id="name" type="text" name="name" autofocus />
-      </div>
-      <br />
-      <br />
-      <div id="allQuestions">
-        <div id="question-field">
-          <label>Question 1: </label>
-          <input class="question" id="q1" type="text" autofocus />
-          <br />
-          <br />
-          <label>Answer 1: </label>
-          <input id="1a1" type="text" autofocus />
-          <label>Answer 2: </label>
-          <input id="1a2" type="text" autofocus />
-          <br />
-          <br />
-          <label>Answer 3: </label>
-          <input id="1a3" type="text" autofocus />
-          <label>Answer 4: </label>
-          <input id="1a4" type="text" autofocus />
-          <br />
-          <br />
-          <label>Correct Answer (1-4) :</label>
-          <input class="correct" id="correct1" type="number" autofocus />
-        </div>
-      </div>
-      <br />
-      <button type="button" class="btn btn-primary" onclick="addQuestion()">Add another question</button>
-
-      <br />
-      <br />
-
-      <div class="form-field">
-        <button type="button" class="btn btn-success" onclick="updateDatabase()">Create Quiz</button>
-      </div>
-
-      <br />
-
-      <button type="button" class="btn btn-warning" onclick="cancelQuiz()">
-        Cancel quiz and return to quiz selection
-      </button>
+    <div class="dismiss">
+      <i class="fas fa-arrow-right" id="closesign"></i>
     </div>
-    <%- include('../partials/footer') %>
-    <script>
-      var socket = io();
-      var questionNum = 1; //Starts at two because question 1 is already present
 
-      function updateDatabase() {
-        var questions = [];
-        var name = document.getElementById('name').value;
-        for (var i = 1; i <= questionNum; i++) {
-          var question = document.getElementById('q' + i).value;
-          var answer1 = document.getElementById(i + 'a1').value;
-          var answer2 = document.getElementById(i + 'a2').value;
-          var answer3 = document.getElementById(i + 'a3').value;
-          var answer4 = document.getElementById(i + 'a4').value;
-          var correct = document.getElementById('correct' + i).value;
-          var answers = [answer1, answer2, answer3, answer4];
-          questions.push({ question: question, answers: answers, correct: correct });
-        }
+    <!-- Question  links-->
+    <a class="navbar-brand " href="#">Question List</a>
+    <nav class="nav nav-pills flex-column">
+      <hr style="color: rgb(14, 119, 105); height: 3px;">
+      <ol>
+        <li>
+          <a class="nav-link btn btn-primary " href="#question1">Question 1</a>
+        </li>
 
-        var quiz = { id: 0, name: name, questions: questions };
-        socket.emit('newQuiz', quiz);
-        console.log(quiz);
-      }
+      </ol>
+    </nav>
 
-      function addQuestion() {
-        questionNum += 1;
+  </nav>
+  <!-- End sidebar -->
 
-        var questionsDiv = document.getElementById('allQuestions');
+  <div class="content">
 
-        var newQuestionDiv = document.createElement('div');
+    <a class="btn btn-primary  btn-customized open-menu" href="#" role="button" style="margin-top: 4.5rem;"
+      id="menubtn">
+      <i class="fas fa-align-right"></i> <span>Menu</span>
+    </a>
 
-        var questionLabel = document.createElement('label');
-        var questionField = document.createElement('input');
+  </div>
+  <!-- navigation -->
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase" id="mainNav"
+    style="padding-top: 0.1rem; padding-bottom: 0.1rem;">
+    <div class="container-fluid">
+      <div>
+        <img class="img-thumbnail" src="../images/logo.png" style="height: 2.70rem;" id="logo">
+        <!-- settings button -->
+        <button class="btn  mx-sm-1 navbar-toggler " id="gearbtn" data-bs-target=".bd-example-modal-lg"
+          data-bs-toggle="modal" aria-label="Toggle navigation" style="border: 0rem ">
+          <style>
+            .btn:active {
+              transform: translateY(4px);
+            }
+          </style>
 
-        var answer1Label = document.createElement('label');
-        var answer1Field = document.createElement('input');
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="azure" class="bi bi-gear-fill gear"
+            viewBox="0 0 16 16">
+            <path
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
 
-        var answer2Label = document.createElement('label');
-        var answer2Field = document.createElement('input');
+          </svg>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="SETTINGS">
+        <button
+          class="btn btn-primary text-uppercase bg-primary bg-gradient border rounded shadow align-self-end py-1 px-0 px-lg-2 mx-lg-4 "
+          id="btn-settings" type="button" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">
+          SETTINGS
+        </button>
+      </div>
 
-        var answer3Label = document.createElement('label');
-        var answer3Field = document.createElement('input');
 
-        var answer4Label = document.createElement('label');
-        var answer4Field = document.createElement('input');
 
-        var correctLabel = document.createElement('label');
-        var correctField = document.createElement('input');
 
-        questionLabel.innerHTML = 'Question ' + String(questionNum) + ': ';
-        questionField.setAttribute('class', 'question');
-        questionField.setAttribute('id', 'q' + String(questionNum));
-        questionField.setAttribute('type', 'text');
+      <!-- Nav Links -->
+      <button data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" id="toggle"><i
+          class="fa fa-bars"></i></button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
 
-        answer1Label.innerHTML = 'Answer 1: ';
-        answer2Label.innerHTML = ' Answer 2: ';
-        answer3Label.innerHTML = 'Answer 3: ';
-        answer4Label.innerHTML = ' Answer 4: ';
-        correctLabel.innerHTML = 'Correct Answer (1-4): ';
+          <li class="nav-item mx-0 mx-lg-1" id="exit"><a
+              class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#">Exıt</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1" id="done"><a
+              class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#c">Done</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-        answer1Field.setAttribute('id', String(questionNum) + 'a1');
-        answer1Field.setAttribute('type', 'text');
-        answer2Field.setAttribute('id', String(questionNum) + 'a2');
-        answer2Field.setAttribute('type', 'text');
-        answer3Field.setAttribute('id', String(questionNum) + 'a3');
-        answer3Field.setAttribute('type', 'text');
-        answer4Field.setAttribute('id', String(questionNum) + 'a4');
-        answer4Field.setAttribute('type', 'text');
-        correctField.setAttribute('id', 'correct' + String(questionNum));
-        correctField.setAttribute('type', 'number');
 
-        newQuestionDiv.setAttribute('id', 'question-field'); //Sets class of div
+  <!--                   MODAL CODES                    -->
+  <!--                   MODAL CODES                    -->
+  <!--                   MODAL CODES                    -->
 
-        newQuestionDiv.appendChild(questionLabel);
-        newQuestionDiv.appendChild(questionField);
-        newQuestionDiv.appendChild(document.createElement('br'));
-        newQuestionDiv.appendChild(document.createElement('br'));
-        newQuestionDiv.appendChild(answer1Label);
-        newQuestionDiv.appendChild(answer1Field);
-        newQuestionDiv.appendChild(answer2Label);
-        newQuestionDiv.appendChild(answer2Field);
-        newQuestionDiv.appendChild(document.createElement('br'));
-        newQuestionDiv.appendChild(document.createElement('br'));
-        newQuestionDiv.appendChild(answer3Label);
-        newQuestionDiv.appendChild(answer3Field);
-        newQuestionDiv.appendChild(answer4Label);
-        newQuestionDiv.appendChild(answer4Field);
-        newQuestionDiv.appendChild(document.createElement('br'));
-        newQuestionDiv.appendChild(document.createElement('br'));
-        newQuestionDiv.appendChild(correctLabel);
-        newQuestionDiv.appendChild(correctField);
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true"
+    data-bs-whatever="" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
 
-        questionsDiv.appendChild(document.createElement('br')); //Creates a break between each question
-        questionsDiv.appendChild(newQuestionDiv); //Adds the question div to the screen
+        <section class=" row container-fluid px-3">
+          <h2 class="px-5">Quiz Summary</h2>
+          <div class="col-8  d-flex flex-column py-2">
 
-        newQuestionDiv.style.backgroundColor = randomColor();
-      }
+            <label class="modallabel py-2 " id="title">Title</label>
 
-      //Called when user wants to exit quiz creator
-      function cancelQuiz() {
-        if (confirm('Are you sure you want to exit? All work will be DELETED!')) {
-          window.location.href = '../';
-        }
-      }
+            <input data-tag="quizText"
+              class="inputset form-control form-control-lg d-lg-flex  border-primary  border rounded " type="text"
+              placeholder="Enter quiz title" maxlength="80">
+            <label class="modallabel  py-2" id="title">Descripton</label>
+            <textarea rows="3" data-tag="quizDescription"
+              class=" inputset border rounded border-primary  orm-control-lg d-lg-flex" type="text"
+              maxlength="260"> </textarea>
+          </div>
 
-      socket.on('startGameFromCreator', function (data) {
-        window.location.href = '../../host/?id=' + data;
+          <div class="imgarea col-4 py-2 flex-column d-flex">
+            <span class="imglabel ">Cover image</span>
+            <div class=" drop-zone border-primary border-1 ">
+
+              <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
+              <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or click to
+                upload</span>
+            </div>
+
+          </div>
+
+
+        </section>
+
+        <section class="row  px-3 py-3">
+
+          <div class=" col-3 d-flex flex-column ">
+
+            <label for="Music" class=" selectlabel" style="font-weight:bold">Music</label>
+            <select class="form-select border-primary" data-tag="lobbyMusicId" style="font-weight:bold ;">
+
+              <option value="1" id="music1">Music-1</option>
+              <option value="1" id="music2">Music-2</option>
+              <option value="1" id="music3">Music-3</option>
+              <option value="1" id="music4">Music-4</option>
+              <option value="1" id="music4">Music-5</option>
+              <option value="1" id="music4">Music-6</option>
+              <option value="1" id="music4">Music-7</option>
+              <option value="1" id="music4">Music-8</option>
+            </select>
+
+
+          </div>
+          <div class="col-3 py-3  d-flex flex-column">
+            <form action="">
+              <input type="checkbox" data-tag="isVisible" checked="checked"
+                class="form-check-input border-success set-check" style="border-radius: 30px; background-color: green;">
+              <label class="selectlabel  py-1" style="font-weight:bold">Visibile to users </label>
+            </form>
+          </div>
+
+          <div class="col-5  py-3 d-flex flex-column">
+            <form action="">
+
+              <input type="checkbox" data-tag="isDraft" class="form-check-input border-primary set-check"
+                style="border-radius: 30px;  ">
+              <label class="selectlabel px-1 py-1" style="font-weight:bold">Check to save as
+                draft</label>
+            </form>
+          </div>
+
+        </section>
+
+        <section class=" stbtn row container-fluid px-3 py-3" style="text-align: center;">
+
+          <div class="stbtn">
+            <button class=" btn btn-success" type="button" style="margin-right: 10px; width: 200px;" data-tag="Doneset">
+              <span style="font-weight:bold">Done</span></button>
+
+
+
+            <button class=" btn btn-secondary" type="button" style="margin-left: 10px; width: 200px;"
+              data-bs-dismiss="modal"> <span style="font-weight:bold">Close</span></button>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </div>
+
+
+  <ol class=" container-fluid px-0" style="padding-top: 3rem;" type="none" id="questionList">
+
+
+    <li class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="uuidv4-xxxxx" data-id="id"
+      data-composer-id="uuidv4-xxxxx" data-question-order="questionOrder" data-spy="scroll" data-bs-target="#mySidebar"
+      id="question1">
+
+
+
+      <input data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
+        type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;">
+
+
+      <ul class="row qinfo" style="margin-top: 25px" type="none">
+
+
+        <div class="col-2 col-lg-2 ">
+
+          <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
+          <select class="form-select border-success" data-tag="timeLimitId">
+
+            <option value="1" id="10s">10 seconds</option>
+            <option value="1" id="20s">20 seconds</option>
+            <option value="1" id="30s">30 seconds</option>
+            <option selected id="1m">1 minute</option>
+            <option value="1" id="1m30s">1 minute 30 seconds</option>
+            <option value="1" id="2m">2 minutes</option>
+            <option value="1" id="3m">3 minutes</option>
+            <option value="1" id="4m">4 minutes</option>
+
+          </select>
+
+        </div>
+
+
+
+        <div class="col-6 col-lg-6 offset-1 offset-lg-1 drop-zone border-success border-1">
+
+          <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
+
+          <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or
+            click to upload</span>
+        </div>
+
+
+        <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
+          <label for="Question Type" class="for selectlabel border-info">Question Type</label>
+          <select class="form-select  border-success" data-tag="questionTypeId">
+
+            <option selected>Quiz</option>
+            <option value="1">True or False</option>
+
+          </select>
+        </div>
+
+      </ul>
+      <!-- Answer Choices -->
+      <ul class="row" style="margin-top: 30px;" data-tag="Answers">
+        <li class="col-lg-6 row borderred  cborder" data-question-id="" data-id="">
+
+          <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
+
+          <div class="col-11 align-self-center ">
+            <div class=" input-group px-lg-2">
+
+              <input data-tag="text" class="inputa col-11 form-control form-control-lg " type="text"
+                placeholder="Add answer 1 (required)">
+
+              <input data-tag="isCorrect" type="checkbox" class=" form-check-input"
+                style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;">
+            </div>
+          </div>
+
+        </li>
+
+        <li class="col-lg-6 row borderblue cborder" data-question-id="" data-id="">
+
+          <div class="col-1"><i><img src="../images/mavi.png" alt=""></i></div>
+          <div class="col-11 align-self-center ">
+            <div class=" input-group px-lg-2">
+              <input data-tag="text" class=" inputb col-11 form-control form-control-lg required"
+                placeholder="Add answer 2 (required)">
+              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
+                style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
+
+            </div>
+          </div>
+        </li>
+
+        <li class="col-lg-6 row cborder borderyellow " data-question-id="" data-id="">
+
+          <div class="col-1"><i><img src="../images/sari.png" alt=""></i></div>
+          <div class="col-11 align-self-center">
+            <div class=" input-group px-lg-2 ">
+              <input data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text"
+                placeholder="Add answer 3 (optional)">
+              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
+                style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
+
+            </div>
+          </div>
+
+        </li>
+
+        <li class="col-lg-6 bordergreen row cborder ">
+
+          <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
+          <div class="col-11 align-self-center">
+            <div class=" input-group px-lg-2">
+              <input data-tag="text" class="inputd form-control form-control-lg" type="text"
+                placeholder="Add answer 4 (optional)">
+              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
+                style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px;">
+
+            </div>
+          </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
+
+        <li class="col-lg-6  row dborder ">
+
+          <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
+          <div class="col-11 align-self-center">
+            <div class=" input-group px-lg-2">
+              <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
+                style="background-color: #228b03; color: white; font-weight: 400; border: none;">
+              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
+                style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
+
+            </div>
+          </div>
+
+        </li>
+
+        <li class="col-lg-6 row eborder" data-question-id="" data-id="">
+
+          <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
+
+          <div class="col-11 align-self-center ">
+            <div class=" input-group px-lg-2">
+              <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
+                style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
+
+              <input data-tag="isCorrect" type="checkbox" class=" form-check-input"
+                style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
+            </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <div class="btngroup ">
+
+        <button class=" btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
+            style="font-weight:bold">Clone Question</span></button>
+
+        <button class=" btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
+            style="font-weight:bold">Add Question </span></button>
+
+        <button class=" btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
+          <span style="font-weight:bold;">Delete</span> </button>
+
+      </div>
+
+    </li>
+    <hr style="color: rgb(14, 119, 105); height: 3px;">
+
+
+  </ol>
+
+  <%- include('../partials/footer') %>
+  <script>
+    $(document).ready(function () {
+
+
+      $('.dismiss, .overlay').on('click', function () {
+        $('.sidebar').removeClass('active');
+
       });
 
-      function randomColor() {
-        var colors = ['#4CAF50', '#f94a1e', '#3399ff', '#ff9933'];
-        var randomNum = Math.floor(Math.random() * 4);
-        return colors[randomNum];
+      $('.open-menu').on('click', function (e) {
+        e.preventDefault();
+        $('.sidebar').addClass('active');
+
+        // close opened sub-menus
+        $('.collapse.show').toggleClass('show');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+
+      });
+
+    });
+
+    document.querySelectorAll(".drop-zone-input").forEach((inputElement) => {
+      const dropZoneElement = inputElement.closest(".drop-zone");
+
+      dropZoneElement.addEventListener("click", (e) => {
+        inputElement.click();
+      });
+
+      inputElement.addEventListener("change", (e) => {
+        if (inputElement.files.length) {
+          updateThumbnail(dropZoneElement, inputElement.files[0]);
+        }
+      });
+
+      dropZoneElement.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone-over");
+      });
+
+      ["dragleave", "dragend"].forEach((type) => {
+        dropZoneElement.addEventListener(type, (e) => {
+          dropZoneElement.classList.remove("drop-zone-over");
+        });
+      });
+
+      dropZoneElement.addEventListener("drop", (e) => {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+          inputElement.files = e.dataTransfer.files;
+          updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+
+        dropZoneElement.classList.remove("drop-zone-over");
+      });
+    });
+
+    //Updates the thumbnail on a drop zone element.
+
+    function updateThumbnail(dropZoneElement, file) {
+      let thumbnailElement = dropZoneElement.querySelector(".drop-zone-img");
+
+      // First time - remove the prompt
+      if (dropZoneElement.querySelector(".drop-zone-prompt")) {
+        dropZoneElement.querySelector(".drop-zone-prompt").remove();
       }
 
-      function setBGColor() {
-        var randColor = randomColor();
-        document.getElementById('question-field').style.backgroundColor = randColor;
+      // First time - there is no thumbnail element, so lets create it
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone-img");
+        dropZoneElement.appendChild(thumbnailElement);
       }
-    </script>
-  </body>
+
+      thumbnailElement.dataset.label = file.name;
+
+      // Show thumbnail for image files
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+        };
+      } else {
+        thumbnailElement.style.backgroundImage = null;
+      }
+    }
+  </script>
+  <script>
+    var socket = io();
+    var questionNum = 1; //Starts at two because question 1 is already present
+
+    function updateDatabase() {
+      var questions = [];
+      var name = document.getElementById('name').value;
+      for (var i = 1; i <= questionNum; i++) {
+        var question = document.getElementById('q' + i).value;
+        var answer1 = document.getElementById(i + 'a1').value;
+        var answer2 = document.getElementById(i + 'a2').value;
+        var answer3 = document.getElementById(i + 'a3').value;
+        var answer4 = document.getElementById(i + 'a4').value;
+        var correct = document.getElementById('correct' + i).value;
+        var answers = [answer1, answer2, answer3, answer4];
+        questions.push({
+          question: question,
+          answers: answers,
+          correct: correct
+        });
+      }
+
+      var quiz = {
+        id: 0,
+        name: name,
+        questions: questions
+      };
+      socket.emit('newQuiz', quiz);
+      console.log(quiz);
+    }
+
+    function addQuestion() {
+      questionNum += 1;
+
+      var questionsDiv = document.getElementById('allQuestions');
+
+      var newQuestionDiv = document.createElement('div');
+
+      var questionLabel = document.createElement('label');
+      var questionField = document.createElement('input');
+
+      var answer1Label = document.createElement('label');
+      var answer1Field = document.createElement('input');
+
+      var answer2Label = document.createElement('label');
+      var answer2Field = document.createElement('input');
+
+      var answer3Label = document.createElement('label');
+      var answer3Field = document.createElement('input');
+
+      var answer4Label = document.createElement('label');
+      var answer4Field = document.createElement('input');
+
+      var correctLabel = document.createElement('label');
+      var correctField = document.createElement('input');
+
+      questionLabel.innerHTML = 'Question ' + String(questionNum) + ': ';
+      questionField.setAttribute('class', 'question');
+      questionField.setAttribute('id', 'q' + String(questionNum));
+      questionField.setAttribute('type', 'text');
+
+      answer1Label.innerHTML = 'Answer 1: ';
+      answer2Label.innerHTML = ' Answer 2: ';
+      answer3Label.innerHTML = 'Answer 3: ';
+      answer4Label.innerHTML = ' Answer 4: ';
+      correctLabel.innerHTML = 'Correct Answer (1-4): ';
+
+      answer1Field.setAttribute('id', String(questionNum) + 'a1');
+      answer1Field.setAttribute('type', 'text');
+      answer2Field.setAttribute('id', String(questionNum) + 'a2');
+      answer2Field.setAttribute('type', 'text');
+      answer3Field.setAttribute('id', String(questionNum) + 'a3');
+      answer3Field.setAttribute('type', 'text');
+      answer4Field.setAttribute('id', String(questionNum) + 'a4');
+      answer4Field.setAttribute('type', 'text');
+      correctField.setAttribute('id', 'correct' + String(questionNum));
+      correctField.setAttribute('type', 'number');
+
+      newQuestionDiv.setAttribute('id', 'question-field'); //Sets class of div
+
+      newQuestionDiv.appendChild(questionLabel);
+      newQuestionDiv.appendChild(questionField);
+      newQuestionDiv.appendChild(document.createElement('br'));
+      newQuestionDiv.appendChild(document.createElement('br'));
+      newQuestionDiv.appendChild(answer1Label);
+      newQuestionDiv.appendChild(answer1Field);
+      newQuestionDiv.appendChild(answer2Label);
+      newQuestionDiv.appendChild(answer2Field);
+      newQuestionDiv.appendChild(document.createElement('br'));
+      newQuestionDiv.appendChild(document.createElement('br'));
+      newQuestionDiv.appendChild(answer3Label);
+      newQuestionDiv.appendChild(answer3Field);
+      newQuestionDiv.appendChild(answer4Label);
+      newQuestionDiv.appendChild(answer4Field);
+      newQuestionDiv.appendChild(document.createElement('br'));
+      newQuestionDiv.appendChild(document.createElement('br'));
+      newQuestionDiv.appendChild(correctLabel);
+      newQuestionDiv.appendChild(correctField);
+
+      questionsDiv.appendChild(document.createElement('br')); //Creates a break between each question
+      questionsDiv.appendChild(newQuestionDiv); //Adds the question div to the screen
+
+      newQuestionDiv.style.backgroundColor = randomColor();
+    }
+
+    //Called when user wants to exit quiz creator
+    function cancelQuiz() {
+      if (confirm('Are you sure you want to exit? All work will be DELETED!')) {
+        window.location.href = '../';
+      }
+    }
+
+    socket.on('startGameFromCreator', function (data) {
+      window.location.href = '../../host/?id=' + data;
+    });
+
+    function randomColor() {
+      var colors = ['#4CAF50', '#f94a1e', '#3399ff', '#ff9933'];
+      var randomNum = Math.floor(Math.random() * 4);
+      return colors[randomNum];
+    }
+
+    function setBGColor() {
+      var randColor = randomColor();
+      document.getElementById('question-field').style.backgroundColor = randColor;
+    }
+  </script>
+</body>
+
 </html>

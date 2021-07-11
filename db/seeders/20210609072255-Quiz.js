@@ -23,7 +23,7 @@ module.exports = {
           description: faker.commerce.productDescription(),
           composerId: usi.id,
           isVisible: !Math.floor(Math.random() * 2),
-          imgURL: 'https://picsum.photos/180/120?random=2',
+          imgURL: `https://picsum.photos/180/120?random=${index}`,
           imgAltText: 'picsum.photos/',
           imgCredit: 'downloaded from https://picsum.photos',
           lobbyMusicId: Math.floor(1 + Math.random() * 14),
