@@ -9,8 +9,11 @@
   <body>
     <label for="tik1">Check me</label>
     <input type="checkbox" name="tik" id="tik1" />
-    <ol>
-      <li></li>
+    <ol id="questionList">
+      <li data-id="43664bf2-9f42-4bc4-a9cf-e73241aa4a3e" data-quiz-id="c82f173a-a479-4d75-96de-a9bc88a27ed9">
+        <input type="text" data-tag="text" value="Anıl 👑" />
+        <input type="checkbox" name="" id="" />
+      </li>
     </ol>
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -21,9 +24,6 @@
 </html>
 <script>
   $(document).ready(function () {
-    $('input[type="checkbox"]').change(function () {
-      const input = $(this);
-      console.log('$(this).prop("checked") :>> ', input.prop('checked'));
-    });
+    console.log('id:>> ', $('li input[data-tag="text"]').val());
   });
 </script>

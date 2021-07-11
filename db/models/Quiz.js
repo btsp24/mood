@@ -63,13 +63,11 @@ module.exports = (sequelize, DataTypes) => {
     Quiz.hasMany(models.Game, {
       foreignKey: 'quizId',
       target: 'id',
-      onDelete: 'cascade',
     });
 
     Quiz.hasMany(models.Question, {
       foreignKey: 'quizId',
       target: 'id',
-      onDelete: 'cascade',
     });
   };
 

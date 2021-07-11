@@ -26,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     LobbyMusic.hasMany(models.Quiz, {
       foreignKey: 'lobbyMusicId',
       target: 'id',
-      onDelete: 'cascade',
     });
   };
 

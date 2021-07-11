@@ -264,6 +264,22 @@ class Query {
     await Quiz.update(details, { where: { id: theQuizId } });
   }
 
+  static async addQuiz(dataset) {
+    const aQuiz = await Quiz.create({
+      composerId: dataset.details.composerId,
+      text: dataset.text,
+      description: dataset.details.description,
+      isVisible: dataset.details.isVisible,
+      imgURL: dataset.details.imgURL,
+      imgAltText: dataset.details.imgAltText,
+      imgCredit: dataset.details.imgCredit,
+      lobbyMusicId: dataset.details.lobbyMusicId,
+      lobbyVideo: dataset.details.lobbyVideo,
+      isDraft: dataset.details.isDraft,
+    });
+    
+  }
+
   static async getQuizDataset(theQuizId) {
     const details = await this.getQuizDetails(theQuizId);
     const { count, rows } = await this.getQuestionsOfQuizWithAnswers(theQuizId);
@@ -281,14 +297,14 @@ class Query {
     await this.updateQuizQuestions(theQuizId, dataset.rows);
   }
 
-  static async updateQuizQuestions(theQuizId, dataset) {
+  static async updateQuizQuestions(theQuizId, rows) {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
-    if (dataset == null) {
+    if (rows == null) {
       throw new Error('no dataset is given');
     }
-    await Question.bulkCreate(dataset, {
+    await Question.bulkCreate(rows, {
       updateOnDuplicate: [
         'text',
         'questionTypeId',
@@ -315,27 +331,77 @@ class Query {
     });
   }
 
-  static async deleteQuizQuestions(questionsToBeDeleted) {
-    if (questionsToBeDeleted == null) {
-      throw new Error('no questionlist is given');
+  static async deleteUser(userToDelete) {
+    if (userToDelete == null) {
+      throw new Error('no userid is given');
     }
-    await Question.destroy({
+    const quizzesToDelete = (
+      await Quiz.findAll({
+        where: { composerId: userToDelete },
+        attributes: ['id'],
+        raw: true,
+      })
+    ).map(q => q.id);
+    // console.log('quizzesToDelete :>> ', quizzesToDelete);
+    // delete quizzes
+    await this.deleteQuizzes(quizzesToDelete);
+    // delete user
+    await User.destroy({
+      where: {
+        id: userToDelete,
+      },
+    });
+  }
+
+  static async deleteQuizzes(quizzesToDelete) {
+    if (quizzesToDelete == null) {
+      throw new Error('no quizlist is given');
+    }
+    // delete questions
+    const questionsToDelete = (
+      await Question.findAll({
+        where: { quizId: { [Op.in]: quizzesToDelete } },
+        attributes: ['id'],
+        raw: true,
+      })
+    ).map(q => q.id);
+    // console.log('dq-questionsToDelete :>> ', questionsToDelete);
+    await this.deleteQuizQuestions(questionsToDelete);
+
+    await Quiz.destroy({
       where: {
         id: {
-          [Op.in]: questionsToBeDeleted,
+          [Op.in]: quizzesToDelete,
         },
       },
     });
   }
 
-  static async deleteQuizzes(quizzesToBeDeleted) {
-    if (quizzesToBeDeleted == null) {
-      throw new Error('no quizlist is given');
+  static async deleteQuizQuestions(questionsToDelete) {
+    if (questionsToDelete == null) {
+      throw new Error('no questionlist is given');
     }
-    await Quiz.destroy({
+    // console.log('dqq-questionsToDelete :>> ', questionsToDelete);
+    // delete answers
+    await this.deleteQuestionAnswers(questionsToDelete);
+    await Question.destroy({
       where: {
         id: {
-          [Op.in]: quizzesToBeDeleted,
+          [Op.in]: questionsToDelete,
+        },
+      },
+    });
+  }
+
+  static async deleteQuestionAnswers(questionsToDelete) {
+    if (questionsToDelete == null) {
+      throw new Error('no questionList is given');
+    }
+    // console.log('dqa-questionsToDelete :>> ', questionsToDelete);
+    await Answer.destroy({
+      where: {
+        questionId: {
+          [Op.in]: questionsToDelete,
         },
       },
     });

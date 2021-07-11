@@ -41,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
     Game.hasMany(models.Player, {
       foreignKey: 'gameId',
       target: 'id',
-      onDelete: 'cascade',
     });
 
     Game.belongsTo(models.Quiz, {

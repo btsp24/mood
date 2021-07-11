@@ -18,7 +18,7 @@ module.exports = {
         const answer = {
           questionId: qui.id,
           id,
-          text: faker.lorem.words().slice(0, 74),
+          text: answerCount == 2 ? '' + !Math.floor(Math.random() * 2) : faker.lorem.words().slice(0, 74),
           isCorrect: id === correctOne,
           createdAt: date,
           updatedAt: date,

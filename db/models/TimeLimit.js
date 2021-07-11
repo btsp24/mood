@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     TimeLimit.hasMany(models.Question, {
       foreignKey: 'timeLimitId',
       target: 'id',
-      onDelete: 'cascade',
     });
   };
 

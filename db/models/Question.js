@@ -48,7 +48,6 @@ module.exports = (sequelize, DataTypes) => {
     Question.hasMany(models.Answer, {
       foreignKey: 'questionId',
       target: 'id',
-      onDelete: 'cascade',
     });
 
     Question.belongsTo(models.QuestionType, {

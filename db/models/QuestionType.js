@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     QuestionType.hasMany(models.Question, {
       foreignKey: 'questionTypeId',
       target: 'id',
-      onDelete: 'cascade',
     });
   };
 

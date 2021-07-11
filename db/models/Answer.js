@@ -36,13 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     Answer.hasMany(models.PlayerAnswer, {
       foreignKey: 'questionId',
       target: 'questionId',
-      onDelete: 'cascade',
     });
 
     Answer.hasMany(models.PlayerAnswer, {
       foreignKey: 'answerId',
       target: 'id',
-      onDelete: 'cascade',
     });
   };
 

@@ -40,13 +40,11 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Game, {
       foreignKey: 'hostedBy',
       target: 'id',
-      onDelete: 'cascade',
     });
 
     User.hasMany(models.Quiz, {
       foreignKey: 'composerId',
       target: 'id',
-      onDelete: 'cascade',
     });
   };
 

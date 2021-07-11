@@ -5,8 +5,7 @@
   },
   "test": {
     "storage": "./db/database2.sqlite",
-    "dialect": "sqlite",
-    "logging": false
+    "dialect": "sqlite"
   },
   "testorig": {
     "username": "postgres",
