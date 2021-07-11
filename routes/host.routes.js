@@ -1,38 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
-
+const { validate: uuidValidate } = require('uuid');
+const { Query } = require('../utils/queries');
 /* 
     hepsi quizId=uuid değeri alıyor
 */
-
-/* host game init
-çeşitli ayarlar ekranı 
-klasik seçilince pin oluşturuluyor
-*/
-
-router.get(
-  '/',
-  /* ensureAuthenticated, */ function (req, res, next) {
-    res.app.locals.user = req.user;
-    console.log('req.user :>> ', req.user);
-    res.render('host/index', { title: 'Start a Kahoot Game', userName: req.user.userName });
-  }
-);
 
 /* host game lobby
 pin ekranda sergileniyor
 katılanlar gösteriliyor
 */
 
-router.get(
-  '/lobby',
-  /* ensureAuthenticated, */ function (req, res, next) {
-    res.app.locals.user = req.user;
-    console.log('req.user :>> ', req.user);
-    res.render('host/lobby', { title: 'Teacher game lobby page' });
+router.get('/lobby', ensureAuthenticated, async function (req, res, next) {
+  const quizId = req.query.quizId; // || '287c070b-ba20-431d-ac6b-86d058c819b3';
+  const userId = !!req.user
+    ? req.user.id || '7636b9b5-aa24-47e5-b008-d9e54094f952'
+    : '7636b9b5-aa24-47e5-b008-d9e54094f952';
+  if (!!quizId && uuidValidate(quizId) && (await Query.quizExists(quizId))) {
+    res.render('host/lobby', {
+      title: 'quiz composer page',
+    });
   }
-);
+  // console.log('data :>> ', data);
+
+  // res.app.locals.user = req.user;
+  // console.log('req.user :>> ', req.user);
+  // res.render(`host/lobby?quizId=${quizI}`, { title: 'Start a Kahoot Game', userName: req.user.userName });
+});
+
+/* router.get('/lobby', ensureAuthenticated, function (req, res, next) {
+  res.app.locals.user = req.user;
+  console.log('req.user :>> ', req.user);
+  res.render('host/lobby', { title: 'Teacher game lobby page' });
+}); */
 
 /* host game start 
 öğretmen oyunu başlat düğmesine tıklayınca gelen ekran

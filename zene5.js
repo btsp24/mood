@@ -3,7 +3,7 @@ const { User, Quiz, Question, Answer, sequelize, Sequelize } = require('./db/mod
 const { Query } = require('./utils/queries');
 
 const userId = '5b661327-69ca-4ea6-8deb-663f9cff34f9';
-const aQuizId = 'c82f173a-a479-4d75-96de-a9bc88a27ed9';
+const aQuizId = '287c070b-ba20-431d-ac6b-86d058c819b3';
 const aQuestionId = '43664bf2-9f42-4bc4-a9cf-e73241aa4a3e';
 const anAnswerId = '2';
 
@@ -11,6 +11,8 @@ async function main() {
   try {
     await sequelize.authenticate();
     console.log('👍connected');
+    const question = await Query.getQuestionOfQuizByQNumberWithAnswers(aQuizId, 1);
+    console.log('question :>> ', question);
 
     // const aUser = User.build({ userName: 'Osman Tas', email: 'tasosman@gmail.com', password: 'Password' });
     // await aUser.save();
@@ -40,7 +42,7 @@ async function main() {
     //   include: [Quiz], */
     // });
     // console.log('numAffectedRows :>>', numAffectedRows);
-    Query.deleteUser('5b661327-69ca-4ea6-8deb-663f9cff34f9');
+    //   Query.deleteUser('5b661327-69ca-4ea6-8deb-663f9cff34f9');
   } catch (error) {
     console.log('---------');
     console.log('⛔ error :>>', error);

@@ -70,7 +70,7 @@ app.use(passport.session());
 
 // bind uri routers
 app.use('/', userRouter);
-app.use('/host', hostRouter);
+app.use('/', hostRouter);
 app.use('/', playerRouter);
 
 // catch 404 and forward to error handler
@@ -122,22 +122,22 @@ io.on('connection', socket => {
   });
 
   // host connects for the first time
-  socket.on('host-join', async function (data) {
-    console.log('host-join with data :>>', data);
+  socket.on('host-join', async function (quizId) {
+    console.log('host-join with data :>>', quizId);
     try {
-      if (!data) {
+      if (!quizId) {
         socket.emit('noGameFound');
       } else {
-        const questions = await Query.getQuestionsOfTheQuiz(data.id);
+        const questions = await Query.getQuestionsOfQuiz(quizId);
         console.log('questions :>> ', questions);
         if (!questions) {
           // new pin for the given game
           const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
           games.addGame(gamePin, socket.id, false, {
             gameId: await uuidv4(),
-            quizId: data.id,
+            quizId,
             questionLive: false,
-            questionCount: questions.length,
+            questionCount: questions.count,
             questionNumber: 1,
             playersAnswered: 0,
           });
@@ -158,9 +158,9 @@ io.on('connection', socket => {
   });
 
   // host connects from the game view
-  socket.on('host-join-game', data => {
-    console.log('host-join-game with data :>>', data);
-    const oldHostId = data.id;
+  socket.on('host-join-game', quizId => {
+    console.log('host-join-game with data :>>', quizId);
+    const oldHostId = quizId;
     const game = games.getGame(oldHostId);
     if (game) {
       game.hostId = socket.id;
@@ -177,10 +177,7 @@ io.on('connection', socket => {
         ...currentQuestion,
         playersInGame: playerData.length,
       });
-      /*
-      ** neden farklı
-      io.to(game.pin).emit('gameStartedPlayer');
-      */
+
       if (game.pin) {
         io.emit('gameStartedPlayer');
       }
@@ -308,20 +305,20 @@ io.on('connection', socket => {
 
   socket.on('quizList-request', async function () {
     /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizzes = await Query.getQuizzesOfTheUser(/* aUserId */ app.locals.user.id);
+    const quizData = await Query.getQuizzesOfUser(/* aUserId */ app.locals.user.id);
 
-    socket.emit('quizList-response', quizzes);
+    socket.emit('quizList-response', quizData);
   });
   socket.on('draft-quizList-request', async function () {
     /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizzes = await Query.getDraftQuizzesOfTheUser(/* aUserId */ app.locals.user.id);
+    const quizData = await Query.getDraftQuizzesOfUser(/* aUserId */ app.locals.user.id);
 
-    socket.emit('draft-quizList-response', quizzes);
+    socket.emit('draft-quizList-response', quizData);
   });
   socket.on('shared-quizList-request', async function () {
     /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizzes = await Query.getQuizzesOfOtherUsers(/* aUserId */ app.locals.user.id);
+    const quizData = await Query.getQuizzesOfOtherUsers(/* aUserId */ app.locals.user.id);
 
-    socket.emit('shared-quizList-response', quizzes);
+    socket.emit('shared-quizList-response', quizData);
   });
 });

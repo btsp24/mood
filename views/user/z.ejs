@@ -250,7 +250,7 @@
     });
   });
 
-  const questionArray = <%- JSON.stringify(data) %>
+  const questionArray = <%- JSON.stringify(data.rows) %>
     $(document).ready(function () {
       questionArray.forEach(q => {
         console.log('q :>> ', q);
