@@ -47,22 +47,13 @@
         </button>
       </li>
     </ul>
-    <div class="tab-content p-2" id="myTabContent">
-      <div class="tab-pane fade show active py-2" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <% myQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz}); %> <%
-        }); %>
-      </div>
-      <div class="tab-pane fade" id="drafts" role="tabpanel" aria-labelledby="drafts-tab">
-        <% myDraftQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz});
-        %> <% }); %>
-      </div>
-      <div class="tab-pane fade" id="shared" role="tabpanel" aria-labelledby="shared-tab">
-        <% sharedQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz}); %>
-        <% }); %>
-      </div>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"></div>
+      <div class="tab-pane fade" id="drafts" role="tabpanel" aria-labelledby="drafts-tab"></div>
+      <div class="tab-pane fade" id="shared" role="tabpanel" aria-labelledby="shared-tab"></div>
     </div>
     <%- include('../partials/footer') %>
-    <!--     <script>
+    <script>
       console.log('from :>> ', '🏡');
       // const socket = io();
       const quizList = [];
@@ -141,6 +132,6 @@
         }
       });
       // });
-    </script> -->
+    </script>
   </body>
 </html>

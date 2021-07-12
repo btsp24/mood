@@ -47,9 +47,9 @@ class Query {
       },
       attributes: [
         'id',
-        'text',
+        'title',
         'imgURL',
-        'createdAt',
+        'updatedAt',
         'composerId',
         [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
@@ -64,8 +64,8 @@ class Query {
           attributes: [],
         },
       ],
-      group: ['Quiz.id', 'Quiz.text', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
-      order: [['createdAt', 'DESC']],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId'],
+      order: [['updatedAt', 'DESC']],
     })) {
       rows.push(quiz.toJSON());
     }
@@ -94,9 +94,9 @@ class Query {
       },
       attributes: [
         'id',
-        'text',
+        'title',
         'imgURL',
-        'createdAt',
+        'updatedAt',
         'composerId',
         [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
@@ -111,8 +111,8 @@ class Query {
           attributes: [],
         },
       ],
-      group: ['Quiz.id', 'Quiz.text', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
-      order: [['createdAt', 'DESC']],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId'],
+      order: [['updatedAt', 'DESC']],
     })) {
       rows.push(quiz.toJSON());
     }
@@ -143,9 +143,10 @@ class Query {
       },
       attributes: [
         'id',
-        'text',
+        'title',
         'imgURL',
-        'createdAt',
+        'imgAltText',
+        'updatedAt',
         'composerId',
         [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
@@ -160,8 +161,8 @@ class Query {
           attributes: [],
         },
       ],
-      group: ['Quiz.id', 'Quiz.text', 'Quiz.imgURL', 'Quiz.createdAt', 'composerId'],
-      order: [['createdAt', 'DESC']],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.imgAltText', 'Quiz.updatedAt', 'composerId'],
+      order: [['updatedAt', 'DESC']],
     })) {
       rows.push(quiz.toJSON());
     }
@@ -305,7 +306,7 @@ class Query {
   static async addQuiz(dataset) {
     const aQuiz = await Quiz.create({
       composerId: dataset.details.composerId,
-      text: dataset.text,
+      title: dataset.title,
       description: dataset.details.description,
       isVisible: dataset.details.isVisible,
       imgURL: dataset.details.imgURL,

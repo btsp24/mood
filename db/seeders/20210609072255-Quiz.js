@@ -19,7 +19,7 @@ module.exports = {
         let quizId = uuidv4();
         let quiz = {
           id: quizId,
-          text: faker.lorem.words().slice(0, 95),
+          title: faker.lorem.words().slice(0, 95),
           description: faker.commerce.productDescription(),
           composerId: usi.id,
           isVisible: !Math.floor(Math.random() * 2),

@@ -12,11 +12,9 @@ pin ekranda sergileniyor
 katılanlar gösteriliyor
 */
 
-router.get('/lobby', ensureAuthenticated, async function (req, res, next) {
-  const quizId = req.query.quizId; // || '287c070b-ba20-431d-ac6b-86d058c819b3';
-  const userId = !!req.user
-    ? req.user.id || '7636b9b5-aa24-47e5-b008-d9e54094f952'
-    : '7636b9b5-aa24-47e5-b008-d9e54094f952';
+router.get('/lobby/:quizId', ensureAuthenticated, async function (req, res, next) {
+  const quizId = req.params.quizId;
+  const userId = req.user.id;
   if (!!quizId && uuidValidate(quizId) && (await Query.quizExists(quizId))) {
     res.render('host/lobby', {
       title: 'quiz composer page',

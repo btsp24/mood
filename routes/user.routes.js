@@ -112,45 +112,47 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-router.get(
-  '/z/:quizId',
-  /* ensureAuthenticated, */ async (req, res) => {
-    let data;
-    // sample quizId from dummy data
-    const quizId = req.params.quizId || '20434cf9-331a-4932-af41-d24b5b5175d4';
-    const userId = !!req.user
-      ? req.user.id || '394d6af2-e6bd-4e55-a278-d7e1c59269bb'
-      : '394d6af2-e6bd-4e55-a278-d7e1c59269bb';
-    if (!!quizId && uuidValidate(quizId) && (await Query.isQuizEditable(quizId, userId))) {
-      console.log('quizId  :>> ', quizId);
-      data = await Query.getQuestionsWithAnswers(quizId, false);
-    }
-    // console.log('data :>> ', data);
-    res.render('user/z', {
-      title: 'z quiz composer page',
-      data,
-    });
+router.get('/edit/:quizId', ensureAuthenticated, async (req, res) => {
+  let dataset;
+  // sample quizId from dummy data
+  const quizId = req.params.quizId;
+  const userId = req.user.id;
+  if (!!quizId && uuidValidate(quizId) && (await Query.isQuizEditable(quizId, userId))) {
+    console.log('quizId  :>> ', quizId);
+    dataset = await Query.getQuizDataset(quizId);
   }
-);
+  console.log('dataset :>> ', dataset);
+  // console.log('data :>> ', data);
+  res.render('user/edit', {
+    title: 'quiz editor page',
+    dataset,
+  });
+});
 /* home page  for teacher */
-router.get('/home', ensureAuthenticated, (req, res) => {
+router.get('/home', ensureAuthenticated, async (req, res) => {
   res.app.locals.user = req.user;
+  const myQuizzes = await Query.getQuizzesOfUser(/* aUserId */ req.user.id);
+  const myDraftQuizzes = await Query.getDraftQuizzesOfUser(/* aUserId */ req.user.id);
+  const sharedQuizzes = await Query.getQuizzesOfOtherUsers(/* aUserId */ req.user.id);
   res.render('user/home', {
     title: 'home page for teacher',
+    myQuizzes,
+    myDraftQuizzes,
+    sharedQuizzes,
   });
 });
 
 /* compose quiz page for teacher */
-router.get('/home/compose', ensureAuthenticated, (req, res) =>
-  res.render('user/compose', {
-    title: 'compose for teacher',
-  })
-);
+// router.get('/home/compose', ensureAuthenticated, (req, res) =>
+//   res.render('user/compose', {
+//     title: 'compose for teacher',
+//   })
+// );
 
 /* edit quiz page for teacher */
-router.get('/home/edit', ensureAuthenticated, (req, res) =>
-  res.render('user/edit', {
-    title: 'edit quiz for teacher',
-  })
-);
+// router.get('/home/edit', ensureAuthenticated, (req, res) =>
+//   res.render('user/edit', {
+//     title: 'edit quiz for teacher',
+//   })
+// );
 module.exports = router;
