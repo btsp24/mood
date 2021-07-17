@@ -25,6 +25,10 @@ class Players {
   getPlayers(hostId) {
     return this.players.filter(player => player.hostId === hostId);
   }
+
+  count() {
+    return this.players.length;
+  }
 }
 
 module.exports = { Players };

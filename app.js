@@ -58,8 +58,7 @@ const io = socketIO(server);
 
 io.engine.generateId = async req => {
   const newUUID = uuidv4();
-  console.log('io generated newUUID :>> ', newUUID);
-  return /* await */ newUUID;
+  return newUUID;
 };
 
 // Connect flash
@@ -102,48 +101,40 @@ server.listen(port, function () {
 const games = new LiveGames();
 const players = new Players();
 
+const cookie = require('cookie');
+
 io.on('connection', socket => {
-  console.log('client connected socket.id :>>', socket.id);
+  console.log('socket@connection#107 :>> ', socket);
+  const cookies = cookie.parse(socket.request.headers.cookie || '');
+  // console.log('client connected socket.conn.id :>>', cookies);
 
   console.log('socket.conn.id :>> ', socket.conn.id);
   if (!app.locals.user) {
     socket.emit('redirect', '/login');
   }
-  // console.log('req.user :>> ', app.locals.user.id);
-
-  // other methods will come here
-
-  socket.on('UUID-request', () => {
-    console.log('s: UUID', {
-      old: socket.conn.id,
-      new: app.locals.user.id,
-    });
-    socket.conn.id = app.locals.user.id;
-    socket.emit('UUID-response', app.locals.user.id);
-  });
 
   // host connects for the first time
-  socket.on('host-join', async function (quizId) {
-    console.log('host-join with data :>>', quizId);
+  socket.on('host-join', async hjData => {
+    console.log('host-join with data#130 :>>', hjData);
     try {
-      if (!quizId) {
+      if (!hjData) {
         socket.emit('noGameFound');
       } else {
-        const questions = await Query.getQuestionsOfQuiz(quizId);
+        const questions = await Query.getQuestionsOfQuiz(hjData);
         console.log('questions :>> ', questions);
         if (!questions) {
           // new pin for the given game
           const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
-          games.addGame(gamePin, socket.id, false, {
+          games.addGame(gamePin, socket.conn.id, false, {
             gameId: await uuidv4(),
-            quizId,
+            quizId: hjData,
             questionLive: false,
             questionCount: questions.count,
             questionNumber: 1,
             playersAnswered: 0,
           });
-          const game = games.getGame(socket.id);
-          console.log('recently added game :>> ', game);
+          const game = games.getGame(socket.conn.id);
+          console.log('recently added game#149 :>> ', game);
           // host joins a pin named socket room
           socket.join(game.pin);
           socket.emit('showGamePin', {
@@ -154,29 +145,34 @@ io.on('connection', socket => {
         }
       }
     } catch (error) {
-      console.log('error :>> ', error);
+      console.log('error #160:>> ', error);
     }
   });
 
   // host connects from the game view
-  socket.on('host-join-game', quizId => {
-    console.log('host-join-game with data :>>', quizId);
-    const oldHostId = quizId;
+  socket.on('host-join-game', async hjgData => {
+    console.log('host-join-game with data#166 :>>', hjgData);
+    const oldHostId = hjgData;
     const game = games.getGame(oldHostId);
     if (game) {
-      game.hostId = socket.id;
-      const playerData = players.getPlayers(oldHostId);
+      game.hostId = socket.conn.id;
+      const playerList = players.getPlayers(oldHostId);
+      console.log('playerList#172 :>> ', playerList);
       for (const player of players) {
+        // update player hostId in playerslist with new socket.conn.id
         if (player.hostId === oldHostId) {
-          player.hostId = socket.id;
+          player.hostId = socket.conn.id;
         }
       }
-      const currentQuestion = Query.getOneQuestionWithAnswers(game.values.quizId, game.values.questionNumber);
-      console.log('currentQuestion :>> ', currentQuestion);
+      const currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber(
+        game.values.quizId,
+        game.values.questionNumber
+      );
+      console.log('currentQuestion#180 :>> ', currentQuestion);
       /* GAMEQUESTION!S */
       socket.emit('gameQuestion', {
         ...currentQuestion,
-        playersInGame: playerData.length,
+        playersInGame: players.count(),
       });
 
       if (game.pin) {
@@ -189,20 +185,21 @@ io.on('connection', socket => {
   });
 
   // player first time connect
-  socket.on('player-join', params => {
+  socket.on('player-join', pjData => {
     let gameFound = false;
 
     for (const game of games) {
-      if (params.pin === game.pin) {
+      if (pjData.pin === game.pin) {
         const hostId = game.hostId;
-        players.addPlayer(hostId, socket.id, params.name, {
+        players.addPlayer(hostId, socket.conn.id, pjData.name, {
           questionScore: 0,
+          correctAnswerCount: 0,
           answerId: null,
           gameScore: 0,
         });
-        socket.join(params.pin);
+        socket.join(pjData.pin);
         const playersInGame = players.getPlayers(hostId);
-        io.to(params.pin).emit('updatePlayerLobby', playersInGame);
+        io.to(pjData.pin).emit('updatePlayerLobby', playersInGame);
         gameFound = true;
       }
     }
@@ -212,14 +209,15 @@ io.on('connection', socket => {
   });
 
   // player connects from the game view
-  socket.on('player-join-game', data => {
-    const player = players.getPlayer(data.id);
+  socket.on('player-join-game', pjgData => {
+    console.log('pjgData#221 :>> ', pjgData);
+    const player = players.getPlayer(pjgData.id);
     if (player) {
       const game = games.getGame(player.hostId);
       socket.join(game.pin);
-      player.playerId = socket.id;
-      const playerData = player.getPlayers(game.hostId);
-      socket.emit('playervalues', playerData);
+      player.playerId = socket.conn.id;
+      const playerList = player.getPlayers(game.hostId);
+      socket.emit('playerValues', playerList);
     } else {
       socket.emit('noGameFound');
     }
@@ -227,10 +225,11 @@ io.on('connection', socket => {
 
   // host or player disconnects
   socket.on('disconnect', () => {
-    const game = games.getGame(socket.id);
+    const game = games.getGame(socket.conn.id);
+    console.log('game#237 :>> ', game);
     if (game) {
       if (!game.gameLive) {
-        games.removeGame(socket.id);
+        games.removeGame(socket.conn.id);
 
         // here is one of the places to store player score
         const playersToRemove = players.getPlayers(game.hostId);
@@ -241,13 +240,13 @@ io.on('connection', socket => {
         socket.leave(game.pin);
       }
     } else {
-      const player = players.getPlayer(socket.id);
+      const player = players.getPlayer(socket.conn.id);
       if (player) {
         const hostId = player.hostId;
-        const game = games.getGame(hostId);
-        const pin = game.pin;
-        if (!game.gameLive) {
-          players.removePlayer(socket.id);
+        const pGame = games.getGame(hostId);
+        const pin = pGame.pin;
+        if (!pGame.gameLive) {
+          players.removePlayer(socket.conn.id);
           const playersInGame = players.getPlayers(hostId);
           io.to(pin).emit('updatePlayerLobby', playersInGame);
           socket.leave(pin);
@@ -258,68 +257,173 @@ io.on('connection', socket => {
 
   // set player data from given answer
   socket.on('playerAnswer', async givenAnswer => {
-    const player = players.getPlayer(socket.id);
+    const player = players.getPlayer(socket.conn.id);
     const hostId = player.hostId;
-    console.log('player :>> ', player);
-    console.log('givenAnswer :>> ', givenAnswer);
-    const playerCount = players.getPlayers(hostId).length;
-    const game = games.getGame(hostId);
-    if (game.values.questionLive) {
+    console.log('player#270 :>> ', player);
+    console.log('givenAnswer#271 :>> ', givenAnswer);
+    const theGame = games.getGame(hostId);
+    if (theGame.values.questionLive) {
       player.values.answerId = givenAnswer;
-      game.values.playersAnswered += 1;
-      const answersOfQuestion = await Query.getAnswersOfAQuestion(
-        game.values.gameId,
-        game.values.questionNumber
+      theGame.values.playersAnswered += 1;
+      const answersOfQuestion = await Query.getAnswersOfQuestion(
+        theGame.values.quizId,
+        theGame.values.questionNumber
       );
-      const correctAnswer = answersOfQuestion.filter(a => {
+      const correctAnswers = answersOfQuestion.filter(a => {
         return a.isCorrect === true;
       });
-      if (givenAnswer === correctAnswer) {
-        player.values.questionScore += 100;
-        io.to(game.pin).emit('getTime', socket.id);
-        socket.emit('answerResult', true);
-      }
-      if (game.values.playersAnswered === playerCount) {
-        game.values.questionLive = false;
-        const playerData = players.getPlayers(game.hostId);
-        io.to(game.pin).emit('questionOver', playerData, correctAnswer);
+      correctAnswers.forEach(answer => {
+        if (givenAnswer === answer.id) {
+          player.values.questionScore += 100;
+          player.values.correctAnswerCount += 1;
+          io.to(theGame.pin).emit('getTime', socket.conn.id);
+          socket.emit('answerResult', true);
+        }
+      });
+      if (theGame.values.playersAnswered === players.count()) {
+        theGame.values.questionLive = false;
+        const playerData = players.getPlayers(theGame.hostId);
+        io.to(theGame.pin).emit('questionOver', playerData, correctAnswers);
+      } else {
+        console.log('updatePlayersAnswered#296 :>> ', {
+          playersInGame: players.count(),
+          playersAnswered: theGame.values.playersAnswered,
+        });
+        io.to(theGame.pin).emit('updatePlayersAnswered', {
+          playersInGame: players.count(),
+          playersAnswered: theGame.values.playersAnswered,
+        });
       }
     }
   });
 
   socket.on('getScore', async () => {
-    const player = players.getPlayer(socket.id);
+    const player = players.getPlayer(socket.conn.id);
     player.values.quizScore += player.values.questionScore;
     const hostId = player.hostId;
-    const gameId = games.getGame(hostId).values.gameId;
-    const questionId = await Query.getOneQuestion(gameId, player.values.questionNumber).id;
+    const game = games.getGame(hostId);
+    const quizId = game.values.quizId;
+    const questionNumber = game.values.questionNumber;
+    const questionId = await Query.getOneQuestion(quizId, questionNumber).id;
 
     await Query.savePlayerQuestionScore(
-      socket.id,
+      socket.conn.id,
       gameId,
       questionId,
       player.values.answerId,
       player.values.questionScore
     );
+    socket.emit('newScore', player.values.questionScore);
     player.values.questionScore = 0;
   });
 
-  socket.on('quizList-request', async function () {
-    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizData = await Query.getQuizzesOfUser(/* aUserId */ app.locals.user.id);
-
-    socket.emit('quizList-response', quizData);
+  socket.on('time', timingData => {
+    const timeScore = timingData.time * 5;
+    const player = players.getPlayer(timingData.player);
+    player.values.questionScore += timeScore;
   });
-  socket.on('draft-quizList-request', async function () {
-    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizData = await Query.getDraftQuizzesOfUser(/* aUserId */ app.locals.user.id);
 
-    socket.emit('draft-quizList-response', quizData);
+  socket.on('timeUp', async () => {
+    const theGame = games.getGame(socket.conn.id);
+    theGame.values.questionLive = false;
+    const playerList = players.getPlayers(theGame.hostId);
+    const answersOfQuestion = await Query.getAnswersOfQuestion(
+      theGame.values.quizId,
+      theGame.values.questionNumber
+    );
+    const correctAnswers = answersOfQuestion.filter(a => {
+      return a.isCorrect === true;
+    });
+    const playerData = players.getPlayers(theGame.hostId);
+    io.to(theGame.pin).emit('questionOver', playerData, correctAnswers);
   });
-  socket.on('shared-quizList-request', async function () {
-    /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
-    const quizData = await Query.getQuizzesOfOtherUsers(/* aUserId */ app.locals.user.id);
 
-    socket.emit('shared-quizList-response', quizData);
+  socket.on('nextQuestion', async () => {
+    const playerList = players.getPlayers(socket.conn.id);
+    for (const player of players) {
+      if (player.hostId === socket.conn.id) {
+        player.values.answerId = null;
+      }
+    }
+    const theGame = games.getGame(socket.conn.id);
+    theGame.values.playersAnswered = 0;
+    theGame.values.questionLive = true;
+    theGame.values.questionNumber += 1;
+    if (theGame.values.questionNumber <= theGame.values.questionCount) {
+      const currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber(
+        theGame.values.quizId,
+        theGame.values.questionNumber
+      );
+      console.log('currentQuestion#354 :>> ', currentQuestion);
+      socket.emit('gameQuestion', {
+        ...currentQuestion,
+        playersInGame: players.count(),
+      });
+    } else {
+      const playerList = players.getPlayers(theGame.hostId);
+      playerList.sort((a, b) => {
+        // sort descending
+        return -(a.values.gameScore - b.values.gameScore);
+      });
+      const topFivePlayers = [];
+      for (let i = 0; i < 5; i++) {
+        const player = playerList[i];
+        const aPlayerRecord = {
+          pos: i + 1,
+          name: player.name,
+          gameScore: player.values.gameScore,
+          correctAnswerCount: player.values.correctAnswerCount,
+          questionCount: theGame.values.questionCount,
+        };
+        console.log('aPlayerRecord#375 :>> ', aPlayerRecord);
+        topFivePlayers.push(aPlayerRecord);
+      }
+      // check the counter implementation
+      io.to(game.pin).emit('GameOver', topFivePlayers);
+    }
+    if (game.pin) {
+      io.to(game.pin).emit('nextQuestionPlayer');
+      // io.emit('nextQuestionPlayer');
+    }
+  });
+
+  // when host starts the game
+  socket.on('startGame', () => {
+    const game = games.getGame(socket.conn.id);
+    game.gameLive = true;
+    socket.emit('gameStarted', game.hostId);
   });
 });
+
+// after connection section
+// console.log('req.user :>> ', app.locals.user.id);
+
+// other methods will come here
+
+// socket.on('UUID-request', () => {
+//   console.log('s: UUID', {
+//     old: socket.conn.id,
+//     new: app.locals.user.id,
+//   });
+//   socket.conn.id = app.locals.user.id;
+//   socket.emit('UUID-response', app.locals.user.id);
+// });
+
+// socket.on('quizList-request', async function () {
+//   /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+//   const quizData = await Query.getQuizzesOfUser(/* aUserId */ app.locals.user.id);
+
+//   socket.emit('quizList-response', quizData);
+// });
+// socket.on('draft-quizList-request', async function () {
+//   /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+//   const quizData = await Query.getDraftQuizzesOfUser(/* aUserId */ app.locals.user.id);
+
+//   socket.emit('draft-quizList-response', quizData);
+// });
+// socket.on('shared-quizList-request', async function () {
+//   /* const aUserId = 'e87dd769-b724-4117-9838-0e9fe42951e7'; */
+//   const quizData = await Query.getQuizzesOfOtherUsers(/* aUserId */ app.locals.user.id);
+
+//   socket.emit('shared-quizList-response', quizData);
+// });

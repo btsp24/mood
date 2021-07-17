@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 // const bcrypt = require('bcryptjs');
@@ -9,6 +10,24 @@ const { validate: uuidValidate } = require('uuid');
 const { User } = require('../db/models');
 const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
 const { Query } = require('../utils/queries');
+
+// multer attach
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './public/uploads/'); // set the destination
+  },
+  filename: function (req, file, callback) {
+    const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    callback(null, uniquePrefix + path.extname(file.originalname)); // set the file name and extension
+  },
+});
+const upload = multer({ storage: storage });
+router.post('/upload', upload.single('imagename'), function (req, res, next) {
+  const img = req.file.filename;
+  console.log('img :>> ', img);
+});
 
 /* login page */
 router.get('/login', forwardAuthenticated, (req, res) => {

@@ -10,6 +10,7 @@ const {
   Answer,
   QuestionType,
   TimeLimit,
+  Player,
   PlayerAnswer,
   sequelize,
 } = require('../db/models');
@@ -449,7 +450,7 @@ class Query {
     if (theQuestionId == null) {
       throw new Error('no questionId is given');
     }
-    const theQuestion = await Question.findByPk(theQuestionId);
+    // const theQuestion = await Question.findByPk(theQuestionId);
     const rows = [];
     for (const answer of await Answer.findAll({
       where: { questionId: theQuestionId },
@@ -490,11 +491,11 @@ class Query {
     return { count, rows };
   }
 
-  static async isAnswerCorrect(theAnswerId) {
-    if (theAnswerId == null) {
-      throw new Error('no AnswerId is given');
+  static async isAnswerCorrect(questionId, answerId) {
+    if (questionId == null && theAnswerId == null) {
+      throw new Error('no questionId and AnswerId is given');
     }
-    const result = await Answer.findByPk(theAnswerId);
+    const result = await Answer.findOne({ where: { questionId, id: answerId } });
     return result.isCorrect;
   }
 

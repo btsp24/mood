@@ -11,8 +11,10 @@ async function main() {
   try {
     await sequelize.authenticate();
     console.log('👍connected');
-    const question = await Query.getQuestionOfQuizByQNumberWithAnswers(aQuizId, 1);
-    console.log('question :>> ', question);
+    // const count = await Query.getWrongOptionCount('acbae6cd-d34b-49c8-aa93-ba34a9b996fd');
+    const { count, rows } = await Query.getWrongOptionCount('acbae6cd-d34b-49c8-aa93-ba34a9b996fd');
+    console.log('count :>> ', count);
+    console.log('rows :>> ', rows);
 
     // const aUser = User.build({ userName: 'Osman Tas', email: 'tasosman@gmail.com', password: 'Password' });
     // await aUser.save();
