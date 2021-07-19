@@ -5,11 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       gameId: {
         type: DataTypes.UUID,
-        primaryKey: true,
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
-      playerId: {
+      id: {
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
@@ -35,14 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       target: 'id',
     });
 
-    Player.hasMany(models.PlayerAnswer, {
+    Player.belongsToMany(models.Answer, {
       foreignKey: 'playerId',
-      target: 'playerId',
-    });
-
-    Player.hasMany(models.PlayerAnswer, {
-      foreignKey: 'gameId',
-      target: 'gameId',
+      target: 'id',
+      through: 'PlayerAnswer',
     });
   };
 

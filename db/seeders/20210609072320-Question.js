@@ -17,13 +17,13 @@ module.exports = {
         let questionData = {
           quizId: qzi.id,
           id: questionId,
-          questionTypeId,
           text: faker.lorem.text().slice(0, 119) + '?',
+          questionOrder: qId + 1,
+          questionTypeId,
+          timeLimitId: Math.floor(1 + Math.random() * 8),
           imgURL: `https://picsum.photos/180/120?random=${qId}`,
           imgAltText: 'picsum.photos/',
           imgCredit: 'downloaded from https://picsum.photos',
-          timeLimitId: Math.floor(1 + Math.random() * 8),
-          questionOrder: qId + 1,
           createdAt: date,
           updatedAt: date,
         };

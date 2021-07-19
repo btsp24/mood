@@ -15,7 +15,7 @@ const {
   sequelize,
 } = require('../db/models');
 const { Op } = require('sequelize');
-
+const { v4: uuidv4 } = require('uuid');
 class Query {
   static async connectToDatabase() {
     try {
@@ -31,7 +31,7 @@ class Query {
       throw new Error('no userId is given');
     }
     const theUser = await User.findByPk(theUserId);
-    const count = await Quiz.count({
+    const count = await theUser.countQuizzes({
       where: {
         composerId: theUserId,
         isDraft: false,
@@ -41,7 +41,7 @@ class Query {
     if (!theUser) {
       return null;
     }
-    for (const quiz of await Quiz.findAll({
+    for (const quiz of await theUser.getQuizzes({
       where: {
         composerId: theUserId,
         isDraft: false,
@@ -52,6 +52,7 @@ class Query {
         'imgURL',
         'updatedAt',
         'composerId',
+        'isDraft',
         [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
       ],
@@ -65,10 +66,13 @@ class Query {
           attributes: [],
         },
       ],
-      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId'],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId', 'isDraft'],
       order: [['updatedAt', 'DESC']],
+      raw: true,
     })) {
-      rows.push(quiz.toJSON());
+      const rec = quiz.toJSON();
+      rec.editEnabled = true;
+      rows.push(rec);
     }
     return { count, rows };
   }
@@ -78,7 +82,7 @@ class Query {
       throw new Error('no userId is given');
     }
     const theUser = await User.findByPk(theUserId);
-    const count = await Quiz.count({
+    const count = await theUser.countQuizzes({
       where: {
         composerId: theUserId,
         isDraft: true,
@@ -88,7 +92,7 @@ class Query {
     if (!theUser) {
       return null;
     }
-    for (const quiz of await Quiz.findAll({
+    for (const quiz of await theUser.getQuizzes({
       where: {
         composerId: theUserId,
         isDraft: true,
@@ -99,6 +103,7 @@ class Query {
         'imgURL',
         'updatedAt',
         'composerId',
+        'isDraft',
         [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
       ],
@@ -112,10 +117,13 @@ class Query {
           attributes: [],
         },
       ],
-      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId'],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId', 'isDraft'],
       order: [['updatedAt', 'DESC']],
+      raw: true,
     })) {
-      rows.push(quiz.toJSON());
+      const rec = quiz.toJSON();
+      rec.editEnabled = true;
+      rows.push(rec);
     }
     return { count, rows };
   }
@@ -124,7 +132,8 @@ class Query {
     if (theUserId == null) {
       throw new Error('no userId is given');
     }
-    const count = await Quiz.count({
+    const theUser = await User.findByPk(theUserId);
+    const count = await theUser.countQuizzes({
       where: {
         composerId: {
           [Op.ne]: theUserId,
@@ -134,7 +143,7 @@ class Query {
       },
     });
     const rows = [];
-    for (const quiz of await Quiz.findAll({
+    for (const quiz of await theUser.getQuizzes({
       where: {
         composerId: {
           [Op.ne]: theUserId,
@@ -149,6 +158,7 @@ class Query {
         'imgAltText',
         'updatedAt',
         'composerId',
+        'isDraft',
         [sequelize.fn('MAX', sequelize.col('User.userName')), 'composerName'],
         [sequelize.fn('COUNT', sequelize.col('Questions.id')), 'numberOfQuestions'],
       ],
@@ -162,10 +172,21 @@ class Query {
           attributes: [],
         },
       ],
-      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.imgAltText', 'Quiz.updatedAt', 'composerId'],
+      group: [
+        'Quiz.id',
+        'Quiz.title',
+        'Quiz.imgURL',
+        'Quiz.imgAltText',
+        'Quiz.updatedAt',
+        'composerId',
+        'isDraft',
+      ],
       order: [['updatedAt', 'DESC']],
+      raw: true,
     })) {
-      rows.push(quiz.toJSON());
+      const rec = quiz.toJSON();
+      rec.editEnabled = false;
+      rows.push(rec);
     }
     return { count, rows };
   }
@@ -175,25 +196,27 @@ class Query {
       throw new Error('no quizId is given');
     }
     const theQuiz = await Quiz.findByPk(theQuizId);
-    const count = await Question.count({ where: { quizId: theQuizId } });
+    const count = await theQuiz.countQuestions();
     const rows = [];
     if (!theQuiz) {
       return null;
     }
-    for (const question of await Question.findAll({
+    for (const question of await theQuiz.getQuestions({
       where: { quizId: theQuizId },
       attributes: [
-        'id',
         'quizId',
-        'questionOrder',
+        'id',
         'text',
-        'imgURL',
-        'createdAt',
+        'questionOrder',
+        [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
+        [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
+        [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
         'questionTypeId',
         'timeLimitId',
-        [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
-        [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
-        [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
+        'imgURL',
+        'imgAltText',
+        'imgCredit',
+        'createdAt',
       ],
       include: [
         {
@@ -210,11 +233,13 @@ class Query {
         },
       ],
       group: [
-        'Question.id',
         'Question.quizId',
+        'Question.id',
         'Question.questionOrder',
         'Question.text',
         'Question.imgURL',
+        'Question.imgAltText',
+        'Question.imgCredit',
         'Question.createdAt',
         'Question.questionTypeId',
         'Question.timeLimitId',
@@ -222,7 +247,7 @@ class Query {
       order: ['questionOrder'],
       raw: true,
     })) {
-      rows.push(question /* .toJSON() */);
+      rows.push(question);
     }
     return { count, rows };
   }
@@ -236,78 +261,38 @@ class Query {
   }
 
   static async getQuestionOfQuizByQNumber(theQuizId, qNumber) {
-    const theQuestion = await Question.findOne({ where: { quizId: theQuizId, questionOrder: qNumber } });
-    return theQuestion.toJSON();
+    return Question.findOne({ where: { quizId: theQuizId, questionOrder: qNumber }, raw: true });
   }
 
-  static async getQuestionOfQuizByQNumberWithAnswers(theQuizId, qNumber) {
-    return await Question.findOne({
-      where: { quizId: theQuizId, questionOrder: qNumber },
-      attributes: [
-        'id',
-        'quizId',
-        'questionOrder',
-        'text',
-        'imgURL',
-        'createdAt',
-        'questionTypeId',
-        'timeLimitId',
-        // [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
-        // [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
-        // [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
-      ],
-      include: [
-        {
-          model: Answer,
-          attributes: ['id', 'questionId', 'text', 'isCorrect'],
-        },
-        {
-          model: QuestionType,
-          attributes: [],
-        },
-        {
-          model: TimeLimit,
-          attributes: [],
-        },
-      ],
-      group: [
-        'Question.id',
-        'Question.quizId',
-        'Question.questionOrder',
-        'Question.text',
-        'Question.imgURL',
-        'Question.createdAt',
-        'Question.questionTypeId',
-        'Question.timeLimitId',
-      ],
-      order: ['questionOrder'],
-      raw: true,
-    });
-    // theQuestion.Answers = await this.getAnswersOfQuestion(theQuestion.id);
-    // return theQuestion;
+  static async getQuestionOfQuizByQNumberWithAnswers(theQuizId, qNumber, random = false) {
+    const question = await this.getQuestionOfQuizByQNumber(theQuizId, qNumber);
+    question.Answers = await this.getAnswersOfQuestion(question.id, random);
+    return question;
+  }
+
+  static async getQuizDataset(theQuizId) {
+    const details = await this.getQuizDetails(theQuizId);
+    const { count, rows } = await this.getQuestionsOfQuizWithAnswers(theQuizId);
+    return { details, count, rows };
   }
 
   static async getQuizDetails(theQuizId) {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
-    return (await Quiz.findByPk(theQuizId)).toJSON();
+    return await Quiz.findByPk(theQuizId, { raw: true }); /* .toJSON(); */
   }
 
-  static async updateQuizDetails(theQuizId, details) {
-    if (theQuizId == null) {
-      throw new Error('no quizId is given');
+  static async cloneQuizDataset(dataset, newComposerId) {
+    if (newComposerId == null) {
+      throw new Error('no composerId is given');
     }
-    if (details == null) {
-      throw new Error('no detail data is given');
+    if (dataset == null) {
+      throw new Error('no dataset is given');
     }
-    await Quiz.update(details, { where: { id: theQuizId } });
-  }
-
-  static async addQuiz(dataset) {
-    const aQuiz = await Quiz.create({
-      composerId: dataset.details.composerId,
-      title: dataset.title,
+    const newQuiz = await Quiz.create({
+      composerId: newComposerId,
+      title: dataset.details.title,
       description: dataset.details.description,
       isVisible: dataset.details.isVisible,
       imgURL: dataset.details.imgURL,
@@ -317,26 +302,61 @@ class Query {
       lobbyVideo: dataset.details.lobbyVideo,
       isDraft: dataset.details.isDraft,
     });
+
+    await this.cloneQuizQuestions(dataset.rows, newQuiz.id);
+    return newQuiz.id;
   }
 
-  static async getQuizDataset(theQuizId) {
-    const details = await this.getQuizDetails(theQuizId);
-    const { count, rows } = await this.getQuestionsOfQuizWithAnswers(theQuizId);
-    return { details, count, rows };
+  static async cloneQuizQuestions(rows, theQuizId) {
+    if (theQuizId == null) {
+      throw new Error('no quizId is given');
+    }
+    if (rows == null) {
+      throw new Error('no row data is given');
+    }
+    for (const question of rows) {
+      const newQuestionId = uuidv4();
+      question.id = newQuestionId;
+      question.quizId = theQuizId;
+      question.updatedAt = null;
+      for (const answer of question.Answers) {
+        const newAnswerId = uuidv4();
+        answer.questionId = newQuestionId;
+        answer.id = newAnswerId;
+        answer.updatedAt = null;
+      }
+    }
+    await Question.bulkCreate(rows, {
+      include: [
+        {
+          model: Answer,
+        },
+      ],
+    });
   }
 
-  static async updateQuizDataset(theQuizId, dataset) {
+  static async updateQuizDataset(dataset, theQuizId) {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
     if (dataset == null) {
       throw new Error('no dataset is given');
     }
-    await this.updateQuizDetails(theQuizId, dataset.details);
-    await this.updateQuizQuestions(theQuizId, dataset.rows);
+    await this.updateQuizDetails(dataset.details, theQuizId);
+    await this.updateQuizQuestions(dataset.rows, theQuizId);
   }
 
-  static async updateQuizQuestions(theQuizId, rows) {
+  static async updateQuizDetails(details, theQuizId) {
+    if (theQuizId == null) {
+      throw new Error('no quizId is given');
+    }
+    if (details == null) {
+      throw new Error('no detail data is given');
+    }
+    await Quiz.update(details, { where: { id: theQuizId } });
+  }
+
+  static async updateQuizQuestions(rows, theQuizId) {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
@@ -346,25 +366,17 @@ class Query {
     await Question.bulkCreate(rows, {
       updateOnDuplicate: [
         'text',
+        'questionOrder',
         'questionTypeId',
+        'timeLimitId',
         'imgURL',
         'imgAltText',
         'imgCredit',
-        'timeLimitId',
-        'questionOrder',
       ],
       include: [
         {
           model: Answer,
-          updateOnDuplicate: [
-            'questionTypeId',
-            'text',
-            'imgURL',
-            'imgAltText',
-            'imgCredit',
-            'timeLimitId',
-            'questionOrder',
-          ],
+          updateOnDuplicate: ['text', 'answerOrder', 'isCorrect'],
         },
       ],
     });
@@ -404,7 +416,6 @@ class Query {
         raw: true,
       })
     ).map(q => q.id);
-    // console.log('dq-questionsToDelete :>> ', questionsToDelete);
     await this.deleteQuizQuestions(questionsToDelete);
 
     await Quiz.destroy({
@@ -436,7 +447,6 @@ class Query {
     if (questionsToDelete == null) {
       throw new Error('no questionList is given');
     }
-    // console.log('dqa-questionsToDelete :>> ', questionsToDelete);
     await Answer.destroy({
       where: {
         questionId: {
@@ -450,52 +460,59 @@ class Query {
     if (theQuestionId == null) {
       throw new Error('no questionId is given');
     }
-    // const theQuestion = await Question.findByPk(theQuestionId);
-    const rows = [];
-    for (const answer of await Answer.findAll({
+    return await Answer.findAll({
       where: { questionId: theQuestionId },
       order: random ? sequelize.random() : '',
-    })) {
-      rows.push(answer.toJSON());
-    }
-    return rows;
+      raw: true,
+    });
   }
 
   static async getQuestion(theQuestionId) {
-    const theQuestion = await Question.findOne({ where: { id: theQuestionId } });
-    return theQuestion.toJSON();
+    return await Question.findOne({ where: { id: theQuestionId }, raw: true });
   }
 
   static async getQuestionWithAnswers(theQuestionId) {
     if (theQuestionId == null) {
       throw new Error('no questionId is given');
     }
-    const theQuestion = (await Question.findByPk(theQuestionId)).toJSON();
+    const theQuestion = await Question.findByPk(theQuestionId, { raw: true });
     theQuestion.Answers = await this.getAnswersOfQuestion(theQuestionId);
     return theQuestion;
   }
 
-  static async getAnswersOfQuestionByQuizIdAndQNumber(theQuizId, qNumber) {
+  static async getAnswersOfQuestionByQuizIdAndQNumber(theQuizId, qNumber, random = true) {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
-    const theQuestion = await Question.findOne({ where: { quizId: theQuizId, questionOrder: qNumber } });
+    const theQuestion = await Question.findOne({
+      where: { quizId: theQuizId, questionOrder: qNumber },
+      raw: true,
+    });
     const count = await Answer.count({ where: { questionId: theQuestion.id } });
     const rows = [];
     for (const answer of await Answer.findAll({
       where: { questionId: theQuestion.id },
-      order: sequelize.random(),
+      order: random ? sequelize.random() : '',
+      raw: true,
     })) {
-      rows.push(answer.toJSON());
+      rows.push(answer);
     }
     return { count, rows };
   }
 
   static async isAnswerCorrect(questionId, answerId) {
-    if (questionId == null && theAnswerId == null) {
+    if (questionId == null && answerId == null) {
       throw new Error('no questionId and AnswerId is given');
     }
     const result = await Answer.findOne({ where: { questionId, id: answerId } });
+    return result.isCorrect;
+  }
+
+  static async isAnswerCorrectByAnsNum(questionId, answerNum) {
+    if (questionId == null && answerId == null) {
+      throw new Error('no questionId and AnswerId is given');
+    }
+    const result = await Answer.findOne({ where: { questionId, answerOrder: answerNum } });
     return result.isCorrect;
   }
 

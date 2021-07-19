@@ -10,10 +10,13 @@ module.exports = (sequelize, DataTypes) => {
         unique: 'DataTypes.UUIDV4',
       },
       name: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(40),
       },
       audioURL: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(2000),
+      },
+      audioCredit: {
+        type: DataTypes.STRING(1000),
       },
     },
     {

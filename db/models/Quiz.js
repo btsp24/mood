@@ -23,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       isVisible: {
         type: DataTypes.BOOLEAN,
       },
+      isDraft: {
+        type: DataTypes.BOOLEAN,
+      },
+      lobbyMusicId: {
+        type: DataTypes.INTEGER,
+      },
       imgURL: {
         type: DataTypes.STRING(2000),
       },
@@ -31,16 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgCredit: {
         type: DataTypes.STRING(1000),
-      },
-      lobbyVideo: {
-        type: DataTypes.STRING,
-      },
-      lobbyMusicId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      isDraft: {
-        type: DataTypes.BOOLEAN,
       },
     },
     {

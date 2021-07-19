@@ -5,17 +5,20 @@ module.exports = (sequelize, DataTypes) => {
     {
       questionId: {
         type: DataTypes.UUID,
-        primaryKey: true,
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
+        defaultValue: DataTypes.UUIDV4,
       },
       text: {
         type: DataTypes.STRING(75),
+      },
+      answerOrder: {
+        type: DataTypes.INTEGER,
       },
       isCorrect: {
         type: DataTypes.BOOLEAN,
@@ -33,14 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       target: 'id',
     });
 
-    Answer.hasMany(models.PlayerAnswer, {
-      foreignKey: 'questionId',
-      target: 'questionId',
-    });
-
-    Answer.hasMany(models.PlayerAnswer, {
+    Answer.belongsToMany(models.Player, {
       foreignKey: 'answerId',
       target: 'id',
+      through: 'PlayerAnswer',
     });
   };
 

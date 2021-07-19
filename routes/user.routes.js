@@ -131,22 +131,35 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+router.get('/clone/:quizId', ensureAuthenticated, async (req, res) => {
+  const oldQuizId = req.params.quizId;
+  const userId = req.user.id;
+  const datasetOld = await Query.getQuizDataset(oldQuizId);
+  const newQuizId = await Query.cloneQuiz(datasetOld, userId);
+  req.params.quizId = newQuizId;
+  res.redirect(307, '/edit/:quizId');
+});
+
+// edit route
 router.get('/edit/:quizId', ensureAuthenticated, async (req, res) => {
   let dataset;
-  // sample quizId from dummy data
   const quizId = req.params.quizId;
   const userId = req.user.id;
+  console.log('quizId :>> ', quizId);
+  console.log('userId :>> ', userId);
+  console.log('isQuizEditable :>> ', await Query.isQuizEditable(quizId, userId));
   if (!!quizId && uuidValidate(quizId) && (await Query.isQuizEditable(quizId, userId))) {
     console.log('quizId  :>> ', quizId);
     dataset = await Query.getQuizDataset(quizId);
   }
-  console.log('dataset :>> ', dataset);
+  console.log('dataset#142 :>> ', dataset);
   // console.log('data :>> ', data);
   res.render('user/edit', {
     title: 'quiz editor page',
     dataset,
   });
 });
+
 /* home page  for teacher */
 router.get('/home', ensureAuthenticated, async (req, res) => {
   res.app.locals.user = req.user;
