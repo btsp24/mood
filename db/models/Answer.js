@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'answerId',
       target: 'id',
       through: 'PlayerAnswer',
+      constraints: false,
     });
   };
 

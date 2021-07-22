@@ -34,10 +34,16 @@ module.exports = (sequelize, DataTypes) => {
       target: 'id',
     });
 
+    Player.belongsToMany(models.Question, {
+      foreignKey: 'playerId',
+      target: 'id',
+      through: 'PlayerQuestion',
+    });
     Player.belongsToMany(models.Answer, {
       foreignKey: 'playerId',
       target: 'id',
       through: 'PlayerAnswer',
+      constraints: false,
     });
   };
 

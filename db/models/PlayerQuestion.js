@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const PlayerAnswer = sequelize.define(
-    'PlayerAnswer',
+  const PlayerQuestion = sequelize.define(
+    'PlayerQuestion',
     {
       playerId: {
         type: DataTypes.UUID,
@@ -13,10 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      answerId: {
-        type: DataTypes.UUID,
-        allowNull: true,
-        defaultValue: DataTypes.UUIDV4,
+      questionScore: {
+        type: DataTypes.INTEGER,
       },
     },
     {
@@ -25,20 +23,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  PlayerAnswer.associate = function (models) {
-    /* just for backup
-    PlayerAnswer.belongsTo(models.PlayerQuestion, {
+  PlayerQuestion.associate = function (models) {
+    /* empty */
+    /*     PlayerQuestion.hasMany(models.PlayerAnswer, {
       foreignKey: 'questionId',
       target: 'questionId',
-      constraints: false,
     });
-    PlayerAnswer.belongsTo(models.PlayerQuestion, {
+
+    PlayerQuestion.hasMany(models.PlayerAnswer, {
       foreignKey: 'playerId',
       target: 'playerId',
-      constraints: false,
-    }); 
-    */
+    }); */
   };
 
-  return PlayerAnswer;
+  return PlayerQuestion;
 };
