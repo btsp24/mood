@@ -126,7 +126,7 @@ io.on('connection', socket => {
           // new pin for the given game
           const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
           games.addGame(gamePin, socket.conn.id, false, {
-            gameId: await uuidv4(),
+            gameId: uuidv4(),
             quizId: hjData,
             questionLive: false,
             questionCount: questions.count,
@@ -308,7 +308,7 @@ io.on('connection', socket => {
 
     await Query.savePlayerQuestionScore(
       socket.conn.id,
-      gameId,
+      game.values.gameId,
       questionId,
       player.values.answerId,
       player.values.questionScore

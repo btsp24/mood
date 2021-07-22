@@ -532,6 +532,7 @@ class Query {
     return !!result;
   }
 
+  // needs refactoring
   static async savePlayerQuestionScore(playerId, gameId, questionId, answerId, questionScore) {
     try {
       await PlayerAnswer.create({
