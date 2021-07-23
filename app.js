@@ -153,20 +153,24 @@ io.on('connection', socket => {
   // host connects from the game view
   socket.on('host-join-game', async hjgData => {
     console.log('host-join-game with data#166 :>>', hjgData);
-    const oldHostId = hjgData;
+    const oldHostId = hjgData.id;
     const game = games.getGame(oldHostId);
+    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLL",games.getGame(oldHostId),oldHostId,hjgData)
     if (game) {
       game.hostId = socket.conn.id;
       const playerList = players.getPlayers(oldHostId);
       console.log('playerList#172 :>> ', playerList);
-      for (const player of players) {
+      for (const player of players.players) {
         // update player hostId in playerslist with new socket.conn.id
         if (player.hostId === oldHostId) {
+          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa",player.hostId ,oldHostId)
           player.hostId = socket.conn.id;
         }
       }
+      console.log("ŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞŞ",   game.values.quizId.id,
+      game.values.questionNumber)
       const currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber(
-        game.values.quizId,
+        game.values.quizId.id,
         game.values.questionNumber
       );
       //console.log('currentQuestion#180 :>> ', currentQuestion);
@@ -398,6 +402,7 @@ console.log("---------------------",pjData)
 
   // when host starts the game
   socket.on('startGame', () => {
+    console.log("oyun basladı!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     const game = games.getGame(socket.conn.id);
     game.gameLive = true;
     socket.emit('gameStarted', game.hostId);
