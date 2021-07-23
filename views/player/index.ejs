@@ -6,6 +6,10 @@
         <label id="label">Game Pin</label>
         <input id="pin" type="number" name="pin" autofocus />
       </div>
+      <div class="form-field">
+        <label id="label">Nick Name</label>
+        <input id="name" type="text" name="name"  />
+      </div>
       <br />
       <div class="d-grid gap-2 form-field">
         <button id="submit" class="btn btn-lg btn-primary" type="submit">Enter</button>
@@ -13,16 +17,20 @@
     </form>
     <%- include('../partials/footer') %>
   </body>
-  <script>
+  <script>      const socket = io({ transports: ['websocket'], upgrade: false });
+
 $( "form" ).submit(function( event ) {
-  const formData = new FormData(event.target);
-  const data = new URLSearchParams(formData.entries());
+  // const formData = new FormData(event.target);
+  // const data = new URLSearchParams(formData.entries());
+const pin = $("#pin").val()
+const name = $("#name").val()
   event.preventDefault();
-  if ( data ) {
-    alert(data);
-    //$.get('/join',data) ;
-    socket.emit('player-join', {pin: formData.pin});
-    window.location.href = "/join"
+ 
+  if ( pin ) {
+    
+      
+    socket.emit('player-join', {pin});
+    window.location.href = "/ingame?name="+name+"&pin="+pin
     return false;  }
 
 });

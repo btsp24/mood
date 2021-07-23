@@ -104,27 +104,28 @@ const players = new Players();
 const cookie = require('cookie');
 
 io.on('connection', socket => {
-  console.log('socket@connection#107 :>> ', socket);
+  //console.log('socket@connection#107 :>> ', socket);
   const cookies = cookie.parse(socket.request.headers.cookie || '');
   // console.log('client connected socket.conn.id :>>', cookies);
 
-  console.log('socket.conn.id :>> ', socket.conn.id);
+  //console.log('socket.conn.id :>> ', socket.conn.id);
   if (!app.locals.user) {
     socket.emit('redirect', '/login');
   }
 
   // host connects for the first time
   socket.on('host-join', async hjData => {
-    console.log('host-join with data#130 :>>', hjData);
+    //console.log('host-join with data#130 :>>', hjData);
     try {
       if (!hjData) {
         socket.emit('noGameFound');
       } else {
         const questions = await Query.getQuestionsOfQuiz(hjData);
-        console.log('questions :>> ', questions);
-        if (!questions) {
+        //console.log('questions :>> ', questions);
+        if (questions) {
           // new pin for the given game
-          const gamePin = Math.floor(Math.random() * 900_000) + 100_000;
+          const gamePin = Math.floor(Math.random() * 90000) + 10000;
+          //console.log("000000000000000000000",gamePin)
           games.addGame(gamePin, socket.conn.id, false, {
             gameId: await uuidv4(),
             quizId: hjData,
@@ -134,7 +135,7 @@ io.on('connection', socket => {
             playersAnswered: 0,
           });
           const game = games.getGame(socket.conn.id);
-          console.log('recently added game#149 :>> ', game);
+          //console.log('recently added game#149 :>> ', game);
           // host joins a pin named socket room
           socket.join(game.pin);
           socket.emit('showGamePin', {
@@ -168,7 +169,7 @@ io.on('connection', socket => {
         game.values.quizId,
         game.values.questionNumber
       );
-      console.log('currentQuestion#180 :>> ', currentQuestion);
+      //console.log('currentQuestion#180 :>> ', currentQuestion);
       /* GAMEQUESTION!S */
       socket.emit('gameQuestion', {
         ...currentQuestion,
@@ -187,19 +188,27 @@ io.on('connection', socket => {
   // player first time connect
   socket.on('player-join', pjData => {
     let gameFound = false;
-
-    for (const game of games) {
-      if (pjData.pin === game.pin) {
+console.log("---------------------",pjData)
+    for (const game of games.games) {
+      
+      if (pjData.pin === game.pin.toString()) {
+        
         const hostId = game.hostId;
+        
         players.addPlayer(hostId, socket.conn.id, pjData.name, {
           questionScore: 0,
           correctAnswerCount: 0,
           answerId: null,
           gameScore: 0,
         });
+        
         socket.join(pjData.pin);
         const playersInGame = players.getPlayers(hostId);
-        io.to(pjData.pin).emit('updatePlayerLobby', playersInGame);
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxx",playersInGame)  
+        if (pjData.pin) {
+          io.emit('updatePlayerLobby', playersInGame);
+        }
+        //io.to(pjData.pin).emit('updatePlayerLobby', playersInGame);
         gameFound = true;
       }
     }

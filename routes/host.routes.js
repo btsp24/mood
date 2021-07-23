@@ -13,6 +13,7 @@ katılanlar gösteriliyor
 */
 
 router.get('/lobby/:quizId', ensureAuthenticated, async function (req, res, next) {
+
   const quizId = req.params.quizId;
   const userId = req.user.id;
   if (!!quizId && uuidValidate(quizId) && (await Query.quizExists(quizId))) {

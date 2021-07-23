@@ -16,11 +16,13 @@
       const socket = io({ transports: ['websocket'], upgrade: false });
       //var params = jQuery.deparam(window.location.search);
       const urlParams = new URLSearchParams(window.location.search);
-
+      
+      // const params = {
+      //   id: urlParams.get('quizId'),
+      // };
       const params = {
-        id: urlParams.get('quizId'),
+        id: window.location.href.split("/lobby/")[1]
       };
-
       //When host connects to server
       socket.on('connect', function () {
         document.getElementById('players').value = '';
@@ -37,7 +39,7 @@
 
       //Adds player's name to screen and updates player count
       socket.on('updatePlayerLobby', function (data) {
-        console.log(data);
+        console.log("data!!!!!!!!!!!!",data);
         document.getElementById('players').value = '';
 
         for (var i = 0; i < data.length; i++) {

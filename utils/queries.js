@@ -70,9 +70,10 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      const rec = quiz.toJSON();
-      rec.editEnabled = true;
-      rows.push(rec);
+      console.log(quiz)
+      //const rec = quiz.toJSON();
+      quiz.editEnabled = true;
+      rows.push(quiz);
     }
     return { count, rows };
   }
@@ -121,9 +122,9 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      const rec = quiz.toJSON();
-      rec.editEnabled = true;
-      rows.push(rec);
+      //const rec = quiz.toJSON();
+      quiz.editEnabled = true;
+      rows.push(quiz);
     }
     return { count, rows };
   }
@@ -184,9 +185,9 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      const rec = quiz.toJSON();
-      rec.editEnabled = false;
-      rows.push(rec);
+      //const rec = quiz.toJSON();
+      quiz.editEnabled = false;
+      rows.push(quiz);
     }
     return { count, rows };
   }
@@ -195,14 +196,15 @@ class Query {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
-    const theQuiz = await Quiz.findByPk(theQuizId);
+ 
+    const theQuiz = await Quiz.findByPk(theQuizId.id);
     const count = await theQuiz.countQuestions();
     const rows = [];
     if (!theQuiz) {
       return null;
     }
     for (const question of await theQuiz.getQuestions({
-      where: { quizId: theQuizId },
+      where: { quizId: theQuizId.id },
       attributes: [
         'quizId',
         'id',
