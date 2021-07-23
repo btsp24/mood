@@ -49,9 +49,9 @@
             <a name="" id=""  class="btn btn-sm btn-info ms-2 px-3" href="/clone/<%= data.id %>"  role="button">CLONE</a>
           <% } else { %> <a name="" id=""  class="btn btn-sm btn-primary ms-2 px-3" href="/edit/<%= data.id %>"  role="button">EDIT</a> <% }  %>  
           <% if (data.isDraft) { %>
-          <a name="" id="" class="btn btn-sm btn-success ms-2 px-3 disabled" href="/lobby?<%= data.id %> " role="button">PLAY</a>
+          <a name="" id="" class="btn btn-sm btn-success ms-2 px-3 disabled" href="/lobby/<%= data.id %> " role="button">PLAY</a>
           <% } else { %>
-            <a name="" id="" class="btn btn-sm btn-success ms-2 px-3" href="/lobby?<%= data.id %> " role="button">PLAY</a>
+            <a name="" id="" class="btn btn-sm btn-success ms-2 px-3" href="/lobby/<%= data.id %> " role="button">PLAY</a>
           <% }  %>  
         </div>
       </div>

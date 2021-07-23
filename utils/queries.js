@@ -11,7 +11,9 @@ const {
   QuestionType,
   TimeLimit,
   Player,
+  PlayerQuestion,
   PlayerAnswer,
+  Game,
   sequelize,
 } = require('../db/models');
 const { Op } = require('sequelize');
@@ -26,14 +28,14 @@ class Query {
     }
   }
 
-  static async getQuizzesOfUser(theUserId) {
-    if (theUserId == null) {
+  static async getQuizzesOfUser(composerId) {
+    if (composerId == null) {
       throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(theUserId);
+    const theUser = await User.findByPk(composerId);
     const count = await theUser.countQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: false,
       },
     });
@@ -43,7 +45,7 @@ class Query {
     }
     for (const quiz of await theUser.getQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: false,
       },
       attributes: [
@@ -70,21 +72,21 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      const rec = quiz.toJSON();
-      rec.editEnabled = true;
-      rows.push(rec);
+      // const rec = quiz.toJSON();
+      quiz.editEnabled = true;
+      rows.push(quiz);
     }
     return { count, rows };
   }
 
-  static async getDraftQuizzesOfUser(theUserId) {
-    if (theUserId == null) {
+  static async getDraftQuizzesOfUser(composerId) {
+    if (composerId == null) {
       throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(theUserId);
+    const theUser = await User.findByPk(composerId);
     const count = await theUser.countQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: true,
       },
     });
@@ -94,7 +96,7 @@ class Query {
     }
     for (const quiz of await theUser.getQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: true,
       },
       attributes: [
@@ -121,9 +123,9 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      const rec = quiz.toJSON();
-      rec.editEnabled = true;
-      rows.push(rec);
+      // const rec = quiz.toJSON();
+      quiz.editEnabled = true;
+      rows.push(quiz);
     }
     return { count, rows };
   }
@@ -184,25 +186,25 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      const rec = quiz.toJSON();
-      rec.editEnabled = false;
-      rows.push(rec);
+      // const rec = quiz.toJSON();
+      quiz.editEnabled = false;
+      rows.push(quiz);
     }
     return { count, rows };
   }
 
-  static async getQuestionsOfQuiz(theQuizId) {
-    if (theQuizId == null) {
+  static async getQuestionsOfQuiz(quizId) {
+    if (quizId == null) {
       throw new Error('no quizId is given');
     }
-    const theQuiz = await Quiz.findByPk(theQuizId);
+    const theQuiz = await Quiz.findByPk(quizId);
     const count = await theQuiz.countQuestions();
     const rows = [];
     if (!theQuiz) {
       return null;
     }
     for (const question of await theQuiz.getQuestions({
-      where: { quizId: theQuizId },
+      where: { quizId },
       attributes: [
         'quizId',
         'id',
@@ -252,35 +254,35 @@ class Query {
     return { count, rows };
   }
 
-  static async getQuestionsOfQuizWithAnswers(theQuizId, random = false) {
-    const { count, rows } = await this.getQuestionsOfQuiz(theQuizId);
+  static async getQuestionsOfQuizWithAnswers(quizId, random = false) {
+    const { count, rows } = await this.getQuestionsOfQuiz(quizId);
     for (const question of rows) {
       question.Answers = await this.getAnswersOfQuestion(question.id, random);
     }
     return { count, rows };
   }
 
-  static async getQuestionOfQuizByQNumber(theQuizId, qNumber) {
-    return Question.findOne({ where: { quizId: theQuizId, questionOrder: qNumber }, raw: true });
+  static async getQuestionOfQuizByQNumber(quizId, questionOrder) {
+    return Question.findOne({ where: { quizId, questionOrder }, raw: true });
   }
 
-  static async getQuestionOfQuizByQNumberWithAnswers(theQuizId, qNumber, random = false) {
-    const question = await this.getQuestionOfQuizByQNumber(theQuizId, qNumber);
+  static async getQuestionOfQuizByQNumberWithAnswers(quizId, questionOrder, random = false) {
+    const question = await this.getQuestionOfQuizByQNumber(quizId, questionOrder);
     question.Answers = await this.getAnswersOfQuestion(question.id, random);
     return question;
   }
 
-  static async getQuizDataset(theQuizId) {
-    const details = await this.getQuizDetails(theQuizId);
-    const { count, rows } = await this.getQuestionsOfQuizWithAnswers(theQuizId);
+  static async getQuizDataset(quizId) {
+    const details = await this.getQuizDetails(quizId);
+    const { count, rows } = await this.getQuestionsOfQuizWithAnswers(quizId);
     return { details, count, rows };
   }
 
-  static async getQuizDetails(theQuizId) {
-    if (theQuizId == null) {
+  static async getQuizDetails(quizId) {
+    if (quizId == null) {
       throw new Error('no quizId is given');
     }
-    return await Quiz.findByPk(theQuizId, { raw: true }); /* .toJSON(); */
+    return await Quiz.findByPk(quizId, { raw: true }); /* .toJSON(); */
   }
 
   static async cloneQuizDataset(dataset, newComposerId) {
@@ -307,8 +309,8 @@ class Query {
     return newQuiz.id;
   }
 
-  static async cloneQuizQuestions(rows, theQuizId) {
-    if (theQuizId == null) {
+  static async cloneQuizQuestions(rows, quizId) {
+    if (quizId == null) {
       throw new Error('no quizId is given');
     }
     if (rows == null) {
@@ -317,7 +319,7 @@ class Query {
     for (const question of rows) {
       const newQuestionId = uuidv4();
       question.id = newQuestionId;
-      question.quizId = theQuizId;
+      question.quizId = quizId;
       question.updatedAt = null;
       for (const answer of question.Answers) {
         const newAnswerId = uuidv4();
@@ -335,29 +337,29 @@ class Query {
     });
   }
 
-  static async updateQuizDataset(dataset, theQuizId) {
-    if (theQuizId == null) {
+  static async updateQuizDataset(dataset, quizId) {
+    if (quizId == null) {
       throw new Error('no quizId is given');
     }
     if (dataset == null) {
       throw new Error('no dataset is given');
     }
-    await this.updateQuizDetails(dataset.details, theQuizId);
-    await this.updateQuizQuestions(dataset.rows, theQuizId);
+    await this.updateQuizDetails(dataset.details, quizId);
+    await this.updateQuizQuestions(dataset.rows, quizId);
   }
 
-  static async updateQuizDetails(details, theQuizId) {
-    if (theQuizId == null) {
+  static async updateQuizDetails(details, quizId) {
+    if (quizId == null) {
       throw new Error('no quizId is given');
     }
     if (details == null) {
       throw new Error('no detail data is given');
     }
-    await Quiz.update(details, { where: { id: theQuizId } });
+    await Quiz.update(details, { where: { id: quizId } });
   }
 
-  static async updateQuizQuestions(rows, theQuizId) {
-    if (theQuizId == null) {
+  static async updateQuizQuestions(rows, quizId) {
+    if (quizId == null) {
       throw new Error('no quizId is given');
     }
     if (rows == null) {
@@ -516,31 +518,38 @@ class Query {
     return result.isCorrect;
   }
 
-  static async isQuizEditable(theQuizId, theUserId) {
+  static async isQuizEditable(quizId, composerId) {
     if (theQuizId == null) {
       throw new Error('no AnswerId is given');
     }
-    const result = await Quiz.findOne({ where: { id: theQuizId, composerId: theUserId } });
+    const result = await Quiz.findOne({ where: { id: quizId, composerId } });
     return !!result;
   }
 
-  static async quizExists(theQuizId) {
-    if (theQuizId == null) {
+  static async quizExists(quizId) {
+    if (quizId == null) {
       throw new Error('no quizID is given');
     }
-    const result = await Quiz.findOne({ where: { id: theQuizId } });
+    const result = await Quiz.findOne({ where: { id: quizId } });
     return !!result;
   }
 
   // needs refactoring
-  static async savePlayerQuestionScore(playerId, gameId, questionId, answerId, questionScore) {
+  static async savePlayerQuestionScore(playerId, questionId, answerId, questionScore) {
     try {
-      await PlayerAnswer.create({
-        playerId,
-        gameId,
-        questionId,
-        answerId,
-        questionScore,
+      await PlayerQuestion.findOrCreate({
+        where: {
+          playerId,
+          questionId,
+        },
+        defaults: { playerId, questionId, questionScore: questionScore },
+      });
+      await PlayerAnswer.findOrCreate({
+        where: {
+          playerId,
+          questionId,
+        },
+        defaults: { playerId, questionId, answerId },
       });
       return true;
     } catch (error) {
@@ -549,18 +558,40 @@ class Query {
     }
   }
 
-  static async savePlayerGameScore(playerId, gameId, questionId, gameScore) {
+  static async savePlayerGameScore(playerId, gameId, gameScore) {
     try {
-      await Player.create({
-        playerId,
-        gameId,
-        questionId,
-        gameScore,
+      await Player.findOrCreate({
+        where: { playerId, gameId },
+        defaults: {
+          playerId,
+          gameId,
+          gameScore,
+        },
       });
       return true;
     } catch (error) {
       console.log('error :>> ', error);
       return false;
+    }
+  }
+
+  static async getPlayersQuestionScores(gameId, qNumber) {
+    if (gameId == null) {
+      throw new Error('no gameId is given');
+    }
+    if (qNumber == null) {
+      throw new Error('no question number is given');
+    }
+    try {
+      const quizId = await Game.findOne({ where: { gameId }, attributes: ['quizId'], raw: true });
+      const playerListInGame = await Player.findAll({ where: { gameId }, attributes: ['id'], raw: true });
+      const questionId = await Question.findOne({ where: { quizId, questionOrder: qNumber } });
+      const playerQuestionScores = await PlayerQuestion.findAll({
+        where: { questionId, playerId: { [Op.in]: playerListInGame } },
+      });
+      console.log('playerQuestionScores :>> ', playerQuestionScores);
+    } catch (error) {
+      console.log('error :>> ', error);
     }
   }
 }
