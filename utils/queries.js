@@ -130,25 +130,25 @@ class Query {
     return { count, rows };
   }
 
-  static async getQuizzesOfOtherUsers(theUserId) {
-    if (theUserId == null) {
+  static async getQuizzesOfOtherUsers(composerId) {
+    if (composerId == null) {
       throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(theUserId);
-    const count = await theUser.countQuizzes({
+    const theUser = await User.findByPk(composerId);
+    const count = await Quiz.count({
       where: {
         composerId: {
-          [Op.ne]: theUserId,
+          [Op.ne]: composerId,
         },
         isDraft: false,
         isVisible: true,
       },
     });
     const rows = [];
-    for (const quiz of await theUser.getQuizzes({
+    for (const quiz of await Quiz.findAll({
       where: {
         composerId: {
-          [Op.ne]: theUserId,
+          [Op.ne]: composerId,
         },
         isDraft: false,
         isVisible: true,
@@ -174,20 +174,14 @@ class Query {
           attributes: [],
         },
       ],
-      group: [
-        'Quiz.id',
-        'Quiz.title',
-        'Quiz.imgURL',
-        'Quiz.imgAltText',
-        'Quiz.updatedAt',
-        'composerId',
-        'isDraft',
-      ],
+      group: ['Quiz.id', 'Quiz.title', 'Quiz.imgURL', 'Quiz.updatedAt', 'composerId', 'isDraft'],
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
       // const rec = quiz.toJSON();
+      // rec.editEnabled = false;
       quiz.editEnabled = false;
+      // rows.push(rec);
       rows.push(quiz);
     }
     return { count, rows };
@@ -486,20 +480,21 @@ class Query {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
-    const theQuestion = await Question.findOne({
+    const question = await Question.findOne({
       where: { quizId: theQuizId, questionOrder: qNumber },
       raw: true,
     });
-    const count = await Answer.count({ where: { questionId: theQuestion.id } });
+    const count = question.questionTypeId == 1 ? 2 : 4;
+    // const count = await Answer.count({ where: { questionId: question.id } });
     const rows = [];
     for (const answer of await Answer.findAll({
-      where: { questionId: theQuestion.id },
+      where: { questionId: question.id },
       order: random ? sequelize.random() : '',
       raw: true,
     })) {
       rows.push(answer);
     }
-    return { count, rows };
+    return { question, count, rows };
   }
 
   static async isAnswerCorrect(questionId, answerId) {
