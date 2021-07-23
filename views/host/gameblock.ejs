@@ -179,11 +179,20 @@ socket.on('connect', function() {
 
 socket.on('gameQuestion', function(data){
     console.log("xx",data)
-    document.getElementById('question').innerHTML = data.rows[0].text;
-    document.getElementById('answer1').innerHTML = data.rows[0].text;
+    document.getElementById('question').innerHTML = data.question.text;
+    if(data.count==2){
+        document.getElementById('answer1').innerHTML = data.rows[0].text;
+    document.getElementById('answer2').innerHTML = data.rows[1].text;
+    document.getElementById('answer3').innerHTML = "null"
+    document.getElementById('answer4').innerHTML = "null"
+    }
+    if(data.count==4){
+        document.getElementById('answer1').innerHTML = data.rows[0].text;
     document.getElementById('answer2').innerHTML = data.rows[1].text;
     document.getElementById('answer3').innerHTML = data.rows[2].text;
     document.getElementById('answer4').innerHTML = data.rows[3].text;
+    }
+
     var correctAnswer = data.correct;
     document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
     updateTimer();
@@ -194,6 +203,7 @@ socket.on('updatePlayersAnswered', function(data){
 });
 
 socket.on('questionOver', function(playerData, correct){
+    console.log(playerData,correct)
     clearInterval(timer);
     var answer1 = 0;
     var answer2 = 0;

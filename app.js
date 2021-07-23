@@ -181,7 +181,7 @@ io.on('connection', socket => {
       });
 
       if (game.pin) {
-        io.emit('gameStartedPlayer');
+        io.emit('gameStartedPlayer',socket.conn.id);
       }
       game.values.questionLive = true;
     } else {
@@ -270,16 +270,19 @@ console.log("---------------------",pjData)
 
   // set player data from given answer
   socket.on('playerAnswer', async givenAnswer => {
+    console.log("PPPPPPPPPPPPPPP",socket.conn.id)
     const player = players.getPlayer(socket.conn.id);
+    console.log("üüüüüüüüüüüüüüüüüüü",player)
     const hostId = player.hostId;
     console.log('player#270 :>> ', player);
     console.log('givenAnswer#271 :>> ', givenAnswer);
     const theGame = games.getGame(hostId);
+  console.log("üüüüüüüüüüüüüüüüüüü",theGame,hostId,player)
     if (theGame.values.questionLive) {
       player.values.answerId = givenAnswer;
       theGame.values.playersAnswered += 1;
       const answersOfQuestion = await Query.getAnswersOfQuestion(
-        theGame.values.quizId,
+        theGame.values.quizId.id,
         theGame.values.questionNumber
       );
       const correctAnswers = answersOfQuestion.filter(a => {
@@ -295,7 +298,7 @@ console.log("---------------------",pjData)
       });
       if (theGame.values.playersAnswered === players.count()) {
         theGame.values.questionLive = false;
-        const playerData = players.getPlayers(theGame.hostId);
+        const playerData = players.getPlayers(theGame.hostId.id);
         io.to(theGame.pin).emit('questionOver', playerData, correctAnswers);
       } else {
         console.log('updatePlayersAnswered#296 :>> ', {
@@ -311,7 +314,7 @@ console.log("---------------------",pjData)
   });
 
   socket.on('getScore', async () => {
-    const player = players.getPlayer(socket.conn.id);
+    const player = players.getPlayers(socket.conn.id);
     player.values.quizScore += player.values.questionScore;
     const hostId = player.hostId;
     const game = games.getGame(hostId);
@@ -337,23 +340,30 @@ console.log("---------------------",pjData)
   });
 
   socket.on('timeUp', async () => {
+    console.log("------TIMEUP-------")
     const theGame = games.getGame(socket.conn.id);
     theGame.values.questionLive = false;
-    const playerList = players.getPlayers(theGame.hostId);
+    console.log("--++++--+++",  theGame.values.quizId,
+    theGame.values.questionNumber)
+    const playerList = players.getPlayers(theGame.hostId.id);
     const answersOfQuestion = await Query.getAnswersOfQuestion(
-      theGame.values.quizId,
+      theGame.values.quizId.id,
       theGame.values.questionNumber
     );
     const correctAnswers = answersOfQuestion.filter(a => {
       return a.isCorrect === true;
     });
-    const playerData = players.getPlayers(theGame.hostId);
+    const playerData = players.getPlayers(theGame.hostId.id);
     io.to(theGame.pin).emit('questionOver', playerData, correctAnswers);
+    if (theGame.pin) {
+  
+      io.emit('questionOver', playerData, correctAnswers);
+    }
   });
 
   socket.on('nextQuestion', async () => {
     const playerList = players.getPlayers(socket.conn.id);
-    for (const player of players) {
+    for (const player of players.players) {
       if (player.hostId === socket.conn.id) {
         player.values.answerId = null;
       }
@@ -364,7 +374,7 @@ console.log("---------------------",pjData)
     theGame.values.questionNumber += 1;
     if (theGame.values.questionNumber <= theGame.values.questionCount) {
       const currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber(
-        theGame.values.quizId,
+        theGame.values.quizId.id,
         theGame.values.questionNumber
       );
       console.log('currentQuestion#354 :>> ', currentQuestion);
@@ -373,7 +383,7 @@ console.log("---------------------",pjData)
         playersInGame: players.count(),
       });
     } else {
-      const playerList = players.getPlayers(theGame.hostId);
+      const playerList = players.getPlayers(theGame.hostId.id);
       playerList.sort((a, b) => {
         // sort descending
         return -(a.values.gameScore - b.values.gameScore);
@@ -381,6 +391,7 @@ console.log("---------------------",pjData)
       const topFivePlayers = [];
       for (let i = 0; i < 5; i++) {
         const player = playerList[i];
+        console.log("**************",player, playerList[i],players.getPlayers(theGame.hostId.id))
         const aPlayerRecord = {
           pos: i + 1,
           name: player.name,
@@ -392,10 +403,10 @@ console.log("---------------------",pjData)
         topFivePlayers.push(aPlayerRecord);
       }
       // check the counter implementation
-      io.to(game.pin).emit('GameOver', topFivePlayers);
+      io.to(theGame.pin).emit('GameOver', topFivePlayers);
     }
-    if (game.pin) {
-      io.to(game.pin).emit('nextQuestionPlayer');
+    if (theGame.pin) {
+      io.emit('nextQuestionPlayer');
       // io.emit('nextQuestionPlayer');
     }
   });
