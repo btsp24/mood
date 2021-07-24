@@ -157,7 +157,7 @@
     
       socket.on("playerGameData", function (data) {
         for (var i = 0; i < data.length; i++) {
-          if (data[i].playerId == socket.id) {
+          if (data[i].playerId == socket.io.engine.id) {
             document.getElementById("nameText").innerHTML = "Name: " + data[i].name;
             document.getElementById("scoreText").innerHTML =
               "Score: " + data[i].gameData.score;
