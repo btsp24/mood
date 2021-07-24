@@ -185,30 +185,40 @@
           <section class="row px-3 py-3">
             <div class="col-3 d-flex flex-column">
               <label for="Music" class="selectlabel" style="font-weight: bold">Music</label>
-              <select class="form-select border-primary" data-tag="lobbyMusicId" style="font-weight: bold">
-                <option value="1" id="music1">Music-1</option>
-                <option value="1" id="music2">Music-2</option>
-                <option value="1" id="music3">Music-3</option>
-                <option value="1" id="music4">Music-4</option>
-                <option value="1" id="music4">Music-5</option>
-                <option value="1" id="music4">Music-6</option>
-                <option value="1" id="music4">Music-7</option>
-                <option value="1" id="music4">Music-8</option>
+              <select id="lobbyMusicId" class="form-select border-primary" data-tag="lobbyMusicId" style="font-weight: bold">
+                <option value="1" <%= dataset.details.lobbyMusicId == 1 ? "selected": "" %> id="music1">Music-1</option>
+                <option value="2" <%= dataset.details.lobbyMusicId == 2 ? "selected": "" %> id="music2">Music-2</option>
+                <option value="3" <%= dataset.details.lobbyMusicId == 3 ? "selected": "" %> id="music3">Music-3</option>
+                <option value="4" <%= dataset.details.lobbyMusicId == 4 ? "selected": "" %> id="music4">Music-4</option>
+                <option value="5" <%= dataset.details.lobbyMusicId == 5 ? "selected": "" %> id="music5">Music-5</option>
+                <option value="6" <%= dataset.details.lobbyMusicId == 6 ? "selected": "" %> id="music6">Music-6</option>
+                <option value="7" <%= dataset.details.lobbyMusicId == 7 ? "selected": "" %> id="music7">Music-7</option>
+                <option value="8" <%= dataset.details.lobbyMusicId == 8 ? "selected": "" %> id="music8">Music-8</option>
+                <option value="9" <%= dataset.details.lobbyMusicId == 9 ? "selected": "" %> id="music9">Music-9</option>
+                <option value="10" <%= dataset.details.lobbyMusicId == 10 ? "selected": "" %> id="music10">Music-10</option>
+                <option value="11" <%= dataset.details.lobbyMusicId == 11 ? "selected": "" %> id="music11">Music-11</option>
+                <option value="12" <%= dataset.details.lobbyMusicId == 12 ? "selected": "" %> id="music12">Music-12</option>
+                <option value="13" <%= dataset.details.lobbyMusicId == 13 ? "selected": "" %> id="music13">Music-13</option>
               </select>
             </div>
             <div class="col-3 py-3 d-flex flex-column">
               <form action="">
-                <input type="checkbox" data-tag="isVisible" checked="checked" class="form-check-input
-                border-success set-check" style="border-radius: 30px; background-color: green; <%=
-                dataset.details.isChecked ? "checked=\"checked" : '' %>" >
+                <input id="isVisible" 
+                <%= dataset.details.isVisible ? "checked" : "" %>  
+                type="checkbox" 
+                data-tag="isVisible" 
+                class="form-check-input
+                border-success set-check" 
+                style="border-radius: 30px; background-color: green;" >
                 <label class="selectlabel py-1" style="font-weight: bold">Visible to users </label>
               </form>
             </div>
 
             <div class="col-5 py-3 d-flex flex-column">
               <form action="">
-                <input
-                  type="checkbox"
+                <input id="isDraft" 
+                <%= dataset.details.isDraft ? "checked" : "" %>
+                type="checkbox"
                   data-tag="isDraft"
                   class="form-check-input border-primary set-check"
                   style="border-radius: 30px"
@@ -220,7 +230,7 @@
 
           <section class="stbtn row container-fluid px-3 py-3" style="text-align: center">
             <div class="stbtn">
-              <button
+              <button id="btn-quiz-done"
                 class="btn btn-success"
                 type="button"
                 style="margin-right: 10px; width: 200px"
@@ -229,7 +239,7 @@
                 <span style="font-weight: bold">Done</span>
               </button>
 
-              <button
+              <button id="btn-quiz-cancel"
                 class="btn btn-secondary"
                 type="button"
                 style="margin-left: 10px; width: 200px"
@@ -244,7 +254,7 @@
     </div>
 
     <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questionList">
-      <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', {data:
+      <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', { data:
       question}); %> <% }); %>
       <!-- <li class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="uuidv4-xxxxx" data-id="id"
       data-composer-id="uuidv4-xxxxx" data-question-order="questionOrder" data-spy="scroll" data-bs-target="#mySidebar"
