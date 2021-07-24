@@ -56,11 +56,11 @@
       <h4 id="rankText"></h4>
     </div>
     <h2 id="message"></h2>
-    <button onclick="answerSubmitted(1)" id="answer1" class="button"></button>
-    <button onclick="answerSubmitted(2)" id="answer2" class="button"></button>
+    <button onclick="answerSubmitted(1)" id="answer1" class="button">1</button>
+    <button onclick="answerSubmitted(2)" id="answer2" class="button">2</button>
     <br />
-    <button onclick="answerSubmitted(3)" id="answer3" class="button"></button>
-    <button onclick="answerSubmitted(4)" id="answer4" class="button"></button></div>
+    <button onclick="answerSubmitted(3)" id="answer3" class="button">3</button>
+    <button onclick="answerSubmitted(4)" id="answer4" class="button">4</button></div>
     <%- include('../partials/footer') %>
 
     <script>
@@ -75,6 +75,7 @@
       const params = {
         id: urlParams.get("id"),
       };
+      console.log(params)
     
       socket.on("connect", function () {
         //Tell server that it is host connection from game view
@@ -109,12 +110,15 @@
     
       //Get results on last question
       socket.on("answerResult", function (data) {
+        
+        console.log("asnwer",data)
         if (data == true) {
           correct = true;
         }
       });
     
       socket.on("questionOver", function (data) {
+        console.log("questionOver",data)
         if (correct == true) {
           document.body.style.backgroundColor = "#4CAF50";
           document.getElementById("message").style.display = "block";
