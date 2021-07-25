@@ -37,7 +37,7 @@
 
   </ul>
   <!-- Answer Choices -->
-  <% if (data.questionTypeId == 2) { %>
+  <%  if (data.questionTypeId == 2) { %>
   <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 30px;" data-tag="Answers">
     <li id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>" class="col-lg-6 row borderred  cborder" data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[0].id %>">
 
@@ -100,9 +100,9 @@
     </li>
 
   </ul>
-  <% } else { %>
+  <% } else {  %>
    
-  <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 50px;" data-tag="truefalse">
+  <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 50px;" data-tag="Answers">
 
     <li id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>" class="col-lg-6  row dborder " data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[0].id %>">
 

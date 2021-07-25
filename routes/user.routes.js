@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-router.post('/upload', upload.single('imagename'), function (req, res, next) {
+router.post('/upload', upload.single('file'), function (req, res, next) {
   const img = req.file.filename;
   console.log('img :>> ', img);
 });
@@ -152,8 +152,6 @@ router.get('/edit/:quizId', ensureAuthenticated, async (req, res) => {
     console.log('quizId  :>> ', quizId);
     dataset = await Query.getQuizDataset(quizId);
   }
-  console.log('dataset#142 :>> ', dataset);
-  // console.log('data :>> ', data);
   res.render('user/edit', {
     title: 'quiz editor page',
     dataset,

@@ -514,7 +514,7 @@ class Query {
   }
 
   static async isQuizEditable(quizId, composerId) {
-    if (theQuizId == null) {
+    if (quizId == null) {
       throw new Error('no AnswerId is given');
     }
     const result = await Quiz.findOne({ where: { id: quizId, composerId } });
