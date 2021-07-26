@@ -44,7 +44,7 @@
           > <%= data.composerName %>  </small
         ></div>
         <div class="d-flex align-items-center justify-content-between px-0" role="group" aria-label="">
-          <small class="text-muted"> <%= moment(data.updatedAt, 'YYYY-MM-DD HH:mm:ss SS').fromNow() %></small>
+          <small class="text-muted"> <%= moment.utc(data.updatedAt, 'YYYY-MM-DD HH:mm:ss SS').fromNow() %></small>
           <% if (!data.editEnabled) { %>
             <a name="" id=""  class="btn btn-sm btn-info ms-2 px-3" href="/clone/<%= data.id %>"  role="button">CLONE</a>
           <% } else { %> <a name="" id=""  class="btn btn-sm btn-primary ms-2 px-3" href="/edit/<%= data.id %>"  role="button">EDIT</a> <% }  %>  

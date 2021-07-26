@@ -20,7 +20,7 @@ module.exports = {
           text: faker.lorem.text().slice(0, 119) + '?',
           questionOrder: qId + 1,
           questionTypeId,
-          timeLimitId: Math.floor(1 + Math.random() * 8),
+          timeLimitId: Math.floor(1 + Math.random() * 7),
           imgURL: `https://picsum.photos/180/120?random=${qId}`,
           imgAltText: 'picsum.photos/',
           imgCredit: 'downloaded from https://picsum.photos',

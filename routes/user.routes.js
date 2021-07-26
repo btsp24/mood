@@ -27,6 +27,8 @@ const upload = multer({ storage: storage });
 router.post('/upload', upload.single('file'), function (req, res, next) {
   const img = req.file.filename;
   console.log('img :>> ', img);
+  // response return edilecek
+
 });
 
 /* login page */

@@ -1,153 +1,173 @@
 <li id="question<%= data.questionOrder %>" class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="<%= data.quizId %>" data-id="<%= data.id %>"
- data-question-order="<%= data.questionOrder %>" data-spy="scroll" data-bs-target="#mySidebar"
-  id="question<%= data.questionOrder %>">
-  <input id="question<%= data.questionOrder %>text" data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
-    type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;" value="<%= data.text %>">
-  <ul class="row qinfo" style="margin-top: 25px" type="none">
-    <div class="col-2 col-lg-2 ">
-      <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
-      <select id="timeLimitId<%= data.questionOrder %> " class="form-select border-success" data-tag="timeLimitId">
-        <option value="1" <%= data.timeLimitId == 1 ? "selected" : "" %> id="10s">10 seconds</option>
-        <option value="2" <%= data.timeLimitId == 2 ? "selected" : "" %> id="20s">20 seconds</option>
-        <option value="3" <%= data.timeLimitId == 3 ? "selected" : "" %> id="30s">30 seconds</option>
-        <option value="4" <%= data.timeLimitId == 4 ? "selected" : "" %> id="1m">1 minute</option>
-        <option value="5" <%= data.timeLimitId == 5 ? "selected" : "" %> id="1m30s">1 minute 30 seconds</option>
-        <option value="6" <%= data.timeLimitId == 6 ? "selected" : "" %> id="2m">2 minutes</option>
-        <option value="7" <%= data.timeLimitId == 7 ? "selected" : "" %> id="4m">4 minutes</option> 
-      </select>
-
-    </div>
-    <div class="col-6 col-lg-6 offset-1 offset-lg-1 drop-zone border-success border-1">
-      <%# // TODO: burada file konusu çözülecek  !! dropzone !! %> 
-      <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
-
-      <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or
-        click to upload</span>
+  data-question-order="<%= data.questionOrder %>" data-spy="scroll" data-bs-target="#mySidebar"
+   id="question<%= data.questionOrder %>">
+   <input id="question<%= data.questionOrder %>text" data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
+     type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;" value="<%= data.text %>">
+   <ul class="row qinfo" style="margin-top: 25px" type="none">
+     <div class="col-2 col-lg-2 ">
+       <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
+       <select id="timeLimitId<%= data.questionOrder %> " class="form-select border-success" data-tag="timeLimitId">
+         <option value="1" <%= data.timeLimitId == 1 ? "selected" : "" %> id="10s">10 seconds</option>
+         <option value="2" <%= data.timeLimitId == 2 ? "selected" : "" %> id="20s">20 seconds</option>
+         <option value="3" <%= data.timeLimitId == 3 ? "selected" : "" %> id="30s">30 seconds</option>
+         <option value="4" <%= data.timeLimitId == 4 ? "selected" : "" %> id="1m">1 minute</option>
+         <option value="5" <%= data.timeLimitId == 5 ? "selected" : "" %> id="1m30s">1 minute 30 seconds</option>
+         <option value="6" <%= data.timeLimitId == 6 ? "selected" : "" %> id="2m">2 minutes</option>
+         <option value="7" <%= data.timeLimitId == 7 ? "selected" : "" %> id="4m">4 minutes</option> 
+       </select>
+ 
+     </div>
+      <div class="col-6 col-lg-6 offset-1 offset-lg-1 ">
+        <div id="my-dropzone" class="dropzone  border-success border-1" data-tag="imgURL">   
+        </div>
     </div>
 
-    <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
-      <label for="Question Type" class="for selectlabel border-info">Question Type</label>
-      <select id="question<%= data.questionOrder %>questionTypeId" class="form-select border-success" data-tag="questionTypeId" >
+     <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
+       <label for="Question Type" class="for selectlabel border-info">Question Type</label>
+       <select id="question<%= data.questionOrder %>questionTypeId" class="form-select border-success" data-tag="questionTypeId" >
+ 
+         <option value="1"<%= data.questionTypeId == 1 ? "selected" : "" %> >True or False</option>
+         <option value="2"<%= data.questionTypeId == 2 ? "selected" : "" %> >Multiple choice</option>
+ 
+       </select>
+     </div>
+ 
+   </ul>
+   <!-- Answer Choices -->
+   <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 30px;" data-tag="Answers">
+     <%  if (data.questionTypeId == 2) { %>
+       <% data.Answers.forEach(function(answer){ %> 
+           <% switch (answer.answerOrder) {
+             case 1 : %>
+             <li id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>" class="col-lg-6 row borderred  cborder" data-question-id="<%= answer.questionId %>" data-id="<%= answer.id %>">
 
-        <option value="1"<%= data.questionTypeId == 1 ? "selected" : "" %> >True or False</option>
-        <option value="2"<%= data.questionTypeId == 2 ? "selected" : "" %> >Multiple choice</option>
+<div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
 
-      </select>
-    </div>
+<div class="col-11 align-self-center ">
+  <div class=" input-group px-lg-2">
 
-  </ul>
-  <!-- Answer Choices -->
-  <%  if (data.questionTypeId == 2) { %>
-  <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 30px;" data-tag="Answers">
-    <li id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>" class="col-lg-6 row borderred  cborder" data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[0].id %>">
-
-      <div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
-
-      <div class="col-11 align-self-center ">
-        <div class=" input-group px-lg-2">
-
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>text" data-tag="text" class="inputa col-11 form-control form-control-lg " type="text"
-            placeholder="Add answer 1 (required)" value="<%= data.Answers[0].text %>">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class=" form-check-input"
-            style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;" <%= data.Answers[0].isCorrect ? "checked" : "" %> >
-        </div>
-      </div>
-
-    </li>
-
-    <li id="question<%= data.questionOrder+'Answers'+data.Answers[1].answerOrder %>" class="col-lg-6 row borderblue cborder" data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[1].id %>">
-
-      <div class="col-1"><i><img src="/images/mavi.png" alt=""></i></div>
-      <div class="col-11 align-self-center ">
-        <div class=" input-group px-lg-2">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[1].answerOrder %>text" data-tag="text" class=" inputb col-11 form-control form-control-lg required"
-            placeholder="Add answer 2 (required)" value="<%= data.Answers[1].text %>">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[1].answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= data.Answers[1].isCorrect ? "checked" : "" %>
-            style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
-
-        </div>
-      </div>
-    </li>
-
-    <li id="question<%= data.questionOrder+'Answers'+data.Answers[2].answerOrder %>" class="col-lg-6 row cborder borderyellow "  data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[2].id %>">
-
-      <div class="col-1"><i><img src="/images/sari.png" alt=""></i></div>
-      <div class="col-11 align-self-center">
-        <div class=" input-group px-lg-2 ">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[2].answerOrder %>text" data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text"
-            placeholder="Add answer 3 (optional)" value="<%= data.Answers[2].text %>">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[2].answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= data.Answers[2].isCorrect ? "checked" : "" %>
-            style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
-
-        </div>
-      </div>
-
-    </li>
-
-    <li id="question<%= data.questionOrder+'Answers'+data.Answers[3].answerOrder %>" class="col-lg-6 bordergreen row cborder " data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[3].id %>">
-
-      <div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
-      <div class="col-11 align-self-center">
-        <div class=" input-group px-lg-2">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[3].answerOrder %>text" data-tag="text" class="inputd form-control form-control-lg" type="text"
-            placeholder="Add answer 4 (optional)"value="<%= data.Answers[3].text %>">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[3].answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= data.Answers[3].isCorrect ? "checked" : "" %>
-            style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px;">
-
-        </div>
-      </div>
-      </div>
-    </li>
-
-  </ul>
-  <% } else {  %>
-   
-  <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 50px;" data-tag="Answers">
-
-    <li id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>" class="col-lg-6  row dborder " data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[0].id %>">
-
-      <div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
-      <div class="col-11 align-self-center">
-        <div class=" input-group px-lg-2">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>text" data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
-            style="background-color: #228b03; color: white; font-weight: 400; border: none;">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[0].answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= data.Answers[0].isCorrect ? "checked" : "" %>
-            style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
-
-        </div>
-      </div>
-
-    </li>
-
-    <li id="question<%= data.questionOrder+'Answers'+data.Answers[1].answerOrder %>" class="col-lg-6 row eborder" data-question-id="<%= data.questionId %>" data-id="<%= data.Answers[1].id %>">
-
-      <div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
-
-      <div class="col-11 align-self-center ">
-        <div class=" input-group px-lg-2">
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[1].answerOrder %>text" data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
-            style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
-
-          <input id="question<%= data.questionOrder+'Answers'+data.Answers[1].answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class=" form-check-input" <%= data.Answers[1].isCorrect ? "checked" : "" %>
-            style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
-        </div>
-      </div>
-    </li>
-
-  </ul>
-  <% } %>
-  <div class="btngroup ">
-
-    <button class=" btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
-        style="font-weight:bold">Clone Question</span></button>
-
-    <button class=" btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
-        style="font-weight:bold">Add Question </span></button>
-
-    <button class=" btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
-      <span style="font-weight:bold;">Delete</span> </button>
-
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>text" data-tag="text" class="inputa col-11 form-control form-control-lg " type="text"
+      placeholder="Add answer 1 (required)" value="<%= answer.text %>">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class=" form-check-input"
+      style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;" <%= answer.isCorrect ? "checked" : "" %> >
   </div>
+</div>
 
 </li>
-<hr style="color: rgb(14, 119, 105); height: 3px;">
+                     <% break;
+             
+             case 2 : %>
+             <li id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>" class="col-lg-6 row borderblue cborder" data-question-id="<%= answer.questionId %>" data-id="<%= answer.id %>">
+
+<div class="col-1"><i><img src="/images/mavi.png" alt=""></i></div>
+<div class="col-11 align-self-center ">
+  <div class=" input-group px-lg-2">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>text" data-tag="text" class=" inputb col-11 form-control form-control-lg required"
+      placeholder="Add answer 2 (required)" value="<%= answer.text %>">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= answer.isCorrect ? "checked" : "" %>
+      style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
+
+  </div>
+</div>
+</li>
+                     <% break;
+             
+             case 3 : %>
+             <li id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>" class="col-lg-6 row cborder borderyellow "  data-question-id="<%= answer.questionId %>" data-id="<%= answer.id %>">
+
+<div class="col-1"><i><img src="/images/sari.png" alt=""></i></div>
+<div class="col-11 align-self-center">
+  <div class=" input-group px-lg-2 ">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>text" data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text"
+      placeholder="Add answer 3 (optional)" value="<%= answer.text %>">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= answer.isCorrect ? "checked" : "" %>
+      style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
+
+  </div>
+</div>
+
+</li>
+                     <% break;        
+             case 4 : %>
+             <li id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>" class="col-lg-6 bordergreen row cborder " data-question-id="<%= answer.questionId %>" data-id="<%= answer.id %>">
+
+<div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
+<div class="col-11 align-self-center">
+  <div class=" input-group px-lg-2">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>text" data-tag="text" class="inputd form-control form-control-lg" type="text"
+      placeholder="Add answer 4 (optional)"value="<%= answer.text %>">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= answer.isCorrect ? "checked" : "" %>
+      style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px;">
+
+  </div>
+</div>
+</div>
+</li>
+                     <% break;
+             } %>
+
+         <% }); %>
+     
+     <% } else {  %>
+       <% data.Answers.forEach(function(answer){ %> 
+         
+           <% switch (answer.answerOrder) {
+             case 1 : %>
+             <li id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>" class="col-lg-6  row dborder " data-question-id="<%= answer.questionId %>" data-id="<%= answer.id %>">
+
+<div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
+<div class="col-11 align-self-center">
+  <div class=" input-group px-lg-2">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>text" data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
+      style="background-color: #228b03; color: white; font-weight: 400; border: none;">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class="form-check-input" <%= answer.isCorrect ? "checked" : "" %>
+      style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
+
+  </div>
+</div>
+
+</li>
+                     <% break;
+             
+             case 2 : %>
+             <li id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>" class="col-lg-6 row eborder" data-question-id="<%= answer.questionId %>" data-id="<%= answer.id %>">
+
+<div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
+
+<div class="col-11 align-self-center ">
+  <div class=" input-group px-lg-2">
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>text" data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
+      style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
+
+    <input id="question<%= data.questionOrder+'Answers'+answer.answerOrder %>isCorrect" data-tag="isCorrect" type="checkbox" class=" form-check-input" <%= answer.isCorrect ? "checked" : "" %>
+      style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
+  </div>
+</div>
+</li>
+                     <% break;
+             } %>
+
+         <% }); %>
+     
+     
+     <% } %>
+   </ul>
+ 
+ 
+  
+   <div class="btngroup ">
+ 
+     <button class=" btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
+         style="font-weight:bold">Clone Question</span></button>
+ 
+     <button class=" btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
+         style="font-weight:bold">Add Question </span></button>
+ 
+     <button class=" btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
+       <span style="font-weight:bold;">Delete</span> </button>
+ 
+   </div>
+ 
+ </li>
+ <hr style="color: rgb(14, 119, 105); height: 3px;">
+ 

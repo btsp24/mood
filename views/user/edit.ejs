@@ -1,83 +1,59 @@
 <!DOCTYPE html>
-<html lang="tr">
-  <%- include('../partials/headerhome', {title}); %>
-  <link rel="stylesheet" href="../stylesheets/stylecompose.css" />
+<html lang="en">
+<%- include('../partials/headerhome', {title}); %>
+<link rel="stylesheet" href="/stylesheets/stylecompose.css" />
 
-  <body>
-    <nav class="navbar-light bg-light sidebar" id="mySidebar">
-      <div class="dismiss">
-        <i class="fas fa-arrow-right" id="closesign"></i>
-      </div>
-
-      <!-- Question  links-->
-      <a class="navbar-brand" href="#">Question List</a>
-      <nav class="nav nav-pills flex-column">
-        <hr style="color: rgb(14, 119, 105); height: 3px" />
-        <ol>
-          <% dataset.rows.forEach(function(question){ %>
-          <li>
-            <a class="nav-link btn btn-primary" href="#question<%= question.questionOrder %>"
-              >Question <%= question.questionOrder %></a
-            >
-          </li>
-          <% }); %>
-        </ol>
-      </nav>
-    </nav>
-    <!-- End sidebar -->
-
-    <div class="content">
-      <a
-        class="btn btn-primary btn-customized open-menu"
-        href="#"
-        role="button"
-        style="margin-top: 4.5rem"
-        id="menubtn"
-      >
-        <i class="fas fa-align-right"></i> <span>Menu</span>
-      </a>
+<body>
+  <nav class="navbar-light bg-light sidebar" id="mySidebar">
+    <div class="dismiss">
+      <i class="fas fa-arrow-right" id="closesign"></i>
     </div>
-    <!-- navigation -->
-    <nav
-      class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase"
-      id="mainNav"
-      style="padding-top: 0.1rem; padding-bottom: 0.1rem"
-    >
-      <div class="container-fluid">
-        <div>
-          <img class="img-thumbnail" src="../images/logo.png" style="height: 2.7rem" id="logo" />
-          <!-- settings button -->
-          <button
-            class="btn mx-sm-1 navbar-toggler"
-            id="gearbtn"
-            data-bs-target=".bd-example-modal-lg"
-            data-bs-toggle="modal"
-            aria-label="Toggle navigation"
-            style="border: 0rem"
-          >
-            <style>
-              .btn:active {
-                transform: translateY(4px);
-              }
-            </style>
 
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
-              fill="azure"
-              class="bi bi-gear-fill gear"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div class="collapse navbar-collapse" id="SETTINGS">
-          <button
-            class="
+    <!-- Question  links-->
+    <a class="navbar-brand" href="#">Question List</a>
+    <nav class="nav nav-pills flex-column">
+      <hr style="color: rgb(14, 119, 105); height: 3px" />
+      <ol>
+        <% dataset.rows.forEach(function(question){ %>
+        <li>
+          <a class="nav-link btn btn-primary" href="#question<%= question.questionOrder %>">Question
+            <%= question.questionOrder %></a>
+        </li>
+        <% }); %>
+      </ol>
+    </nav>
+  </nav>
+  <!-- End sidebar -->
+
+  <div class="content">
+    <a class="btn btn-primary btn-customized open-menu" href="#" role="button" style="margin-top: 4.5rem" id="menubtn">
+      <i class="fas fa-align-right"></i> <span>Menu</span>
+    </a>
+  </div>
+  <!-- navigation -->
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase" id="mainNav"
+    style="padding-top: 0.1rem; padding-bottom: 0.1rem">
+    <div class="container-fluid">
+      <div>
+        <img class="img-thumbnail" src="../images/logo.png" style="height: 2.7rem" id="logo" />
+        <!-- settings button -->
+        <button class="btn mx-sm-1 navbar-toggler" id="gearbtn" data-bs-target=".bd-example-modal-lg"
+          data-bs-toggle="modal" aria-label="Toggle navigation" style="border: 0rem">
+          <style>
+            .btn:active {
+              transform: translateY(4px);
+            }
+          </style>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="azure" class="bi bi-gear-fill gear"
+            viewBox="0 0 16 16">
+            <path
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+          </svg>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="SETTINGS">
+        <button class="
               btn btn-primary
               text-uppercase
               bg-primary bg-gradient
@@ -88,353 +64,234 @@
               py-1
               px-0 px-lg-2
               mx-lg-4
-            "
-            id="btn-settings"
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target=".bd-example-modal-lg"
-          >
-            SETTINGS
-          </button>
-        </div>
-
-        <!-- Nav Links -->
-        <button
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarResponsive"
-          class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded"
-          aria-controls="navbarResponsive"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          id="toggle"
-        >
-          <i class="fa fa-bars"></i>
+            " id="btn-settings" type="button" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">
+          SETTINGS
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item mx-0 mx-lg-1" id="exit">
-              <a
-                class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded"
-                href="#"
-                >Exıt</a
-              >
-            </li>
-            <li class="nav-item mx-0 mx-lg-1" id="done">
-              <a
-                class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded"
-                href="#c"
-                >Done</a
-              >
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
 
-    <!--                   MODAL CODES                    -->
-    <!--                   MODAL CODES                    -->
-    <!--                   MODAL CODES                    -->
-
-    <div
-      class="modal fade bd-example-modal-lg"
-      tabindex="-1"
-      aria-labelledby="ModalLabel"
-      aria-hidden="true"
-      data-bs-whatever=""
-      data-bs-backdrop="static"
-    >
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <section class="row container-fluid px-3">
-            <h2 class="px-5">Quiz Summary</h2>
-            <div class="col-8 d-flex flex-column py-2">
-              <label class="modallabel py-2" id="title">Title</label>
-
-              <input
-                data-tag="quizTitle"
-                class="inputset form-control form-control-lg d-lg-flex border-primary border rounded"
-                type="text"
-                placeholder="Enter quiz title"
-                maxlength="80"
-                value="<%= dataset.details.title %>"
-              />
-              <label class="modallabel py-2" id="title">Descripton</label>
-              <textarea
-                rows="3"
-                data-tag="quizDescription"
-                class="inputset border rounded border-primary orm-control-lg d-lg-flex"
-                type="text"
-                maxlength="260"
-              >
-<%= dataset.details.description %> </textarea
-              >
-            </div>
-
-            <div class="imgarea col-4 py-2 flex-column d-flex">
-              <span class="imglabel">Cover image</span>
-              <div class="drop-zone border-primary border-1">
-                <img src="<%= dataset.details.imgURL %>" alt="" srcset="" />
-
-                <!-- <img src="" name="imgURL" class="drop-zone-input" data-tag="imgURL"> -->
-                <!--               <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or click to
-                upload</span> -->
-              </div>
-            </div>
-          </section>
-
-          <section class="row px-3 py-3">
-            <div class="col-3 d-flex flex-column">
-              <label for="Music" class="selectlabel" style="font-weight: bold">Music</label>
-              <select id="lobbyMusicId" class="form-select border-primary" data-tag="lobbyMusicId" style="font-weight: bold">
-                <option value="1" <%= dataset.details.lobbyMusicId == 1 ? "selected": "" %> id="music1">Music-1</option>
-                <option value="2" <%= dataset.details.lobbyMusicId == 2 ? "selected": "" %> id="music2">Music-2</option>
-                <option value="3" <%= dataset.details.lobbyMusicId == 3 ? "selected": "" %> id="music3">Music-3</option>
-                <option value="4" <%= dataset.details.lobbyMusicId == 4 ? "selected": "" %> id="music4">Music-4</option>
-                <option value="5" <%= dataset.details.lobbyMusicId == 5 ? "selected": "" %> id="music5">Music-5</option>
-                <option value="6" <%= dataset.details.lobbyMusicId == 6 ? "selected": "" %> id="music6">Music-6</option>
-                <option value="7" <%= dataset.details.lobbyMusicId == 7 ? "selected": "" %> id="music7">Music-7</option>
-                <option value="8" <%= dataset.details.lobbyMusicId == 8 ? "selected": "" %> id="music8">Music-8</option>
-                <option value="9" <%= dataset.details.lobbyMusicId == 9 ? "selected": "" %> id="music9">Music-9</option>
-                <option value="10" <%= dataset.details.lobbyMusicId == 10 ? "selected": "" %> id="music10">Music-10</option>
-                <option value="11" <%= dataset.details.lobbyMusicId == 11 ? "selected": "" %> id="music11">Music-11</option>
-                <option value="12" <%= dataset.details.lobbyMusicId == 12 ? "selected": "" %> id="music12">Music-12</option>
-                <option value="13" <%= dataset.details.lobbyMusicId == 13 ? "selected": "" %> id="music13">Music-13</option>
-              </select>
-            </div>
-            <div class="col-3 py-3 d-flex flex-column">
-              <form action="">
-                <input id="isVisible" 
-                <%= dataset.details.isVisible ? "checked" : "" %>  
-                type="checkbox" 
-                data-tag="isVisible" 
-                class="form-check-input
-                border-success set-check" 
-                style="border-radius: 30px; background-color: green;" >
-                <label class="selectlabel py-1" style="font-weight: bold">Visible to users </label>
-              </form>
-            </div>
-
-            <div class="col-5 py-3 d-flex flex-column">
-              <form action="">
-                <input id="isDraft" 
-                <%= dataset.details.isDraft ? "checked" : "" %>
-                type="checkbox"
-                  data-tag="isDraft"
-                  class="form-check-input border-primary set-check"
-                  style="border-radius: 30px"
-                />
-                <label class="selectlabel px-1 py-1" style="font-weight: bold">Check to save as draft</label>
-              </form>
-            </div>
-          </section>
-
-          <section class="stbtn row container-fluid px-3 py-3" style="text-align: center">
-            <div class="stbtn">
-              <button id="btn-quiz-done"
-                class="btn btn-success"
-                type="button"
-                style="margin-right: 10px; width: 200px"
-                data-tag="Doneset"
-              >
-                <span style="font-weight: bold">Done</span>
-              </button>
-
-              <button id="btn-quiz-cancel"
-                class="btn btn-secondary"
-                type="button"
-                style="margin-left: 10px; width: 200px"
-                data-bs-dismiss="modal"
-              >
-                <span style="font-weight: bold">Close</span>
-              </button>
-            </div>
-          </section>
-        </div>
+      <!-- Nav Links -->
+      <button data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" id="toggle">
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item mx-0 mx-lg-1" id="exit">
+            <a class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#"
+              onclick="location.href = document.referrer; return false;">Exit</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1" id="done">
+            <a id="questions-done"
+              class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#">Done</a>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
 
-    <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questionList">
-      <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', { data:
+  <!--                   MODAL CODES                    -->
+  <!--                   MODAL CODES                    -->
+  <!--                   MODAL CODES                    -->
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true"
+    data-bs-whatever="" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <section class="row container-fluid px-3">
+          <h2 class="px-5">Quiz Summary</h2>
+          <div class="col-8 d-flex flex-column py-2">
+            <label class="modallabel py-2" id="title">Title</label>
+
+            <input data-tag="quizTitle"
+              class="inputset form-control form-control-lg d-lg-flex border-primary border rounded" type="text"
+              placeholder="Enter quiz title" maxlength="80" value="<%= dataset.details.title %>" />
+            <label class="modallabel py-2" id="title">Descripton</label>
+            <textarea rows="3" data-tag="quizDescription"
+              class="inputset border rounded border-primary orm-control-lg d-lg-flex" type="text" maxlength="260">
+<%= dataset.details.description %> </textarea>
+          </div>
+
+          <div class="imgarea col-4 py-2 flex-column d-flex">
+            <span class="imglabel">Cover image</span>
+            <div id="my-dropzone-cover" class=" dropzone  border-success border-1" data-tag="imgURL">
+
+            </div>
+          </div>
+        </section>
+
+        <section class="row px-3 py-3">
+          <div class="col-3 d-flex flex-column">
+            <label for="Music" class="selectlabel" style="font-weight: bold">Music</label>
+            <select id="lobbyMusicId" class="form-select border-primary" data-tag="lobbyMusicId"
+              style="font-weight: bold">
+              <option value="1" <%= dataset.details.lobbyMusicId == 1 ? "selected": "" %> id="music1">Music-1</option>
+              <option value="2" <%= dataset.details.lobbyMusicId == 2 ? "selected": "" %> id="music2">Music-2</option>
+              <option value="3" <%= dataset.details.lobbyMusicId == 3 ? "selected": "" %> id="music3">Music-3</option>
+              <option value="4" <%= dataset.details.lobbyMusicId == 4 ? "selected": "" %> id="music4">Music-4</option>
+              <option value="5" <%= dataset.details.lobbyMusicId == 5 ? "selected": "" %> id="music5">Music-5</option>
+              <option value="6" <%= dataset.details.lobbyMusicId == 6 ? "selected": "" %> id="music6">Music-6</option>
+              <option value="7" <%= dataset.details.lobbyMusicId == 7 ? "selected": "" %> id="music7">Music-7</option>
+              <option value="8" <%= dataset.details.lobbyMusicId == 8 ? "selected": "" %> id="music8">Music-8</option>
+              <option value="9" <%= dataset.details.lobbyMusicId == 9 ? "selected": "" %> id="music9">Music-9</option>
+              <option value="10" <%= dataset.details.lobbyMusicId == 10 ? "selected": "" %> id="music10">Music-10
+              </option>
+              <option value="11" <%= dataset.details.lobbyMusicId == 11 ? "selected": "" %> id="music11">Music-11
+              </option>
+              <option value="12" <%= dataset.details.lobbyMusicId == 12 ? "selected": "" %> id="music12">Music-12
+              </option>
+              <option value="13" <%= dataset.details.lobbyMusicId == 13 ? "selected": "" %> id="music13">Music-13
+              </option>
+            </select>
+          </div>
+          <div class="col-3 py-3 d-flex flex-column">
+            <form action="">
+              <input id="isVisible" <%= dataset.details.isVisible ? "checked" : "" %> type="checkbox"
+                data-tag="isVisible" class="form-check-input
+                border-success set-check" style="border-radius: 30px; background-color: green;">
+              <label class="selectlabel py-1" style="font-weight: bold">Visible to users </label>
+            </form>
+          </div>
+
+          <div class="col-5 py-3 d-flex flex-column">
+            <form action="">
+              <input id="isDraft" <%= dataset.details.isDraft ? "checked" : "" %> type="checkbox" data-tag="isDraft"
+                class="form-check-input border-primary set-check" style="border-radius: 30px" />
+              <label class="selectlabel px-1 py-1" style="font-weight: bold">Check to save as draft</label>
+            </form>
+          </div>
+        </section>
+
+        <section class="stbtn row container-fluid px-3 py-3" style="text-align: center">
+          <div class="stbtn">
+            <button id="btn-quiz-done" class="btn btn-success" type="button" style="margin-right: 10px; width: 200px"
+              data-tag="Doneset">
+              <span style="font-weight: bold">Done</span>
+            </button>
+
+            <button id="btn-quiz-cancel" class="btn btn-secondary" type="button" style="margin-left: 10px; width: 200px"
+              data-bs-dismiss="modal">
+              <span style="font-weight: bold">Close</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questionList">
+    <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', { data:
       question}); %> <% }); %>
-      <!-- <li class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="uuidv4-xxxxx" data-id="id"
-      data-composer-id="uuidv4-xxxxx" data-question-order="questionOrder" data-spy="scroll" data-bs-target="#mySidebar"
-      id="question1">
+  </ol>
+
+  <%- include('../partials/footer') %>
+  <script>
+    Dropzone.prototype.defaultOptions.addRemoveLinks = true;
+    Dropzone.prototype.defaultOptions.dictDefaultMessage = 'Drop files or click here to upload';
+    Dropzone.prototype.defaultOptions.paramName = 'file';
+    Dropzone.prototype.defaultOptions.url = '/upload';
+    Dropzone.prototype.defaultOptions.resizeWidth = 540;
+    // Dropzone.prototype.defaultOptions.thumbnailWidth = 540;
+    // Dropzone.prototype.defaultOptions.thumbnailHeight = 360;
+    Dropzone.prototype.defaultOptions.thumbnailMethod= "contain";
+    Dropzone.prototype.defaultOptions.acceptedFiles= 'image/jpeg, image/gif, image/png, image/bmp';
+    Dropzone.options.myDropzoneCover = {
+              resizeWidth: 180,
+              thumbnailWidth: 80,
+              thumbnailHeight: 80,
+};
+
+    $(document).ready(function () {
+      // $('.dropzone').each(function(index){
+      //   $(this).dropzone({
+      //     url: '/upload',
+      //     paramName: 'file',
+      //     addRemoveLinks: true,
+      //     dictDefaultMessage: 'Drop files or click here to upload',
+      //     // ...
+      //   })
+      // });
 
 
+      const details = <%-JSON.stringify(dataset.details) %> ;
+      const title = <%-JSON.stringify(dataset.details.title) %> ;
+      const count = <%-JSON.stringify(dataset.count) %> ;
+      const rows = <%-JSON.stringify(dataset.rows) %> ;
+      console.log('details.text :>> ', title);
+      console.log('count :>> ', count);
+      console.log('rows :>> ', rows);
 
-      <input data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
-        type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;">
+      $('#btn-quiz-done').click({
+        details: details
+      }, (event) => {
+        console.table(event.data.details);
+        const newDetails = JSON.parse(JSON.stringify(event.data.details));
+        newDetails.title = $('[data-tag="quizTitle"]').val();
+        newDetails.description = $('[data-tag="quizDescription"]').val();
+        newDetails.isVisible = $('[data-tag="isVisible"]').prop('checked');
+        newDetails.isDraft = $('[data-tag="isDraft"]').prop('checked');
+        newDetails.lobbyMusicId = $('[data-tag="lobbyMusicId"]').val();
+        // newDetails.imgURL = $('[data-tag="imgURL"]').prop(); // TODO: needs refactoring for dropzone
 
+        console.table(newDetails);
 
-      <ul class="row qinfo" style="margin-top: 25px" type="none">
+      })
 
+      $('#questions-done').click({
+        questions: rows,
+        oldCount: count
+      }, (event) => {
+        console.log('uuidv4() :>> ', uuidv4());
+        const newQuestions = JSON.parse(JSON.stringify(event.data.questions));
+        // get current questionCount from dom 
+        // refactor with global var like questionCount ??
+        const oldCount = event.data.oldCount;
+        const newCount = $('[data-question-order]').length;
+        // if questionCount is less than or equal to oldCount we will update till this number
+        // const updateTill = newCount >= oldCount ? newCount : oldCount; 
+        // decide if delete needed else we may add new questions
+        const willDelete = newCount - oldCount < 0 ? true : false;
+        // console.table(newQuestions[3].Answers);
+        if (willDelete) {
+          for (let k = newCount; k < oldCount; k++) {
+            delete newQuestions[k];
+          }
+        }
+        for (let i = 1; i <= newCount; i++) {
+          const oldCountAnswer = newQuestions[i - 1].questionTypeId == 1 ? 2 : 4;
+          const newCountAnswer = $(`#question${i}questionTypeId`).val() == 1 ? 2 : 4;
 
-        <div class="col-2 col-lg-2 ">
+          // decide if delete needed else we may add new questions
+          const willDeleteAnswer = newCountAnswer - oldCountAnswer < 0 ? true : false;
 
-          <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
-          <select class="form-select border-success" data-tag="timeLimitId">
+          const quizId = $(`#question${i}`).data('quizId');
+          const questionId = $(`#question${i}`).data('id');
+          newQuestions[i - 1].text = $(`#question${i}text`).val();
+          newQuestions[i - 1].questionTypeId = $(`#question${i}questionTypeId`).val();
+          newQuestions[i - 1].timeLimitId = $(`#timeLimitId${i}`).val();
+          newQuestions[i - 1].imgURL = $(`#img${i}`).prop('src') // TODO: needs refactoring
+          if (willDeleteAnswer) {
+            console.log('will delete answers of', newQuestions[i - 1]);
+            for (let j = newCountAnswer; j < oldCountAnswer; j++) {
+              delete newQuestions[i - 1].Answers[j];
+            }
+          }
+          for (let j = 1; j <= newCountAnswer; j++) {
+            newQuestions[i - 1].Answers[j - 1].text = $(`#question${i}Answers${j}text`).val();
+            newQuestions[i - 1].Answers[j - 1].isCorrect = $(`#question${i}Answers${j}isCorrect`).prop(
+              'checked');
+            const id = $(`#question${i}Answers${j}`).data('id');
+            if (!id) {
+              newQuestions[i - 1].Answers[j - 1].id = uuidv4();
+            }
+            // TODO: add data-answer-order to dom elements
 
-            <option value="1" id="10s">10 seconds</option>
-            <option value="1" id="20s">20 seconds</option>
-            <option value="1" id="30s">30 seconds</option>
-            <option selected id="1m">1 minute</option>
-            <option value="1" id="1m30s">1 minute 30 seconds</option>
-            <option value="1" id="2m">2 minutes</option>
-            <option value="1" id="3m">3 minutes</option>
-            <option value="1" id="4m">4 minutes</option>
-
-          </select>
-
-        </div>
-
-
-
-        <div class="col-6 col-lg-6 offset-1 offset-lg-1 drop-zone border-success border-1">
-
-          <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
-
-          <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or
-            click to upload</span>
-        </div>
-
-
-        <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
-          <label for="Question Type" class="for selectlabel border-info">Question Type</label>
-          <select class="form-select  border-success" data-tag="questionTypeId">
-
-            <option selected>Quiz</option>
-            <option value="1">True or False</option>
-
-          </select>
-        </div>
-
-      </ul>
-      <!-- Answer Choices -->
-      <!--       <ul class="row" style="margin-top: 30px;" data-tag="Answers">
-        <li class="col-lg-6 row borderred  cborder" data-question-id="" data-id="">
-
-          <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
-
-          <div class="col-11 align-self-center ">
-            <div class=" input-group px-lg-2">
-
-              <input data-tag="text" class="inputa col-11 form-control form-control-lg " type="text"
-                placeholder="Add answer 1 (required)">
-
-              <input data-tag="isCorrect" type="checkbox" class=" form-check-input"
-                style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;">
-            </div>
-          </div>
-
-        </li>
-
-        <li class="col-lg-6 row borderblue cborder" data-question-id="" data-id="">
-
-          <div class="col-1"><i><img src="../images/mavi.png" alt=""></i></div>
-          <div class="col-11 align-self-center ">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class=" inputb col-11 form-control form-control-lg required"
-                placeholder="Add answer 2 (required)">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
-
-            </div>
-          </div>
-        </li>
-
-        <li class="col-lg-6 row cborder borderyellow " data-question-id="" data-id="">
-
-          <div class="col-1"><i><img src="../images/sari.png" alt=""></i></div>
-          <div class="col-11 align-self-center">
-            <div class=" input-group px-lg-2 ">
-              <input data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text"
-                placeholder="Add answer 3 (optional)">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
-
-            </div>
-          </div>
-
-        </li>
-
-        <li class="col-lg-6 bordergreen row cborder ">
-
-          <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
-          <div class="col-11 align-self-center">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class="inputd form-control form-control-lg" type="text"
-                placeholder="Add answer 4 (optional)">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px;">
-
-            </div>
-          </div>
-          </div>
-        </li>
-
-      </ul> -->
-
-      <!--       <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
-
-        <li class="col-lg-6  row dborder ">
-
-          <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
-          <div class="col-11 align-self-center">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
-                style="background-color: #228b03; color: white; font-weight: 400; border: none;">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
-
-            </div>
-          </div>
-
-        </li>
-
-        <li class="col-lg-6 row eborder" data-question-id="" data-id="">
-
-          <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
-
-          <div class="col-11 align-self-center ">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
-                style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
-
-              <input data-tag="isCorrect" type="checkbox" class=" form-check-input"
-                style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
-            </div>
-          </div>
-        </li>
-
-      </ul> -->
-
-      <!--       <div class="btngroup ">
-
-        <button class=" btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
-            style="font-weight:bold">Clone Question</span></button>
-
-        <button class=" btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
-            style="font-weight:bold">Add Question </span></button>
-
-        <button class=" btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
-          <span style="font-weight:bold;">Delete</span> </button>
-
-      </div> -->
-
-      <!--     </li>
-    <hr style="color: rgb(14, 119, 105); height: 3px;"> -->
-    </ol>
-
-    <%- include('../partials/footer') %>
-    <script>
-      $(document).ready(function () {
-        const details = <%-JSON.stringify(dataset.details) %> ;
-        const title = <%-JSON.stringify(dataset.details.title) %> ;
-        const count = <%-JSON.stringify(dataset.count) %> ;
-        const rows = <%-JSON.stringify(dataset.rows) %> ;
-        console.log('details.text :>> ', title);
-        console.log('count :>> ', count);
-        console.log('rows :>> ', rows);
+          }
+        };
+        for (const q of newQuestions) {
+          console.log('q :>> ', q);
+        }
+      })
 
       $('.dismiss, .overlay').on('click', function () {
         $('.sidebar').removeClass('active');
@@ -442,84 +299,18 @@
       });
 
       $('.open-menu').on('click', function (e) {
-      e.preventDefault();
-      $('.sidebar').addClass('active');
+        e.preventDefault();
+        $('.sidebar').addClass('active');
 
-      // close opened sub-menus
-      $('.collapse.show').toggleClass('show');
-      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-
-      });
+        // close opened sub-menus
+        $('.collapse.show').toggleClass('show');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 
       });
 
-      document.querySelectorAll(".drop-zone-input").forEach((inputElement) => {
-        const dropZoneElement = inputElement.closest(".drop-zone");
 
-        dropZoneElement.addEventListener("click", (e) => {
-          inputElement.click();
-        });
+    });
+  </script>
+</body>
 
-        inputElement.addEventListener("change", (e) => {
-          if (inputElement.files.length) {
-            updateThumbnail(dropZoneElement, inputElement.files[0]);
-          }
-        });
-
-        dropZoneElement.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          dropZoneElement.classList.add("drop-zone-over");
-        });
-
-        ["dragleave", "dragend"].forEach((type) => {
-          dropZoneElement.addEventListener(type, (e) => {
-            dropZoneElement.classList.remove("drop-zone-over");
-          });
-        });
-
-        dropZoneElement.addEventListener("drop", (e) => {
-          e.preventDefault();
-
-          if (e.dataTransfer.files.length) {
-            inputElement.files = e.dataTransfer.files;
-            updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-          }
-
-          dropZoneElement.classList.remove("drop-zone-over");
-        });
-      });
-
-      //Updates the thumbnail on a drop zone element.
-
-      function updateThumbnail(dropZoneElement, file) {
-        let thumbnailElement = dropZoneElement.querySelector(".drop-zone-img");
-
-        // First time - remove the prompt
-        if (dropZoneElement.querySelector(".drop-zone-prompt")) {
-          dropZoneElement.querySelector(".drop-zone-prompt").remove();
-        }
-
-        // First time - there is no thumbnail element, so lets create it
-        if (!thumbnailElement) {
-          thumbnailElement = document.createElement("div");
-          thumbnailElement.classList.add("drop-zone-img");
-          dropZoneElement.appendChild(thumbnailElement);
-        }
-
-        thumbnailElement.dataset.label = file.name;
-
-        // Show thumbnail for image files
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-          };
-        } else {
-          thumbnailElement.style.backgroundImage = null;
-        }
-      }
-    </script>
-  </body>
 </html>
