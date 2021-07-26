@@ -54,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     Quiz.belongsTo(models.LobbyMusic, {
       foreignKey: 'lobbyMusicId',
       target: 'id',
+      constraints: false,
     });
 
     Quiz.hasMany(models.Game, {

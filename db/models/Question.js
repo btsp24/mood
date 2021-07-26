@@ -53,11 +53,13 @@ module.exports = (sequelize, DataTypes) => {
     Question.belongsTo(models.QuestionType, {
       foreignKey: 'questionTypeId',
       target: 'id',
+      constraints: false,
     });
 
     Question.belongsTo(models.TimeLimit, {
       foreignKey: 'timeLimitId',
       target: 'id',
+      constraints: false,
     });
 
     Question.belongsTo(models.Quiz, {
@@ -69,6 +71,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'questionId',
       target: 'id',
       through: 'PlayerQuestion',
+      constraints: false,
+    });
+
+    Question.hasMany(models.PlayerQuestion, {
+      foreignKey: 'questionId',
+      target: 'id',
+      constraints: false,
     });
   };
 

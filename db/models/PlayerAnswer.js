@@ -26,18 +26,29 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   PlayerAnswer.associate = function (models) {
-    /* just for backup
+    PlayerAnswer.belongsTo(models.PlayerQuestion, {
+      foreignKey: 'playerId',
+      target: 'playerId',
+      constraints: false,
+    });
+
     PlayerAnswer.belongsTo(models.PlayerQuestion, {
       foreignKey: 'questionId',
       target: 'questionId',
       constraints: false,
     });
-    PlayerAnswer.belongsTo(models.PlayerQuestion, {
+
+    PlayerAnswer.belongsTo(models.Player, {
       foreignKey: 'playerId',
-      target: 'playerId',
+      target: 'id',
       constraints: false,
-    }); 
-    */
+    });
+
+    PlayerAnswer.belongsTo(models.Answer, {
+      foreignKey: 'answerId',
+      target: 'id',
+      constraints: false,
+    });
   };
 
   return PlayerAnswer;
