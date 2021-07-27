@@ -174,6 +174,52 @@ router.get('/edit/:quizId', ensureAuthenticated, async (req, res) => {
   });
 });
 
+router.post('/save', async (req, res) => {
+  const { dataset } = req.body; // {details, rows}
+  const quizId = dataset.quizId;
+  try {
+    await Query.updateQuizDataset(dataset, quizId);
+  req.flash('success_msg', 'quiz saved');
+  res.redirect('/home');
+} catch (err) {
+  console.log('error :>> ', err);
+}
+/* 
+  const errors = [];
+
+  if (!userName || !email || !password || !password2) {
+    errors.push({
+      msg: 'Please enter all fields',
+    });
+  }
+
+  if (errors.length > 0) {
+    console.log(errors);
+  } else {
+    const userFound = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (userFound) {
+      errors.push({
+        msg: 'Email already exists',
+      });
+      res.render('register', {
+        errors,
+        userName,
+        email,
+        password,
+        password2,
+      });
+    } else {
+
+      
+    }
+  }
+   */
+});
+
 /* home page  for teacher */
 router.get('/home', ensureAuthenticated, async (req, res) => {
   res.app.locals.user = req.user;

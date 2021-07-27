@@ -13,9 +13,9 @@
     <a class="navbar-brand" href="#">Question List</a>
     <nav class="nav nav-pills flex-column">
       <hr style="color: rgb(14, 119, 105); height: 3px" />
-      <ol>
+      <ol >
         <% dataset.rows.forEach(function(question){ %>
-        <li>
+        <li id="navquestion<%= question.questionOrder %>">
           <a class="nav-link btn btn-primary" href="#question<%= question.questionOrder %>">Question
             <%= question.questionOrder %></a>
         </li>
@@ -184,8 +184,134 @@
       question}); %> <% }); %>
   </ol>
 
+
+<ul class="navlink-template" hidden>
+  <li>
+    <a class="nav-link btn btn-primary" href="#question??">Question??
+      </a>
+  </li>
+</ul>  
+<ul class="question-template" hidden>
+  <li class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="" data-id=""
+  data-question-order="" data-spy="scroll" data-bs-target="#mySidebar">
+   <input data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
+     type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;" value="">
+     <ul class="row qinfo" style="margin-top: 25px" type="none">
+      <div class="col-2 col-lg-2 ">
+        <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
+        <select class="form-select border-success" data-tag="timeLimitId">
+          <option value="1" id="10s">10 seconds</option>
+          <option value="2" id="20s">20 seconds</option>
+          <option value="3" id="30s">30 seconds</option>
+          <option value="4" id="1m">1 minute</option>
+          <option value="5" id="1m30s">1 minute 30 seconds</option>
+          <option value="6" id="2m">2 minutes</option>
+          <option value="7" id="4m">4 minutes</option> 
+        </select>
+      </div>
+       <div class="col-6 col-lg-6 offset-1 offset-lg-1 ">
+         <div id="my-dropzone??" class="dropzone  border-success border-1" data-tag="imgURL">   
+         </div>
+     </div>
+ 
+      <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
+        <label for="Question Type" class="for selectlabel border-info">Question Type</label>
+        <select class="form-select border-success" data-tag="questionTypeId" >
+  
+          <option value="1">True or False</option>
+          <option value="2">Multiple choice</option>
+  
+        </select>
+      </div>
+  
+    </ul>
+
+    <div class="btngroup ">
+      <button class="btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
+          style="font-weight:bold">Clone Question</span></button>
+  
+      <button class="btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
+          style="font-weight:bold">Add Question </span></button>
+  
+      <button class="btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
+        <span style="font-weight:bold;">Delete</span> </button>
+  
+    </div>
+  </li>
+
+</ul>
+ <div class="answer-templates" hidden>
+ <!-- true false  hidden -->
+ <ul class="row trueFalse" style="margin-top: 30px;" data-tag="Answers" hidden>
+  <li class="col-lg-6  row dborder " data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
+    <div class="col-11 align-self-center">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
+          style="background-color: #228b03; color: white; font-weight: 400; border: none;">
+        <input data-tag="isCorrect" type="checkbox" class="form-check-input" 
+          style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
+      </div>
+    </div>
+  </li>
+  <li class="col-lg-6 row eborder" data-question-id="" data-id="">
+    <div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
+    <div class="col-11 align-self-center ">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
+          style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
+        <input data-tag="isCorrect" type="checkbox" class=" form-check-input" 
+          style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
+      </div>
+    </div>
+  </li>
+</ul>
+<!-- multiple choice hidden -->
+<ul class="row multipleChoice" style="margin-top: 30px;" data-tag="Answers" hidden>
+  <li class="col-lg-6 row borderred  cborder" data-question-id="" data-id="">
+    <div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
+    <div class="col-11 align-self-center ">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class="inputa col-11 form-control form-control-lg " type="text" placeholder="Add answer 1 (required)" value="">
+        <input data-tag="isCorrect" type="checkbox" class=" form-check-input" style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;">
+      </div>
+    </div>
+  </li>
+  <li class="col-lg-6 row borderblue cborder" data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/mavi.png" alt=""></i></div>
+    <div class="col-11 align-self-center ">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class=" inputb col-11 form-control form-control-lg required" placeholder="Add answer 2 (required)" value="">
+        <input data-tag="isCorrect" type="checkbox" class="form-check-input" 
+          style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
+      </div>
+    </div>
+  </li>
+  <li  class="col-lg-6 row cborder borderyellow " data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/sari.png" alt=""></i></div>
+    <div class="col-11 align-self-center">
+      <div class=" input-group px-lg-2 ">
+        <input data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text" placeholder="Add answer 3 (optional)" value="">
+        <input data-tag="isCorrect"type="checkbox" class="form-check-input" style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
+      </div>
+    </div>
+  </li>
+  <li class="col-lg-6 bordergreen row cborder" data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
+      <div class="col-11 align-self-center">
+        <div class=" input-group px-lg-2">
+          <input data-tag="text" class="inputd form-control form-control-lg" type="text" placeholder="Add answer 4 (optional)" value="">
+          <input data-tag="isCorrect" type="checkbox" class="form-check-input"
+            style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px">
+        </div>
+      </div>
+  </li>
+</ul>
+</div> 
   <%- include('../partials/footer') %>
   <script>
+    const uuid = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c =>(c^(window.crypto||window.msCrypto).getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+
     Dropzone.prototype.defaultOptions.addRemoveLinks = true;
     Dropzone.prototype.defaultOptions.dictDefaultMessage = 'Drop files or click here to upload';
     Dropzone.prototype.defaultOptions.paramName = 'file';
@@ -195,19 +321,7 @@
     Dropzone.prototype.defaultOptions.thumbnailHeight = 240;
     Dropzone.prototype.defaultOptions.thumbnailWidth = 360;
     Dropzone.prototype.defaultOptions.acceptedFiles= 'image/jpeg, image/gif, image/png, image/bmp';
-    // Dropzone.prototype.defaultOptions.init = function() {
-    //         const mockFile = {
-    //                 name: 'FileName',
-    //                 size: '1000', 
-    //                 type: 'image/jpeg',
-    //                 accepted: true            // required if using 'MaxFiles' option
-    //             };
-    //             this.files.push(mockFile);    // add to files array
-    //             this.emit("addedfile", mockFile);
-    //             this.emit("thumbnail", mockFile, 'https://picsum.photos/180/120?random=0');
-    //             this.emit("complete", mockFile);
-    //           };
-
+    
               <% dataset.rows.forEach(function(question) { %>        
                 Dropzone.options.myDropzone<%=JSON.stringify(question.questionOrder) %> = {
                   init : function() {
@@ -222,12 +336,9 @@
                 this.emit("thumbnail", mockFile, '<%=question.imgURL %>');
                 this.emit("complete", mockFile);
                 this.on("success", function(file, serverResponse) {
-
                   // Called after the file successfully uploaded.
-
                   // If the image is already a thumbnail:
                   this.emit('thumbnail', file, '/'+serverResponse.path);
-
                   // If it needs resizing:
                   // this.createThumbnailFromUrl(file, '/'+serverResponse.path);
                 });
@@ -252,29 +363,94 @@
                 this.emit("thumbnail", mockFile, '<%=dataset.details.imgURL %>');
                 this.emit("complete", mockFile);
                 this.on("success", function(file, serverResponse) {
-
                   // Called after the file successfully uploaded.
-
                   // If the image is already a thumbnail:
                   this.emit('thumbnail', file, '/'+serverResponse.path);
-
                   // If it needs resizing:
                   // this.createThumbnailFromUrl(file, '/'+serverResponse.path);
-    });
-
+                });
               }
     };
     
 
     $(document).ready(function () {
-      
+      $('[data-tag="questionTypeId"]').on('change', function (e) {
+        const currentQId = $(this).closest('li').data('id');
+        const currentQNr = $(this).closest('li').data('questionOrder');
+        const selectVal = e.target.value;
+        let $el;
+          // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+          // console.log('selectVal :>> ', e.target.value);
+          if ($(this).val() == 1) {
+            // true false
+            $el = $('ul.trueFalse').clone();
+            $el.toggleClass('trueFalse');
+
+            for (let i = 0; i < 2; i++) {
+              $el.find('li').attr('data-id', function(index) { return uuid() });          
+            }
+
+          } else {
+            // multiple
+            $el = $('ul.multipleChoice').clone();
+            $el.toggleClass('multipleChoice');
+              for (let i = 0; i < 4; i++) {
+              $el.find('li').attr('data-id', function(index) { return uuid() });           
+            }
+          }
+          $el.attr('id',`question${currentQNr}Answers`)
+          .find('li').attr('id', function(index) {
+            return `question${currentQNr}Answers${index+1}`
+          });
+          $el.find('li').attr('data-question-id', currentQId );
+          $el.prop('hidden', false);
+          $el = $(this).closest('li').find('[data-tag="Answers"]').replaceWith($el);
+      })
+
+      $('button.btn-success').on('click', function(e){
+        console.log('click on clone');
+        console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+        const hrClone = $(this).closest('li').next('hr').clone();
+        const clone = $(this).closest('li').clone(true, true);
+        const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
+        $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
+        $(this).parent().parent().after(clone).after(hrClone);
+        // hr.after(clone).after(hr);
+        // call reorder nav and reorder questions function
+      })
+
+      $('button.btn-primary').on('click', function(e){
+        console.log('click on add');
+        console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+        const hrClone = $(this).closest('li').next('hr').clone();
+        const qClone = $('ul.question-template li').clone(true, true);
+        const aClone = $('div.answer-templates ul.multipleChoice').clone(true, true);
+        qClone.find('.btngroup').before(aClone);
+        console.log(aClone);
+        $(this).parent().parent().after(qClone).after(hrClone).show();
+        // $(this).closest('li').remove();
+        // call reorder nav and reorder questions function
+      })
+
+      $('button.btn-danger').on('click', function(e){
+        // console.log('click on delete');
+        // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+        // console.log('$(this).closest("li"). :>> ', $(this).closest('li').prop('id'));
+        // console.log('sdsdfsd:>> ', $(`#nav${$(this).closest('li').prop('id')}`).html());
+        const count = $('li.col-lg-10').length-1;
+        console.log('count :>> ', count);
+        if (count > 1) {
+          const hr = $(this).closest('li').next('hr').remove();
+          $(this).closest('li').remove();
+          $(`#nav${$(this).closest('li').prop('id')}`).remove();
+        }
+        // call reorder nav and reorder questions function
+      })
+
       const details = <%-JSON.stringify(dataset.details) %> ;
       const title = <%-JSON.stringify(dataset.details.title) %> ;
       const count = <%-JSON.stringify(dataset.count) %> ;
       const rows = <%-JSON.stringify(dataset.rows) %> ;
-      // console.log('details.text :>> ', title);
-      // console.log('count :>> ', count);
-      // console.log('rows :>> ', rows);
       
       $('#btn-quiz-done').click({
         details: details
@@ -286,47 +462,45 @@
         newDetails.isVisible = $('[data-tag="isVisible"]').prop('checked');
         newDetails.isDraft = $('[data-tag="isDraft"]').prop('checked');
         newDetails.lobbyMusicId = $('[data-tag="lobbyMusicId"]').val();
-        newDetails.imgURL = $('div.imgarea [data-dz-thumbnail]').prop('src'); // TODO: needs refactoring for dropzone
+        newDetails.imgURL = $('div.imgarea [data-dz-thumbnail]').prop('src'); 
 
         console.table(newDetails);
-
       })
 
       $('#questions-done').click({
         questions: rows,
         oldCount: count
       }, (event) => {
-        console.log('uuidv4() :>> ', uuidv4());
         const newQuestions = JSON.parse(JSON.stringify(event.data.questions));
         // get current questionCount from dom 
         // refactor with global var like questionCount ??
         const oldCount = event.data.oldCount;
         const newCount = $('[data-question-order]').length;
-        // if questionCount is less than or equal to oldCount we will update till this number
-        // const updateTill = newCount >= oldCount ? newCount : oldCount; 
-        // decide if delete needed else we may add new questions
         const willDelete = newCount - oldCount < 0 ? true : false;
-        // console.table(newQuestions[3].Answers);
+        // decide if delete needed else we may add new questions
         if (willDelete) {
           for (let k = newCount; k < oldCount; k++) {
             delete newQuestions[k];
           }
         }
         for (let i = 1; i <= newCount; i++) {
-          const oldCountAnswer = newQuestions[i - 1].questionTypeId == 1 ? 2 : 4;
-          const newCountAnswer = $(`#question${i}questionTypeId`).val() == 1 ? 2 : 4;
-
-          // decide if delete needed else we may add new questions
-          const willDeleteAnswer = newCountAnswer - oldCountAnswer < 0 ? true : false;
-
-          const quizId = $(`#question${i}`).data('quizId');
-          const questionId = $(`#question${i}`).data('id');
           newQuestions[i - 1].text = $(`#question${i}text`).val();
           newQuestions[i - 1].questionTypeId = $(`#question${i}questionTypeId`).val();
           newQuestions[i - 1].timeLimitId = $(`#timeLimitId${i}`).val();
-          newQuestions[i - 1].imgURL = $(`#img${i}`).prop('src') // TODO: needs refactoring
+          newQuestions[i - 1].imgURL = $('div.dropzone [data-dz-thumbnail]').prop('src');  
+          const quizId = $(`#question${i}`).data('quizId') ?? uuid();
+          newQuestions[i - 1].quizId = quizId;
+          const questionId = $(`#question${i}`).data('id') ?? uuid();
+          newQuestions[i - 1].id = questionId;
+          newQuestions[i - 1].questionOrder = i;
+
+
+          const oldCountAnswer = newQuestions[i - 1].questionTypeId == 1 ? 2 : 4;
+          const newCountAnswer = $(`#question${i}questionTypeId`).val() == 1 ? 2 : 4;
+          const willDeleteAnswer = newCountAnswer - oldCountAnswer < 0 ? true : false;
+          // decide if delete needed else we may add new questions
           if (willDeleteAnswer) {
-            console.log('will delete answers of', newQuestions[i - 1]);
+            // console.log('will delete answers of', newQuestions[i - 1]);
             for (let j = newCountAnswer; j < oldCountAnswer; j++) {
               delete newQuestions[i - 1].Answers[j];
             }
@@ -335,16 +509,13 @@
             newQuestions[i - 1].Answers[j - 1].text = $(`#question${i}Answers${j}text`).val();
             newQuestions[i - 1].Answers[j - 1].isCorrect = $(`#question${i}Answers${j}isCorrect`).prop(
               'checked');
-            const id = $(`#question${i}Answers${j}`).data('id');
-            if (!id) {
-              newQuestions[i - 1].Answers[j - 1].id = uuidv4();
-            }
-            // TODO: add data-answer-order to dom elements
-
+            newQuestions[i - 1].Answers[j - 1].questionId = questionId;
+            const answerId = $(`#question${i}Answers${j}`).data('id') ?? uuid();
+            newQuestions[i - 1].Answers[j - 1].id = answerId;
           }
         };
         for (const q of newQuestions) {
-          console.log('q :>> ', q);
+          // console.log('q :>> ', q);
         }
       })
 
