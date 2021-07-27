@@ -16,7 +16,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, './public/uploads/'); // set the destination
+    callback(null, './uploads'); // set the destination
   },
   filename: function (req, file, callback) {
     const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -24,11 +24,25 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-router.post('/upload', upload.single('file'), function (req, res, next) {
+router.post('/upload', await upload.single('file'), function (req, res, next) {
   const img = req.file.filename;
   console.log('img :>> ', img);
+  if(!req.file) {
+    res.status(500).send({error: 'error occured'});
+    return next(req.originalUrl);
+  }
+  
+  console.log(req.body)
+  console.log(req.files)
+  console.log(req.file)
+  
+  // res.send('SUCCESS')
+  return res.status(200).send(req.file);
   // response return edilecek
-
+  // res.send('File uploaded successfully! -> filename = ' + req.file.filename);
+  // console.log(req.file);
+  // res.json({ fileUrl: 'http://192.168.0.7:3000/images/' + req.file.filename });
+  
 });
 
 /* login page */
@@ -139,7 +153,7 @@ router.get('/clone/:quizId', ensureAuthenticated, async (req, res) => {
   const datasetOld = await Query.getQuizDataset(oldQuizId);
   const newQuizId = await Query.cloneQuiz(datasetOld, userId);
   req.params.quizId = newQuizId;
-  res.redirect(307, '/edit/:quizId');
+  res.redirect(307, `/edit/${newQuizId}`);
 });
 
 // edit route

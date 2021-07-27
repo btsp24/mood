@@ -190,37 +190,91 @@
     Dropzone.prototype.defaultOptions.dictDefaultMessage = 'Drop files or click here to upload';
     Dropzone.prototype.defaultOptions.paramName = 'file';
     Dropzone.prototype.defaultOptions.url = '/upload';
-    Dropzone.prototype.defaultOptions.resizeWidth = 540;
-    // Dropzone.prototype.defaultOptions.thumbnailWidth = 540;
-    // Dropzone.prototype.defaultOptions.thumbnailHeight = 360;
+    Dropzone.prototype.defaultOptions.resizeWidth = 360;
     Dropzone.prototype.defaultOptions.thumbnailMethod= "contain";
+    Dropzone.prototype.defaultOptions.thumbnailHeight = 120;
     Dropzone.prototype.defaultOptions.acceptedFiles= 'image/jpeg, image/gif, image/png, image/bmp';
+    // Dropzone.prototype.defaultOptions.init = function() {
+    //         const mockFile = {
+    //                 name: 'FileName',
+    //                 size: '1000', 
+    //                 type: 'image/jpeg',
+    //                 accepted: true            // required if using 'MaxFiles' option
+    //             };
+    //             this.files.push(mockFile);    // add to files array
+    //             this.emit("addedfile", mockFile);
+    //             this.emit("thumbnail", mockFile, 'https://picsum.photos/180/120?random=0');
+    //             this.emit("complete", mockFile);
+    //           };
+
+              <% dataset.rows.forEach(function(question) { %>        
+                Dropzone.options.myDropzone<%=JSON.stringify(question.questionOrder) %> = {
+                  init : function() {
+                  const mockFile = {
+                    name: 'FileName',
+                    size: '1000', 
+                    type: 'image/jpeg',
+                    accepted: true            // required if using 'MaxFiles' option
+                };
+                this.files.push(mockFile);    // add to files array
+                this.emit("addedfile", mockFile);
+                this.emit("thumbnail", mockFile, '<%=question.imgURL %>');
+                this.emit("complete", mockFile);
+                this.on("success", function(file, serverResponse) {
+
+                  // Called after the file successfully uploaded.
+
+                  // If the image is already a thumbnail:
+                  this.emit('thumbnail', file, '/'+serverResponse.path);
+
+                  // If it needs resizing:
+                  // this.createThumbnailFromUrl(file, '/'+serverResponse.path);
+                });
+              }
+                }
+          
+                <% }); %>
+
     Dropzone.options.myDropzoneCover = {
-              resizeWidth: 180,
-              thumbnailWidth: 80,
-              thumbnailHeight: 80,
-};
+      resizeWidth: 180,
+      thumbnailWidth: 80,
+      thumbnailHeight: 80,
+      init : function() {
+            const mockFile = {
+                    name: 'FileName',
+                    size: '1000', 
+                    type: 'image/jpeg',
+                    accepted: true            // required if using 'MaxFiles' option
+                };
+                this.files.push(mockFile);    // add to files array
+                this.emit("addedfile", mockFile);
+                this.emit("thumbnail", mockFile, '<%=dataset.details.imgURL %>');
+                this.emit("complete", mockFile);
+                this.on("success", function(file, serverResponse) {
+
+                  // Called after the file successfully uploaded.
+
+                  // If the image is already a thumbnail:
+                  this.emit('thumbnail', file, '/'+serverResponse.path);
+
+                  // If it needs resizing:
+                  // this.createThumbnailFromUrl(file, '/'+serverResponse.path);
+    });
+
+              }
+    };
+    
 
     $(document).ready(function () {
-      // $('.dropzone').each(function(index){
-      //   $(this).dropzone({
-      //     url: '/upload',
-      //     paramName: 'file',
-      //     addRemoveLinks: true,
-      //     dictDefaultMessage: 'Drop files or click here to upload',
-      //     // ...
-      //   })
-      // });
-
-
+      
       const details = <%-JSON.stringify(dataset.details) %> ;
       const title = <%-JSON.stringify(dataset.details.title) %> ;
       const count = <%-JSON.stringify(dataset.count) %> ;
       const rows = <%-JSON.stringify(dataset.rows) %> ;
-      console.log('details.text :>> ', title);
-      console.log('count :>> ', count);
-      console.log('rows :>> ', rows);
-
+      // console.log('details.text :>> ', title);
+      // console.log('count :>> ', count);
+      // console.log('rows :>> ', rows);
+      
       $('#btn-quiz-done').click({
         details: details
       }, (event) => {
@@ -231,7 +285,7 @@
         newDetails.isVisible = $('[data-tag="isVisible"]').prop('checked');
         newDetails.isDraft = $('[data-tag="isDraft"]').prop('checked');
         newDetails.lobbyMusicId = $('[data-tag="lobbyMusicId"]').val();
-        // newDetails.imgURL = $('[data-tag="imgURL"]').prop(); // TODO: needs refactoring for dropzone
+        newDetails.imgURL = $('div.imgarea [data-dz-thumbnail]').prop('src'); // TODO: needs refactoring for dropzone
 
         console.table(newDetails);
 

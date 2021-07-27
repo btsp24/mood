@@ -279,7 +279,7 @@ class Query {
     return await Quiz.findByPk(quizId, { raw: true }); /* .toJSON(); */
   }
 
-  static async cloneQuizDataset(dataset, newComposerId) {
+  static async cloneQuiz(dataset, newComposerId) {
     if (newComposerId == null) {
       throw new Error('no composerId is given');
     }

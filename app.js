@@ -27,6 +27,7 @@ const { Query } = require('./utils/queries');
 const app = express();
 // share public dir
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static('uploads'));
 // cookie setup
 app.use(express.json());
 app.use(
