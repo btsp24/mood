@@ -47,8 +47,8 @@
         <div class="d-flex align-items-center justify-content-between px-0" role="group" aria-label="">
           <small class="text-muted"> <%= moment.utc(data.updatedAt, 'YYYY-MM-DD HH:mm:ss SS').fromNow() %></small>
           <% if (!data.editEnabled) { %>
-            <a id=""  class="btn btn-sm btn-info ms-2 px-3" href="/clone/<%= data.id %>"  role="button">CLONE</a>
-          <% } else { %> <a id="" class="btn btn-sm btn-danger ms-2 px-3" href="/delete/<%= data.id %>"  role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">DELETE</a>
+            <a id=""  class="btn btn-sm btn-info ms-2 px-3" data-id="<%= data.id %>" href="#"  role="button">CLONE</a>
+          <% } else { %> <a id="" class="btn btn-sm btn-danger ms-2 px-3" data-id="<%= data.id %>" href="#"  role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">DELETE</a>
             <a  id=""  class="btn btn-sm btn-primary ms-2 px-3" href="/edit/<%= data.id %>"  role="button">EDIT</a> <% }  %>  
           <% if (data.isDraft) { %>
           <a  id="" class="btn btn-sm btn-success ms-2 px-3 disabled" href="/lobby/<%= data.id %> " role="button">PLAY</a>

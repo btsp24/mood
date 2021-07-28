@@ -75,7 +75,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-        <a href="#" type="button" class="btn btn-danger btn-sm">Confirm</a>
+        <a id='confirmButton' href="" type="button" class="btn btn-danger btn-sm">Confirm</a>
       </div>
     </div>
   </div>
@@ -83,6 +83,32 @@
 
 
     <%- include('../partials/footer') %>
+<script>
+  $(document).ready(function () {
+    $('.btn-danger').on('click', function (e) {
+      const quizIdToDelete = $(this).data('id');
+      $('#confirmButton').on('click', () => {
+        $.ajax({
+          type: "DELETE",
+          url: `/delete/${quizIdToDelete}`,
+          success: function(msg){
+          }
+        });
+      })
+    })
+
+    $('.btn-info').on('click', function (e) {
+      const quizIdToClone = $(this).data('id');
+      $.ajax({
+        type: "PUT",
+        url: `/clone/${quizIdToClone}`,
+        success: function(msg){
+          }
+      });
+    })
+  });
+</script>
+
     <!--     <script>
       console.log('from :>> ', '🏡');
       // const socket = io();

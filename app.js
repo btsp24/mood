@@ -105,6 +105,7 @@ const players = new Players();
 const cookie = require('cookie');
 
 io.on('connection', socket => {
+  const topFivePlayers = [];
   console.log('socket@connection#107 :>> ', socket);
   const cookies = cookie.parse(socket.request.headers.cookie || '');
   // console.log('client connected socket.conn.id :>>', cookies);
@@ -366,7 +367,7 @@ io.on('connection', socket => {
         // sort descending
         return -(a.values.gameScore - b.values.gameScore);
       });
-      const topFivePlayers = [];
+      // const topFivePlayers = [];
       for (let i = 0; i < 5; i++) {
         const player = playerList[i];
         const aPlayerRecord = {
@@ -386,6 +387,10 @@ io.on('connection', socket => {
       io.to(game.pin).emit('nextQuestionPlayer');
       // io.emit('nextQuestionPlayer');
     }
+  });
+  
+  socket.on('getTopFive', () => {
+    socket.emit('TopFivePlayer', topFivePlayers);
   });
 
   // when host starts the game

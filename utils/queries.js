@@ -400,27 +400,58 @@ class Query {
     });
   }
 
+  static async deleteQuiz(quizToDelete) {
+    if (quizToDelete == null) {
+      throw new Error('no quizlist is given');
+    }
+    try {
+      // delete questions
+      const questionsToDelete = (
+        await Question.findAll({
+          where: { quizId:  quizToDelete },
+          attributes: ['id'],
+          raw: true,
+        })
+      ).map(q => q.id);
+      await this.deleteQuizQuestions(questionsToDelete);
+
+      await Quiz.destroy({
+        where: {
+          id: quizToDelete,
+        },
+      });
+    } catch (error) {
+    console.log('error :>> ', error);      
+    }
+    return true;
+  }
+
   static async deleteQuizzes(quizzesToDelete) {
     if (quizzesToDelete == null) {
       throw new Error('no quizlist is given');
     }
-    // delete questions
-    const questionsToDelete = (
-      await Question.findAll({
-        where: { quizId: { [Op.in]: quizzesToDelete } },
-        attributes: ['id'],
-        raw: true,
-      })
-    ).map(q => q.id);
-    await this.deleteQuizQuestions(questionsToDelete);
+    try {
+      // delete questions
+      const questionsToDelete = (
+        await Question.findAll({
+          where: { quizId: { [Op.in]: quizzesToDelete } },
+          attributes: ['id'],
+          raw: true,
+        })
+      ).map(q => q.id);
+      await this.deleteQuizQuestions(questionsToDelete);
 
-    await Quiz.destroy({
-      where: {
-        id: {
-          [Op.in]: quizzesToDelete,
+      await Quiz.destroy({
+        where: {
+          id: {
+            [Op.in]: quizzesToDelete,
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+    console.log('error :>> ', error);      
+    }
+    return true;
   }
 
   static async deleteQuizQuestions(questionsToDelete) {
