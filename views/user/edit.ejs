@@ -13,7 +13,7 @@
     <a class="navbar-brand" href="#">Question List</a>
     <nav class="nav nav-pills flex-column">
       <hr style="color: rgb(14, 119, 105); height: 3px" />
-      <ol >
+      <ol id='questionList'>
         <% dataset.rows.forEach(function(question){ %>
         <li id="navquestion<%= question.questionOrder %>">
           <a class="nav-link btn btn-primary" href="#question<%= question.questionOrder %>">Question
@@ -179,7 +179,7 @@
     </div>
   </div>
 
-  <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questionList">
+  <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questions">
     <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', { data:
       question}); %> <% }); %>
   </ol>
@@ -240,7 +240,7 @@
   </li>
 
 </ul>
- <div class="answer-templates" hidden>
+ <div id='answer-templates' hidden>
  <!-- true false  hidden -->
  <ul class="row trueFalse" style="margin-top: 30px;" data-tag="Answers" hidden>
   <li class="col-lg-6  row dborder " data-question-id="" data-id="">
@@ -375,64 +375,88 @@
 
     $(document).ready(function () {
       $('[data-tag="questionTypeId"]').on('change', function (e) {
-        const currentQId = $(this).closest('li').data('id');
-        const currentQNr = $(this).closest('li').data('questionOrder');
+        const currentQId = $(this).closest('li').attr('id');
+        const currentQNr = $(this).closest('li.col-lg-10').attr('id').substr(8);
+        console.log('currentQNr :>> ', currentQNr);
         const selectVal = e.target.value;
         let $el;
           // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
           // console.log('selectVal :>> ', e.target.value);
           if ($(this).val() == 1) {
             // true false
-            $el = $('ul.trueFalse').clone();
-            $el.toggleClass('trueFalse');
+            $el = $('#answer-templates ul.trueFalse').clone();
 
+            $el.toggleClass('trueFalse');
+            
             for (let i = 0; i < 2; i++) {
               $el.find('li').attr('data-id', function(index) { return uuid() });          
             }
-
+            
           } else {
             // multiple
-            $el = $('ul.multipleChoice').clone();
+            $el = $('#answer-templates ul.multipleChoice').clone();
+
             $el.toggleClass('multipleChoice');
               for (let i = 0; i < 4; i++) {
               $el.find('li').attr('data-id', function(index) { return uuid() });           
             }
           }
-          $el.attr('id',`question${currentQNr}Answers`)
-          .find('li').attr('id', function(index) {
+          $el.attr('id',`question${currentQNr}Answers`);
+          // console.log('$(el).prop("id") :>> ', $el.prop("id"));
+          $el.find('li').attr('id', function(index) {
+            // console.log(`question${currentQNr}Answers${index+1}`);
             return `question${currentQNr}Answers${index+1}`
           });
           $el.find('li').attr('data-question-id', currentQId );
-          $el.prop('hidden', false);
-          $el = $(this).closest('li').find('[data-tag="Answers"]').replaceWith($el);
+          $el.show().prop('hidden', false);
+          $(`#question${currentQNr}Answers`).replaceWith($el);
+          console.log(`#question${currentQNr}Answers`);
       })
 
       $('button.btn-success').on('click', function(e){
-        console.log('click on clone');
-        console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+        const newQueNr = $(this).closest('li').data('questionOrder')+1;
+        // clone question
+        // console.log('click on clone');
+        // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
         const hrClone = $(this).closest('li').next('hr').clone();
         const clone = $(this).closest('li').clone(true, true);
+
         const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
         $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
-        $(this).parent().parent().after(clone).after(hrClone);
+        $(this).closest('li').after(clone).after(hrClone);
         // hr.after(clone).after(hr);
         // call reorder nav and reorder questions function
+        updateQuestionOrder()
       })
 
       $('button.btn-primary').on('click', function(e){
-        console.log('click on add');
-        console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+        // add question
+        const currentQuizId = $(this).closest('li').data('quizId');
+        const newQueNr = $(this).closest('li').data('questionOrder')+1;
+        console.log('newQueNr', newQueNr);
+        // console.log('currentQId', currentQId);
+        // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
         const hrClone = $(this).closest('li').next('hr').clone();
         const qClone = $('ul.question-template li').clone(true, true);
-        const aClone = $('div.answer-templates ul.multipleChoice').clone(true, true);
-        qClone.find('.btngroup').before(aClone);
-        console.log(aClone);
-        $(this).parent().parent().after(qClone).after(hrClone).show();
-        // $(this).closest('li').remove();
+        qClone.prop('data-id', uuid());
+        qClone.prop('id', `question${newQueNr}`);
+        qClone.prop('data-quiz-id', currentQuizId );
+        qClone.find(`[data-tag="questionTypeId"] option[value="2"]`).prop({defaultSelected: true});
+        const aClone = $('#answer-templates ul.multipleChoice').clone(true, true).prop('hidden',false);
+        aClone.prop('id',`question${newQueNr}Answers`);
+        console.log('`question${newQueNr}Answers` :>> ', `question${newQueNr}Answers`);
+        qClone.find('.btngroup').before(aClone);        
+        const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
+        $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
+        // console.log(qClone.html());
+        $(this).closest('li').after(qClone).after(hrClone).show();
         // call reorder nav and reorder questions function
+        updateQuestionOrder()
+        $(`#question${newQueNr}questionTypeId option[value="2"]`).prop({defaultSelected: true});
       })
 
       $('button.btn-danger').on('click', function(e){
+        // delete question
         // console.log('click on delete');
         // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
         // console.log('$(this).closest("li"). :>> ', $(this).closest('li').prop('id'));
@@ -445,7 +469,52 @@
           $(`#nav${$(this).closest('li').prop('id')}`).remove();
         }
         // call reorder nav and reorder questions function
+        updateQuestionOrder()
       })
+
+      function updateQuestionOrder() {
+        // #questionList
+        $('#questionList li').prop('id', function(index) {
+          return `navquestion${index+1}`
+        })
+        $('#questionList li a').prop('href', function(index) {
+          return `#question${index+1}`
+        })
+        $('#questionList li a').text(function(index) {
+          return `Question ${index+1}`
+        });
+        // #questions
+        $('#questions>li').prop('id', function(index) {
+          return `question${index+1}`
+        })
+        $('#questions>li').prop('data-question-order', function(index) {
+          return `${index+1}`
+        })
+        $('#questions li>input').prop('id', function(index) {
+          return `question${index+1}text`
+        });
+        $('#questions li>ul [data-tag="timeLimitId"]').prop('id', function(index) {
+          return `timeLimitId${index+1}`
+        }); 
+        $('#questions li>ul [data-tag="imgURL"]').prop('id', function(index) {
+          return `my-dropzone${index+1}`
+        });             
+        $('#questions li>ul [data-tag="questionTypeId"]').prop('id', function(index) {
+          return `question${index+1}questionTypeId`
+        });             
+        $('#questions [data-tag="Answers"]').prop('id', function(index) {
+          return `question${index+1}Answers`
+        });
+
+        
+        // navClone.prop('id',`navquestion${currentQNr+1}`);
+        // navClone.find('a').prop('href',`#question${currentQNr+1}`);
+        // navClone.find('a').text(`Question ${currentQNr+1}`);
+        // aClone.attr('id', `question${currentQNr+1}Answers`);
+        // qClone.find('.btngroup').before(aClone).find('li').attr('id', function(index) {
+        //     return `question${currentQNr}Answers${index+1}`
+        //   });
+      }
 
       const details = <%-JSON.stringify(dataset.details) %> ;
       const title = <%-JSON.stringify(dataset.details.title) %> ;
