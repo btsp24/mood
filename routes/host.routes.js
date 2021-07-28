@@ -18,6 +18,7 @@ router.get('/lobby/:quizId', ensureAuthenticated, async function (req, res, next
   if (!!quizId && uuidValidate(quizId) && (await Query.quizExists(quizId))) {
     res.render('host/lobby', {
       title: 'quiz composer page',
+      audio: '/audio/peritune-spook4.mp3',
     });
   }
   // console.log('data :>> ', data);
@@ -56,7 +57,10 @@ son soruda game over a gidiyor
 router.get('/gameblock', function (req, res, next) {
   res.app.locals.user = req.user;
   console.log('req.user :>> ', req.user);
-  res.render('host/gameblock', { title: 'Teacher game block page questions comes' });
+  res.render('host/gameblock', {
+    title: 'Teacher game block page questions comes',
+    audio: '/audio/peritune-spook4.mp3',
+  });
 });
 
 /* host game over 

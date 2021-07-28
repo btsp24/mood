@@ -50,6 +50,10 @@ h2 {
   color: white;
 }
 */
+.hidden-modal{
+  display: none;
+}
+
 #question-field {
   border-style: groove;
   border-width: 1px;
