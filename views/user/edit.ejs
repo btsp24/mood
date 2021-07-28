@@ -380,8 +380,6 @@
         console.log('currentQNr :>> ', currentQNr);
         const selectVal = e.target.value;
         let $el;
-          // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
-          // console.log('selectVal :>> ', e.target.value);
           if ($(this).val() == 1) {
             // true false
             $el = $('#answer-templates ul.trueFalse').clone();
@@ -389,7 +387,7 @@
             $el.toggleClass('trueFalse');
             
             for (let i = 0; i < 2; i++) {
-              $el.find('li').attr('data-id', function(index) { return uuid() });          
+              $el.find('li').attr('data-id', function(index) { return $(this).attr('data-id') ?? uuid(); });          
             }
             
           } else {
@@ -398,13 +396,11 @@
 
             $el.toggleClass('multipleChoice');
               for (let i = 0; i < 4; i++) {
-              $el.find('li').attr('data-id', function(index) { return uuid() });           
+              $el.find('li').attr('data-id', function(index) { return $(this).attr('data-id') ?? uuid() });           
             }
           }
           $el.attr('id',`question${currentQNr}Answers`);
-          // console.log('$(el).prop("id") :>> ', $el.prop("id"));
           $el.find('li').attr('id', function(index) {
-            // console.log(`question${currentQNr}Answers${index+1}`);
             return `question${currentQNr}Answers${index+1}`
           });
           $el.find('li').attr('data-question-id', currentQId );
@@ -415,16 +411,12 @@
 
       $('button.btn-success').on('click', function(e){
         const newQueNr = $(this).closest('li').data('questionOrder')+1;
-        // clone question
-        // console.log('click on clone');
-        // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
         const hrClone = $(this).closest('li').next('hr').clone();
         const clone = $(this).closest('li').clone(true, true);
 
         const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
         $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
         $(this).closest('li').after(clone).after(hrClone);
-        // hr.after(clone).after(hr);
         // call reorder nav and reorder questions function
         updateQuestionOrder()
       })
@@ -433,9 +425,7 @@
         // add question
         const currentQuizId = $(this).closest('li').data('quizId');
         const newQueNr = $(this).closest('li').data('questionOrder')+1;
-        console.log('newQueNr', newQueNr);
-        // console.log('currentQId', currentQId);
-        // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
+
         const hrClone = $(this).closest('li').next('hr').clone();
         const qClone = $('ul.question-template li').clone(true, true);
         qClone.prop('data-id', uuid());
@@ -444,11 +434,10 @@
         qClone.find(`[data-tag="questionTypeId"] option[value="2"]`).prop({defaultSelected: true});
         const aClone = $('#answer-templates ul.multipleChoice').clone(true, true).prop('hidden',false);
         aClone.prop('id',`question${newQueNr}Answers`);
-        console.log('`question${newQueNr}Answers` :>> ', `question${newQueNr}Answers`);
+
         qClone.find('.btngroup').before(aClone);        
         const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
         $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
-        // console.log(qClone.html());
         $(this).closest('li').after(qClone).after(hrClone).show();
         // call reorder nav and reorder questions function
         updateQuestionOrder()
@@ -456,11 +445,6 @@
       })
 
       $('button.btn-danger').on('click', function(e){
-        // delete question
-        // console.log('click on delete');
-        // console.log('qOrders :>> ', $(this).closest('li').data('questionOrder'));
-        // console.log('$(this).closest("li"). :>> ', $(this).closest('li').prop('id'));
-        // console.log('sdsdfsd:>> ', $(`#nav${$(this).closest('li').prop('id')}`).html());
         const count = $('li.col-lg-10').length-1;
         console.log('count :>> ', count);
         if (count > 1) {
@@ -505,15 +489,6 @@
         $('#questions [data-tag="Answers"]').prop('id', function(index) {
           return `question${index+1}Answers`
         });
-
-        
-        // navClone.prop('id',`navquestion${currentQNr+1}`);
-        // navClone.find('a').prop('href',`#question${currentQNr+1}`);
-        // navClone.find('a').text(`Question ${currentQNr+1}`);
-        // aClone.attr('id', `question${currentQNr+1}Answers`);
-        // qClone.find('.btngroup').before(aClone).find('li').attr('id', function(index) {
-        //     return `question${currentQNr}Answers${index+1}`
-        //   });
       }
 
       const details = <%-JSON.stringify(dataset.details) %> ;
@@ -553,17 +528,27 @@
           }
         }
         for (let i = 1; i <= newCount; i++) {
+          const quizId = $(`#question${i}`).data('quizId') ?? uuid();
+          const questionId = $(`#question${i}`).data('id') ?? uuid();
+          const midObj = {};
+          midObj.text = $(`#question${i}text`).val();
+          midObj.questionTypeId = $(`#question${i}questionTypeId`).val();
+          midObj.timeLimitId = $(`#timeLimitId${i}`).val();
+          midObj.imgURL = $('div.dropzone [data-dz-thumbnail]').prop('src');  
+          midObj.quizId = quizId;  
+          midObj.id = questionId;  
+          midObj.questionOrder = i;
+          midObj.Answers = [];
+          newQuestions[i - 1] = midObj;
+/* 
           newQuestions[i - 1].text = $(`#question${i}text`).val();
           newQuestions[i - 1].questionTypeId = $(`#question${i}questionTypeId`).val();
           newQuestions[i - 1].timeLimitId = $(`#timeLimitId${i}`).val();
           newQuestions[i - 1].imgURL = $('div.dropzone [data-dz-thumbnail]').prop('src');  
-          const quizId = $(`#question${i}`).data('quizId') ?? uuid();
           newQuestions[i - 1].quizId = quizId;
-          const questionId = $(`#question${i}`).data('id') ?? uuid();
           newQuestions[i - 1].id = questionId;
           newQuestions[i - 1].questionOrder = i;
-
-
+ */
           const oldCountAnswer = newQuestions[i - 1].questionTypeId == 1 ? 2 : 4;
           const newCountAnswer = $(`#question${i}questionTypeId`).val() == 1 ? 2 : 4;
           const willDeleteAnswer = newCountAnswer - oldCountAnswer < 0 ? true : false;
@@ -575,16 +560,29 @@
             }
           }
           for (let j = 1; j <= newCountAnswer; j++) {
+            const answerId = $(`#question${i}Answers${j}`).data('id') ?? uuid();
+            const midAnsObj = {};
+            midAnsObj.text = $(`#question${i}Answers${j}text`).val();
+            midAnsObj.isCorrect = $(`#question${i}Answers${j}isCorrect`).prop(
+              'checked');
+            midAnsObj.questionId = questionId;
+            midAnsObj.id = answerId;
+            newQuestions[i - 1].Answers[j - 1] = midAnsObj;
+/* 
             newQuestions[i - 1].Answers[j - 1].text = $(`#question${i}Answers${j}text`).val();
             newQuestions[i - 1].Answers[j - 1].isCorrect = $(`#question${i}Answers${j}isCorrect`).prop(
               'checked');
             newQuestions[i - 1].Answers[j - 1].questionId = questionId;
-            const answerId = $(`#question${i}Answers${j}`).data('id') ?? uuid();
-            newQuestions[i - 1].Answers[j - 1].id = answerId;
+            newQuestions[i - 1].Answers[j - 1].id = answerId; 
+*/
+
           }
         };
         for (const q of newQuestions) {
-          // console.log('q :>> ', q);
+          console.log('q :>> ', q);
+          for (const a of q.Answers) {
+            console.log('a :>> ', a);
+          }
         }
       })
 
@@ -600,10 +598,7 @@
         // close opened sub-menus
         $('.collapse.show').toggleClass('show');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-
       });
-
-
     });
   </script>
 </body>
