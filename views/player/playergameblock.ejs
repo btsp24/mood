@@ -1,55 +1,76 @@
 <!DOCTYPE html>
 <html>
   <%- include('../partials/header', {title}); %>
-
-  <head>
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-  </head>
-  <style>
-    html,
-    body {
-      height: 90%;
-      padding: 0;
-      margin: 0;
-    }
-    button {
-      width: 50%;
-      height: 50%;
-      float: left;
-    }
-    #answer1 {
-      background-color: #4caf50;
-    }
-    #answer2 {
-      background-color: #f94a1e;
-    }
-    #answer3 {
-      background-color: #3399ff;
-    }
-    #answer4 {
-      background-color: #ff9933;
-    }
-  
-    #buttons {
-      text-align: center;
-    }
-    #nameText {
-      font-family: "Raleway", sans-serif;
-      padding: 0px 10px;
-    }
-    #scoreText {
-      font-family: "Raleway", sans-serif;
-      padding: 0px 10px;
-    }
-    #message {
-      font-family: "Raleway", sans-serif;
-      text-align: center;
-      font-size: 35px;
-    }
-  </style>
   <body>
-    <h1><%= title %></h1>
+        <!-- Answer Choices -->
+        <ul class="row" style="margin-top: 30px;" data-tag="Answers">
+          <li class="col-lg-6 row py-2 " data-question-id="" data-id="">
+              <div class="col-12 align-self-center ">
+                  <div class=" input-group px-2">
+                      <i> <img src="/images/kirmizi.png" alt=""></i>
+                      <input data-tag="text" class=" form-control form-control-lg" type="text" value="Answer-1"
+                          readonly
+                          style="background-color: #eb1c1c; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+                  </div>
+              </div>
+          </li>
+          <li class="col-lg-6 row  py-2 " data-question-id="" data-id="">
+              <div class="col-12 align-self-center ">
+                  <div class="input-group  px-2">
+                      <i><img src="/images/mavi.png" alt=""></i>
+                      <input data-tag="text" class=" form-control form-control-lg" type="text" value="Answer-2"
+                          readonly
+                          style="background-color: rgb(3, 81, 182); color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+                  </div>
+              </div>
+          </li>
+          <li class="col-lg-6 row py-2 " data-question-id="" data-id="">
+              <div class="col-12 align-self-center">
+                  <div class=" input-group px-2 ">
+                      <i><img src="/images/sari.png" alt=""></i>
+                      <input data-tag="text" class=" form-control form-control-lg" type="text" value="Answer-3"
+                          readonly
+                          style="background-color: #eec71a;; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+                  </div>
+              </div>
+          </li>
+          <li class="col-lg-6 row py-2  ">
+              <div class="col-12 align-self-center">
+                  <div class=" input-group px-2">
+                      <i><img src="/images/yesil.png" alt=""></i>
+                      <input data-tag="text" class=" form-control form-control-lg" type="text" value="Answer-4"
+                          readonly
+                          style="background-color: #228b03; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+                  </div>
+              </div>
+              </div>
+          </li>
+      </ul>
+      <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
+          <li class="col-6  row  ">
+              <div class="col-12 align-self-center">
+                  <div class=" input-group px-2">
+                      <i><img src="/images/yesil.png" alt=""></i>
+                      <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
+                          style="background-color: #228b03; color: white; font-weight: 500; border: none;">
+                  </div>
+              </div>
+          </li>
+          <li class="col-6 row " data-question-id="" data-id="">
+              <div class="col-12 align-self-center ">
+                  <div class=" input-group px-2">
+                      <i> <img src="/images/kirmizi.png" alt=""></i>
+                      <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
+                          style="background-color: #eb1c1c; color: white; font-weight: 500; border: none;">
+                  </div>
+              </div>
+          </li>
+      </ul>
+
+<!-- OLD STUFF -->
+<!-- OLD STUFF -->
+
+
     <div class="container"><div id="stats">
       <h4 id="nameText">Name:</h4>
       <h4 id="scoreText">Score:</h4>
@@ -157,7 +178,7 @@
     
       socket.on("playerGameData", function (data) {
         for (var i = 0; i < data.length; i++) {
-          if (data[i].playerId == socket.id) {
+          if (data[i].playerId == socket.io.engine.id) {
             document.getElementById("nameText").innerHTML = "Name: " + data[i].name;
             document.getElementById("scoreText").innerHTML =
               "Score: " + data[i].gameData.score;
