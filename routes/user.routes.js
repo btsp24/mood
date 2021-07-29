@@ -4,7 +4,8 @@ const router = express.Router();
 // const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const {
-  validate: uuidValidate
+  validate: uuidValidate, 
+  v4: uuidv4
 } = require('uuid');
 
 // Load User model
@@ -145,25 +146,28 @@ router.get('/logout', (req, res) => {
 
 router.put('/save/details',
   ensureAuthenticated, async (req, res) => {
-    const detailsToSave = req.body.details;
-    const quizIdToSave = detailsToSave.quizId;
+    const detailsToSave = JSON.parse(req.body.details);
+    const quizIdToSave = detailsToSave.id;
     if (!detailsToSave || !quizIdToSave) {
       res.status(412).send('missing parameters');
       return;
     }
-    await Query.updateQuizDetails(detailsToSave, quizIdToSave)
+    await Query.updateQuizDetails(detailsToSave, quizIdToSave);
     res.status(200).send('success');
   })
 
 router.put('/save/quiz',
   ensureAuthenticated, async (req, res) => {
-    const questionsToSave = req.body.rows;
+    const questionsToSave = JSON.parse(req.body.rows);
     const quizIdToSave = req.body.quizId;
+    const questionsToDelete = JSON.parse(req.body.questionsToDelete);
+    console.log('questionsToDelete :>> ', questionsToDelete);
     if (!questionsToSave || !quizIdToSave) {
       res.status(412).send('missing parameters');
       return;
     }
-    await Query.updateQuizQuestions(questionsToSave, quizIdToSave)
+    Promise.all([Query.deleteQuizQuestions(questionsToDelete), Query.updateQuizQuestions(questionsToSave, quizIdToSave)]);
+    // Query.updateQuizQuestions(questionsToSave, quizIdToSave);
     res.status(200).send('success');
   })
 
@@ -200,9 +204,6 @@ router.get('/edit/:quizId', ensureAuthenticated, async (req, res) => {
     res.status(412).send('missing parameters');
     return;
   }
-  // console.log('quizId :>> ', quizId);
-  // console.log('userId :>> ', userId);
-  // console.log('isQuizEditable :>> ', await Query.isQuizEditable(quizId, userId));
   if (!!quizId && uuidValidate(quizId) && (await Query.isQuizEditable(quizId, userId))) {
     // console.log('quizId  :>> ', quizId);
     dataset = await Query.getQuizDataset(quizId);
@@ -213,10 +214,39 @@ router.get('/edit/:quizId', ensureAuthenticated, async (req, res) => {
   });
 });
 
+router.get('/compose', ensureAuthenticated, async (req, res) => {
+  const quizId = uuidv4();
+  const userId = req.user.id;
+  const questionId = uuidv4();
+  if (!quizId || !userId) {
+    res.status(412).send('missing parameters');
+    return;
+  }
+  const dataset = {};
+  dataset.details = {id: quizId, composerId: userId, 
+    title: 'New Quiz', isVisible: false, isDraft: true};
+  dataset.rows = [
+    {quizId, id: questionId, text: 'New Question', questionOrder: 1, 
+      questionTypeId:2, timeLimitId: 2,
+      Answers: [
+        {questionId, id: uuidv4()},
+        {questionId, id: uuidv4()},
+        {questionId, id: uuidv4()},
+        {questionId, id: uuidv4()},
+      ]
+    }];
+  dataset.count = 1;
+
+  res.render('user/compose', {
+    title: 'quiz editor page',
+    dataset,
+  });
+});
+
 router.post('/add/details', async (req, res) => {
   const detailsToSave = req.body.details; // {details, rows}
-  const quizId = detailsToSave.quizId;
-  if (!questionsToSave || !quizId) {
+  const quizId = detailsToSave.id;
+  if (!detailsToSave || !quizId) {
     res.status(412).send('missing parameters');
     return;
   }
