@@ -4,7 +4,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=development npm start --trace-warnings",
+    "start": "NODE_ENV=development node . --trace-warnings",
     "dev": "nodemon app.js"
   },
   "dependencies": {
