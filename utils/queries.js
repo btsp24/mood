@@ -514,21 +514,13 @@ class Query {
     const theQuiz = await Quiz.findByPk(theQuizId);
     const question = await theQuiz.getQuestions({
       where: { quizId: theQuizId, questionOrder: qNumber },
-      attributes: [
-        'quizId',
-        'id',
-        'text',
-        'questionOrder',
-        [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
-        [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
-        [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
-        'questionTypeId',
-        'timeLimitId',
-        'imgURL',
-        'imgAltText',
-        'imgCredit',
-        'createdAt',
-      ],
+      attributes: {
+        include: [
+          [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
+          [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
+          [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
+        ]
+      },
       include: [
         {
           model: TimeLimit,
@@ -603,7 +595,6 @@ class Query {
     return !!result;
   }
 
-  // needs refactoring
   static async savePlayerQuestionScore(playerId, questionId, answerId, questionScore) {
     try {
       const [pQ, createdPQ] = await PlayerQuestion.findOrCreate({
@@ -644,6 +635,9 @@ class Query {
           gameScore,
         },
       });
+      if (!created) {
+        player.update({gameScore});
+      }
       return true;
     } catch (error) {
       console.log('error :>> ', error);
@@ -659,13 +653,27 @@ class Query {
       throw new Error('no question number is given');
     }
     try {
-      const quizId = await Game.findOne({ where: { gameId }, attributes: ['quizId'], raw: true });
-      const playerListInGame = await Player.findAll({ where: { gameId }, attributes: ['id'], raw: true });
-      const questionId = await Question.findOne({ where: { quizId, questionOrder: qNumber } });
+      const {quizId} = await Game.findOne({ where: { id: gameId }, attributes: ['quizId'], raw: true });
+      console.log('#657 quizId :>> ', quizId);
+      const playerListInGame = (await Player.findAll({ where: { gameId }, attributes: ['id'], raw: true })).map((e) => {return e.id});
+      console.log('#659 playerListInGame :>> ', playerListInGame);
+      const {id: questionId} = await Question.findOne({ where: { quizId, questionOrder: qNumber }, attributes: ['id'], raw: true });
+      console.log('#661 questionId :>> ', questionId);
       const playerQuestionScores = await PlayerQuestion.findAll({
-        where: { questionId, playerId: { [Op.in]: playerListInGame } },
+        where: { questionId, playerId: { [Op.in]: playerListInGame }},
+        attributes: [
+          'questionScore',
+            // [sequelize.fn('MAX', sequelize.col('Player.nickName')), 'PlayerNickname'],        
+          ],
+          include: {
+            model: Player,
+            attributes: [['nickName','Player Nickname']]
+          },
+          order: [['questionScore', 'DESC']],
+          raw: true
       });
       console.log('playerQuestionScores :>> ', playerQuestionScores);
+      return playerQuestionScores;
     } catch (error) {
       console.log('error :>> ', error);
     }

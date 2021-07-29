@@ -300,7 +300,7 @@ io.on('connection', socket => {
 
   socket.on('getScore', async () => {
     const player = players.getPlayer(socket.conn.id);
-    player.values.quizScore += player.values.questionScore;
+    player.values.gameScore += player.values.questionScore;
     const hostId = player.hostId;
     const game = games.getGame(hostId);
     const quizId = game.values.quizId;
@@ -314,6 +314,7 @@ io.on('connection', socket => {
       player.values.answerId,
       player.values.questionScore
     );
+    await Query.savePlayerGameScore(socket.conn.id, game.values.gameId, player.values.gameScore);
     socket.emit('newScore', player.values.questionScore);
     player.values.questionScore = 0;
   });
