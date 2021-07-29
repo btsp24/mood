@@ -6,61 +6,12 @@
         <title>
             <%= title %>
         </title>
-        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel='stylesheet' href='/stylesheets/styleBlock.css' />
     </head>
 
     <body>
-        <style>
-            #answer1 {
-                background-color: #4CAF50;
-                margin: auto;
-                padding: 30px 20px;
-                height: 50%;
-                font-family: 'Raleway', sans-serif;
-                font-size: 20px;
-            }
-
-            #answer2 {
-                background-color: #f94a1e;
-                margin: auto;
-                padding: 30px 20px;
-                height: 50%;
-                font-family: 'Raleway', sans-serif;
-                font-size: 20px;
-            }
-
-            #answer3 {
-                background-color: #3399ff;
-                margin: auto;
-                padding: 30px 20px;
-                height: 50%;
-                font-family: 'Raleway', sans-serif;
-                font-size: 20px;
-            }
-
-            #answer4 {
-                background-color: #ff9933;
-                margin: auto;
-                padding: 30px 20px;
-                height: 50%;
-                font-family: 'Raleway', sans-serif;
-                font-size: 20px;
-            }
-
-            .square {
-                border: none;
-                padding: 15px 32px;
-                text-align: center;
-                text-decoration: none;
-                display: none;
-                font-size: 16px;
-                margin: 4px 2px;
-                width: 70px;
-                height: 0px;
-                font-size: 20px;
-            }
-
-            #square1 {
+<style>
+        #square1 {
                 background-color: #4CAF50;
             }
 
@@ -75,104 +26,190 @@
             #square4 {
                 background-color: #ff9933;
             }
-
-            #nextQButton {
-                display: none;
-            }
-
-            #question {
-                font-family: 'Raleway', sans-serif;
-            }
-
-            #timerText {
-                font-family: 'Raleway', sans-serif;
-            }
-
-            #num {
-                font-family: 'Tajawal', sans-serif;
-                font-size: 35px;
-            }
-
-            #playersAnswered {
-                font-family: 'Tajawal', sans-serif;
-            }
-
-            #questionNum {
-                font-family: 'Tajawal', sans-serif;
-            }
-
-            #winner1 {
-                font-family: 'Raleway', sans-serif;
+            .square {
+                border: none;
+                padding: 15px 32px;
                 text-align: center;
-                font-size: 30px;
+                text-decoration: none;
                 display: none;
-            }
-
-            #winner2 {
-                font-family: 'Raleway', sans-serif;
-                text-align: center;
-                font-size: 22px;
-                display: none;
-            }
-
-            #winner3 {
-                font-family: 'Raleway', sans-serif;
-                text-align: center;
+                font-size: 16px;
+                margin: 4px 2px;
+                width: 70px;
+                height: 0px;
                 font-size: 20px;
-                display: none;
             }
+</style>
+        <ol class=" container-fluid " type="none" id="questionList">
+            <div class="row">
+                <div class=" col-10 col-md-11 py-3 px-3" data-quiz-id="uuidv4-xxxxx" data-id="id"
+                    data-composer-id="uuidv4-xxxxx" data-question-order="questionOrder" style="align-items: center;">
 
-            #winner4 {
-                font-family: 'Raleway', sans-serif;
-                text-align: center;
-                display: none;
-            }
+                    <p data-tag="text" class="qq border rounded  form-control-lg d-lg-flex "
+                        style="margin-left: 10px; text-align: center; font-weight: 600; font-size:x-large;"
+                        id="questionText">
+                        Lorem ipsum dolor sit amet consectetur,
+                        adipisicing elit. Dolorum aut explicabo eligendi nam itaque voluptatum
+                        consectetur exercitationem, consequatur aliquid facere ea!
+                        Magnam amet fuga magni exercitationem deserunt at distinctio ut.
 
-            #winner5 {
-                font-family: 'Raleway', sans-serif;
-                text-align: center;
-                display: none;
-            }
+                    </p>
 
-            #winnerTitle {
-                text-align: center;
-                font-family: 'Raleway', sans-serif;
-                font-size: 35px;
-                color: #3399ff;
-                display: none;
-            }
-        </style>
-        <h1>
-            <%= title %>
-        </h1>
-        <h4 id="questionNum">Question 1 / x</h4>
-        <h4 id="playersAnswered">Players Answered: 0 / x</h4>
-        <h3 id="timerText">Time Left:<span id="num"> 20</span></h3>
+                </div>
+
+                <div class=" col-2 col-md-1  player">
+
+                    <div class="pbuttons">
+
+                        <div class="playpause-track" onclick="playpauseTrack()"><i class="fas fa-play-circle fa-2x"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="slider_container">
+
+                        <button class="sound-icon" onclick=showDiv()><i class="fas fa-volume-up"></i></button>
+
+                        <!-- <i class=" control-2 fas fa-volume-down"></i> -->
+                        <input id="sound" type="range" min="0" max="100" value="75" class="volume_slider"
+                            onchange="setVolume()">
+                        <!-- <i class="control-1 fas fa-volume-up"></i> -->
+
+                    </div>
+                </div>
 
 
-        <div class="square" id="square1"></div>
-        <div class="square" id="square2"></div>
-        <div class="square" id="square3"></div>
-        <div class="square" id="square4"></div>
+            </div>
+            <section class="ana">
+                <ul class="row qinfo col-12" style="margin-top: 25px" type="none">
 
-        <h2 id="question">Question</h2>
-        <h3 id="answer1">Answer</h3>
-        <br>
-        <h3 id="answer2">Answer</h3>
-        <br>
-        <h3 id="answer3">Answer</h3>
-        <br>
-        <h3 id="answer4">Answer</h3>
 
-        <br>
-        <button onclick="nextQuestion()" id="nextQButton">Next Question</button>
+                    <div class=" col-3 px-0 countdown">
 
-        <h2 id="winnerTitle">Top 5 Players</h4>
-            <h3 id="winner1">1.</h3>
-            <h3 id="winner2">2.</h3>
-            <h3 id="winner3">3.</h3>
-            <h3 id="winner4">4.</h3>
-            <h3 id="winner5">5.</h3>
+
+                        <svg width="125" height="125">
+                            <circle cx="62.5" cy="62.5" r="50" fill="rgb(39, 1, 100)" />
+                            <text id="time" x="50%" y="50%" text-anchor="middle" fill="white" font-size="50px"
+                                font-family="Arial" dy=".3em"></text>
+                            Sorry, your browser does not support inline SVG.
+                        </svg>
+
+
+                    </div>
+
+                    <div class=" col-6 border-success border-1 imgarea">
+                        <div class="square" id="square1"></div>
+                        <div class="square" id="square2"></div>
+                        <div class="square" id="square3"></div>
+                        <div class="square" id="square4"></div>
+                        <img src="./images/img.png" alt="" data-tag="imgURL" class="img-fluid " id="mainImage">
+                        <!-- <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
+            
+                                <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or
+                                    click to upload</span> -->
+                    </div>
+
+                  
+
+                    <div class="col-3">
+                        <button onclick="nextQuestion()"
+                            class="btn btn-primary text-uppercase bg-primary bg-gradient border rounded shadow  "
+                            id="btn-settings" type="button" style="margin-left: 40%">
+                            Move
+                        </button>
+
+                    </div>
+
+                </ul>
+
+                <!-- Answer Choices -->
+                <ul class="row" style="margin-top: 30px;" data-tag="Answers">
+                    <li class="col-lg-6 row py-2 " data-question-id="" data-id="">
+
+
+                        <div class="col-12 align-self-center ">
+                            <div class=" input-group px-2">
+                                <i> <img src="./images/kirmizi.png" alt=""></i>
+                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                    value="Answer-1" readonly id="answer1"
+                                    style="background-color: #eb1c1c; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <li class="col-lg-6 row  py-2 " data-question-id="" data-id="">
+
+                        <div class="col-12 align-self-center ">
+                            <div class="input-group  px-2">
+                                <i><img src="./images/mavi.png" alt=""></i>
+                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                    value="Answer-2" readonly id="answer2"
+                                    style="background-color: rgb(3, 81, 182); color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="col-lg-6 row py-2 " data-question-id="" data-id="">
+
+                        <div class="col-12 align-self-center">
+                            <div class=" input-group px-2 ">
+                                <i><img src="./images/sari.png" alt=""></i>
+                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                    value="Answer-3" readonly id="answer3"
+                                    style="background-color: #eec71a;; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+
+
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <li class="col-lg-6 row py-2  ">
+
+                        <div class="col-12 align-self-center">
+                            <div class=" input-group px-2">
+                                <i><img src="./images/yesil.png" alt=""></i>
+                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                    value="Answer-4" readonly id="answer4"
+                                    style="background-color: #228b03; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+
+                            </div>
+                        </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
+
+                    <li class="col-6  row  ">
+                        <div class="col-12 align-self-center">
+                            <div class=" input-group px-2">
+                                <i><img src="./images/yesil.png" alt=""></i>
+                                <input data-tag="text" class=" form-control form-control-lg" type="text" value="True"
+                                    readonly
+                                    style="background-color: #228b03; color: white; font-weight: 500; border: none;"
+                                    </div>
+                            </div>
+
+                    </li>
+
+                    <li class="col-6 row " data-question-id="" data-id="">
+
+                        <div class="col-12 align-self-center ">
+
+                            <div class=" input-group px-2">
+                                <i> <img src="./images/kirmizi.png" alt=""></i>
+                                <input data-tag="text" class=" form-control form-control-lg" type="text" value="False"
+                                    readonly
+                                    style="background-color: #eb1c1c; color: white; font-weight: 500; border: none;">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
 
             <%- include('../partials/footer') %>
 
@@ -188,8 +225,9 @@
 
                     var timer;
 
-                    var time = 20;
+                    var time;
                     console.log(params)
+
                     //When host connects to server
                     socket.on('connect', function () {
 
@@ -203,31 +241,34 @@
 
                     socket.on('gameQuestion', function (data) {
                         console.log("xx", data)
-                        document.getElementById('question').innerHTML = data.question.text;
+                        document.getElementById('questionText').innerHTML = data.question.text;
+                        document.getElementById('mainImage').src = data.question.imgURL;
+                        
                         if (data.count == 2) {
-                            document.getElementById('answer1').innerHTML = data.rows[0].text;
-                            document.getElementById('answer2').innerHTML = data.rows[1].text;
-                            document.getElementById('answer3').innerHTML = "null"
-                            document.getElementById('answer4').innerHTML = "null"
+                            document.getElementById('answer1').value = data.rows[0].text;
+                            document.getElementById('answer2').value = data.rows[1].text;
+                            document.getElementById('answer3').value = "null"
+                            document.getElementById('answer4').value = "null"
                         }
                         if (data.count == 4) {
-                            document.getElementById('answer1').innerHTML = data.rows[0].text;
-                            document.getElementById('answer2').innerHTML = data.rows[1].text;
-                            document.getElementById('answer3').innerHTML = data.rows[2].text;
-                            document.getElementById('answer4').innerHTML = data.rows[3].text;
+                            document.getElementById('answer1').value = data.rows[0].text;
+                            document.getElementById('answer2').value = data.rows[1].text;
+                            document.getElementById('answer3').value = data.rows[2].text;
+                            document.getElementById('answer4').value = data.rows[3].text;
+
                         }
 
                         var correctAnswer = data.correct;
-                        document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
-                        updateTimer();
+                        //document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
+                        updateTimer(data.question.timer);
                     });
 
                     socket.on('updatePlayersAnswered', function (data) {
-                        document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
+                        //document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
                     });
 
                     socket.on('questionOver', function (playerData, correct) {
-                        console.log("45051",playerData, correct)
+                        console.log("45051", playerData, correct)
                         clearInterval(timer);
                         var answer1 = 0;
                         var answer2 = 0;
@@ -235,8 +276,8 @@
                         var answer4 = 0;
                         var total = 0;
                         //Hide elements on page
-                        document.getElementById('playersAnswered').style.display = "none";
-                        document.getElementById('timerText').style.display = "none";
+                        //document.getElementById('playersAnswered').style.display = "none";
+                        //document.getElementById('timerText').style.display = "none";
 
                         //Shows user correct answer with effects on elements
                         if (correct[0].answerOrder == 1) {
@@ -283,7 +324,7 @@
                         answer2 = answer2 / total * 100;
                         answer3 = answer3 / total * 100;
                         answer4 = answer4 / total * 100;
-
+                        document.getElementById('mainImage').style.display = "none";
                         document.getElementById('square1').style.display = "inline-block";
                         document.getElementById('square2').style.display = "inline-block";
                         document.getElementById('square3').style.display = "inline-block";
@@ -294,12 +335,14 @@
                         document.getElementById('square3').style.height = answer3 + "px";
                         document.getElementById('square4').style.height = answer4 + "px";
 
-                        document.getElementById('nextQButton').style.display = "block";
+                        //document.getElementById('nextQButton').style.display = "block";
 
                     });
 
                     function nextQuestion() {
-                        document.getElementById('nextQButton').style.display = "none";
+                        console.log("alo")
+                        //document.getElementById('nextQButton').style.display = "none";
+                        document.getElementById('mainImage').style.display = "inline-block";
                         document.getElementById('square1').style.display = "none";
                         document.getElementById('square2').style.display = "none";
                         document.getElementById('square3').style.display = "none";
@@ -310,23 +353,24 @@
                         document.getElementById('answer3').style.filter = "none";
                         document.getElementById('answer4').style.filter = "none";
 
-                        document.getElementById('playersAnswered').style.display = "block";
-                        document.getElementById('timerText').style.display = "block";
-                        document.getElementById('num').innerHTML = " 20";
+                        //document.getElementById('playersAnswered').style.display = "block";
+                        //document.getElementById('timerText').style.display = "block";
+                        //document.getElementById('time').innerHTML = " 20";
                         socket.emit('nextQuestion'); //Tell server to start new question
                     }
 
-                    function updateTimer() {
-                        time = 20;
+                    function updateTimer(timeVal) {
+                        time = timeVal
                         timer = setInterval(function () {
                             time -= 1;
-                            document.getElementById('num').textContent = " " + time;
+                            document.getElementById('time').textContent = " " + time;
                             if (time == 0) {
                                 socket.emit('timeUp');
                             }
                         }, 1000);
                     }
                     socket.on('GameOver', function (data) {
+                        window.location.href = "/podium"
                         console.log(data)
                         document.getElementById('nextQButton').style.display = "none";
                         document.getElementById('square1').style.display = "none";
@@ -338,9 +382,9 @@
                         document.getElementById('answer2').style.display = "none";
                         document.getElementById('answer3').style.display = "none";
                         document.getElementById('answer4').style.display = "none";
-                        document.getElementById('timerText').innerHTML = "";
+                        //document.getElementById('timerText').innerHTML = "";
                         document.getElementById('question').innerHTML = "GAME OVER";
-                        document.getElementById('playersAnswered').innerHTML = "";
+                        //document.getElementById('playersAnswered').innerHTML = "";
 
 
 

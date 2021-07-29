@@ -381,6 +381,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("nextQuestion", async () => {
+    console.log("next")
     //const playerList = players.getPlayers(socket.conn.id);
     for (const player of players.players) {
       if (player.hostId === socket.conn.id) {
@@ -427,7 +428,10 @@ io.on("connection", (socket) => {
       // check the counter implementation
       if(theGame.pin){
         io.emit("GameOver", topFivePlayers);
+
       }
+
+ 
       
     }
     if (theGame.pin) {
@@ -435,6 +439,57 @@ io.on("connection", (socket) => {
       // io.emit('nextQuestionPlayer');
     }
   });
+
+  // socket.on("podium",async()=>{
+    
+  //   for (const player of players.players) {
+  //     if (player.hostId === socket.conn.id) {
+  //       player.values.answerId = null;
+  //     }
+  //   }
+  //   const theGame = games.getGame(socket.conn.id);
+  //   theGame.values.playersAnswered = 0;
+  //   theGame.values.questionLive = true;
+  //   theGame.values.questionNumber += 1;
+  //   if (theGame.values.questionNumber <= theGame.values.questionCount) {
+  //     const currentQuestion =
+  //       await Query.getAnswersOfQuestionByQuizIdAndQNumber(
+  //         theGame.values.quizId.id,
+  //         theGame.values.questionNumber
+  //       );
+  //     console.log("currentQuestion#354 :>> ", currentQuestion);
+  //     socket.emit("gameQuestion", {
+  //       ...currentQuestion,
+  //       playersInGame: players.count(),
+  //     });
+  //   } else {
+  //     const playerList = players.getPlayers(theGame.hostId);
+  //     console.log("////////////////////",playerList,theGame,theGame.hostId)
+  //     playerList.sort((a, b) => {
+  //       // sort descending
+  //       return -(a.values.gameScore - b.values.gameScore);
+  //     });
+  //     const topFivePlayers = [];
+  //     for (let i = 0; i < playerList.length; i++) {
+  //       const player = playerList[i];
+  //       console.log("////////////////////",player)
+  //       const aPlayerRecord = {
+  //         pos: i + 1,
+  //         name: player.name,
+  //         gameScore: player.values.gameScore,
+  //         correctAnswerCount: player.values.correctAnswerCount,
+  //         questionCount: theGame.values.questionCount,
+  //       };
+  //       console.log("aPlayerRecord#375 :>> ", aPlayerRecord);
+  //       topFivePlayers.push(aPlayerRecord);
+  //     }
+
+  //   console.log("****top5",topFivePlayers)
+  //     io.emit("podiumtake", topFivePlayers);
+
+    
+  // })
+
 
   // when host starts the game
   socket.on("startGame", () => {

@@ -68,4 +68,10 @@ router.get('/gameover', function (req, res, next) {
   res.render('host/gameover', { title: 'Teacher game over' });
 });
 
+router.get('/podium', function (req, res, next) {
+  res.app.locals.user = req.user;
+  console.log('req.user :>> ', req.user);
+  res.render('host/podium', { title: 'Teacher game over' });
+});
+
 module.exports = router;

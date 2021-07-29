@@ -503,28 +503,68 @@ class Query {
     return theQuestion;
   }
 
-  static async getAnswersOfQuestionByQuizIdAndQNumber(
-    theQuizId,
-    qNumber,
-    random = true
-  ) {
+  static async getAnswersOfQuestionByQuizIdAndQNumber(theQuizId, qNumber, random = true) {
     if (theQuizId == null) {
-      throw new Error("no quizId is given");
+      throw new Error('no quizId is given');
     }
-    const question = await Question.findOne({
+    const theQuiz = await Quiz.findByPk(theQuizId);
+    const question = await theQuiz.getQuestions({
       where: { quizId: theQuizId, questionOrder: qNumber },
+      attributes: [
+        'quizId',
+        'id',
+        'text',
+        'questionOrder',
+        [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
+        [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
+        [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
+        // 'questionTypeId',
+        'timeLimitId',
+        'imgURL',
+        'imgAltText',
+        'imgCredit',
+        'createdAt',
+      ],
+      include: [
+        {
+          model: TimeLimit,
+          attributes: [],
+        },
+        {
+          model: Answer,
+          attributes: [],
+        },
+        {
+          model: QuestionType,
+          attributes: [],
+        },
+      ],
+      group: [
+        'Question.quizId',
+        'Question.id',
+        'Question.questionOrder',
+        'Question.text',
+        'Question.imgURL',
+        'Question.imgAltText',
+        'Question.imgCredit',
+        'Question.createdAt',
+        'Question.questionTypeId',
+        'Question.timeLimitId',
+      ],
+      order: ['questionOrder'],
       raw: true,
     });
-    const count = question.questionTypeId == 1 ? 2 : 4; // const count = await Answer.count({ where: { questionId: question.id } });
+    const count = question[0].questionTypeId == 1 ? 2 : 4;
+    // const count = await Answer.count({ where: { questionId: question.id } });
     const rows = [];
     for (const answer of await Answer.findAll({
-      where: { questionId: question.id },
-      order: random ? sequelize.random() : "",
+      where: { questionId: question[0].id },
+      order: random ? sequelize.random() : '',
       raw: true,
     })) {
       rows.push(answer);
     }
-    return { question, count, rows };
+    return { question: question[0], count, rows };
   }
 
   static async isAnswerCorrect(questionId, answerId) {
