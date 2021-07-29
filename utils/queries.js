@@ -511,21 +511,64 @@ class Query {
     if (theQuizId == null) {
       throw new Error('no quizId is given');
     }
-    const question = await Question.findOne({
+    const theQuiz = await Quiz.findByPk(theQuizId);
+    const question = await theQuiz.getQuestions({
       where: { quizId: theQuizId, questionOrder: qNumber },
+      attributes: [
+        'quizId',
+        'id',
+        'text',
+        'questionOrder',
+        [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
+        [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
+        [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
+        'questionTypeId',
+        'timeLimitId',
+        'imgURL',
+        'imgAltText',
+        'imgCredit',
+        'createdAt',
+      ],
+      include: [
+        {
+          model: TimeLimit,
+          attributes: [],
+        },
+        {
+          model: Answer,
+          attributes: [],
+        },
+        {
+          model: QuestionType,
+          attributes: [],
+        },
+      ],
+      group: [
+        'Question.quizId',
+        'Question.id',
+        'Question.questionOrder',
+        'Question.text',
+        'Question.imgURL',
+        'Question.imgAltText',
+        'Question.imgCredit',
+        'Question.createdAt',
+        'Question.questionTypeId',
+        'Question.timeLimitId',
+      ],
+      order: ['questionOrder'],
       raw: true,
     });
-    const count = question.questionTypeId == 1 ? 2 : 4;
+    const count = question[0].questionTypeId == 1 ? 2 : 4;
     // const count = await Answer.count({ where: { questionId: question.id } });
     const rows = [];
     for (const answer of await Answer.findAll({
-      where: { questionId: question.id },
+      where: { questionId: question[0].id },
       order: random ? sequelize.random() : '',
       raw: true,
     })) {
       rows.push(answer);
     }
-    return { question, count, rows };
+    return { question: question[0], count, rows };
   }
 
   static async isAnswerCorrect(questionId, answerId) {
@@ -563,33 +606,40 @@ class Query {
   // needs refactoring
   static async savePlayerQuestionScore(playerId, questionId, answerId, questionScore) {
     try {
-      await PlayerQuestion.findOrCreate({
+      const [pQ, createdPQ] = await PlayerQuestion.findOrCreate({
         where: {
           playerId,
           questionId,
         },
-        defaults: { playerId, questionId, questionScore: questionScore },
+        defaults: { playerId, questionId,  questionScore },
       });
-      await PlayerAnswer.findOrCreate({
+      console.log('#537 createdPQ:>> ', createdPQ, pQ.toJSON() );
+      if (!createdPQ) {
+        pQ.update({questionScore});
+      }
+      const [pA, createdPA] = await PlayerAnswer.findOrCreate({
         where: {
           playerId,
           questionId,
         },
         defaults: { playerId, questionId, answerId },
       });
+      if (!createdPA) {
+        pA.update({answerId});
+      }
       return true;
     } catch (error) {
-      console.log('error :>> ', error);
+      console.log('#582 error :>> ', error);
       return false;
     }
   }
 
   static async savePlayerGameScore(playerId, gameId, gameScore) {
     try {
-      await Player.findOrCreate({
-        where: { playerId, gameId },
+     const [player, created] = await Player.findOrCreate({
+        where: { id: playerId, gameId },
         defaults: {
-          playerId,
+          id: playerId,
           gameId,
           gameScore,
         },
