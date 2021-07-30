@@ -6,7 +6,7 @@
 
 
 
-#my-dropzone,  #my-dropzone-cover { 
+#my-dropzone-cover { 
 
   height: 180px;
   margin-top: 20px;
@@ -460,8 +460,8 @@ a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active:focus {
     .dropzone .dz-preview .dz-image {
       border-radius: 20px;
       overflow: hidden;
-      width: 100%;
-      height: 360px;
+     /*  width: 100%; */
+      /* height: 120px; */
       position: relative;
       display: flex;
       z-index: 10; }
