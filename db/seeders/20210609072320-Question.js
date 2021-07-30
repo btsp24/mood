@@ -21,9 +21,9 @@ module.exports = {
           questionOrder: qId + 1,
           questionTypeId,
           timeLimitId: Math.floor(1 + Math.random() * 7),
-          imgURL: `https://picsum.photos/180/120?random=${qId}`,
-          imgAltText: 'picsum.photos/',
-          imgCredit: 'downloaded from https://picsum.photos',
+          imgURL: '/images/540x360.png',
+          imgAltText: 'placeholder img',
+          imgCredit: 'placeholder image',
           createdAt: date,
           updatedAt: date,
         };
