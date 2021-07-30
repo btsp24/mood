@@ -91,7 +91,7 @@
   </nav>
 
   <!--                   MODAL CODES                    -->
-  <div class="modal fade bd-example-modal-lg" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true"
+  <div id="modal-details" class="modal fade bd-example-modal-lg" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true"
     data-bs-whatever="" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -543,9 +543,9 @@
           dataType: 'json', // Set datatype - affects Accept header
           url: `/save/details`,
           data: {details: JSON.stringify(newDetails)},
-          success: function(msg){
-            detailsSaved = true;
-          }
+        }).done(function() {
+          detailsSaved = true;
+          $('#modal-details').modal('hide'); 
         });
       })
 
@@ -606,19 +606,18 @@
             // newQuestions[i - 1].Answers[j - 1] = midAnsObj;
           }
         };
-        // if (!detailsSaved) {
-        //   $('#btn-quiz-done').click();
-        // }
+        if (!detailsSaved) {
+          $('#btn-quiz-done').click();
+        }
         console.log('questionsToDelete :>> ', questionsToDelete);
           $.ajax({
             type: "put",
             dataType: 'json', // Set datatype - affects Accept header
             url: `/save/quiz`,
             data: {rows: JSON.stringify(newQuestions), questionsToDelete: JSON.stringify(questionsToDelete), quizId},
-            success: function(msg) {
-              alert(msg);
-            }
-          });
+          }).done(function() {
+            window.location.href = '/home'
+        });
       })
 
       // side menu ui animation

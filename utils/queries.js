@@ -72,7 +72,6 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      // const rec = quiz.toJSON();
       quiz.editEnabled = true;
       rows.push(quiz);
     }
@@ -123,7 +122,6 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      // const rec = quiz.toJSON();
       quiz.editEnabled = true;
       rows.push(quiz);
     }
@@ -134,7 +132,7 @@ class Query {
     if (composerId == null) {
       throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(composerId);
+    // const theUser = await User.findByPk(composerId);
     const count = await Quiz.count({
       where: {
         composerId: {
@@ -178,10 +176,7 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      // const rec = quiz.toJSON();
-      // rec.editEnabled = false;
       quiz.editEnabled = false;
-      // rows.push(rec);
       rows.push(quiz);
     }
     return { count, rows };
@@ -349,7 +344,20 @@ class Query {
     if (details == null) {
       throw new Error('no detail data is given');
     }
-    await Quiz.update(details, { where: { id: quizId } });
+    try {
+      const [QD, createdQD] = await Quiz.findOrCreate({
+        where: { id: quizId },
+        defaults: details,
+      });
+      console.log('#5 createdQD:>> ', createdQD, QD.toJSON() );
+      if (!createdQD) {
+        QD.update(details);
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+    // old code
+    // await Quiz.update(details, { where: { id: quizId } });
   }
 
   static async updateQuizQuestions(rows, quizId) {
@@ -550,8 +558,7 @@ class Query {
       order: ['questionOrder'],
       raw: true,
     });
-    const count = question[0].questionTypeId == 1 ? 2 : 4;
-    // const count = await Answer.count({ where: { questionId: question.id } });
+    const count = question[0].questionTypeId === 1 ? 2 : 4;
     const rows = [];
     for (const answer of await Answer.findAll({
       where: { questionId: question[0].id },
@@ -572,7 +579,7 @@ class Query {
   }
 
   static async isAnswerCorrectByAnsNum(questionId, answerNum) {
-    if (questionId == null && answerId == null) {
+    if (questionId == null && answerNum == null) {
       throw new Error('no questionId and AnswerId is given');
     }
     const result = await Answer.findOne({ where: { questionId, answerOrder: answerNum } });
@@ -654,16 +661,12 @@ class Query {
     }
     try {
       const {quizId} = await Game.findOne({ where: { id: gameId }, attributes: ['quizId'], raw: true });
-      // console.log('#657 quizId :>> ', quizId);
       const playerListInGame = (await Player.findAll({ where: { gameId }, attributes: ['id'], raw: true })).map((e) => {return e.id});
-      // console.log('#659 playerListInGame :>> ', playerListInGame);
       const {id: questionId} = await Question.findOne({ where: { quizId, questionOrder: qNumber }, attributes: ['id'], raw: true });
-      // console.log('#661 questionId :>> ', questionId);
       return await PlayerQuestion.findAll({
         where: { questionId, playerId: { [Op.in]: playerListInGame }},
         attributes: [
           'questionScore',
-            // [sequelize.fn('MAX', sequelize.col('Player.nickName')), 'PlayerNickname'],        
           ],
           include: {
             model: Player,
@@ -672,7 +675,6 @@ class Query {
           order: [['questionScore', 'DESC']],
           raw: true
       });
-      // console.log('playerQuestionScores :>> ', playerQuestionScores);
     } catch (error) {
       console.log('error :>> ', error);
     }

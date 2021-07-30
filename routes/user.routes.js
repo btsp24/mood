@@ -153,7 +153,13 @@ router.put('/save/details',
       return;
     }
     await Query.updateQuizDetails(detailsToSave, quizIdToSave);
-    res.status(200).send('success');
+    res.end('{"success" : "Updated Successfully", "status" : 200}');
+    // const response = {
+    //   status  : 200,
+    //   success : 'Updated Successfully'
+    // }
+    // res.end(JSON.stringify(response));
+    // res.status(200).send('success');
   })
 
 router.put('/save/quiz',
@@ -166,9 +172,11 @@ router.put('/save/quiz',
       res.status(412).send('missing parameters');
       return;
     }
-    Promise.all([Query.deleteQuizQuestions(questionsToDelete), Query.updateQuizQuestions(questionsToSave, quizIdToSave)]);
+    Query.deleteQuizQuestions(questionsToDelete);
+    Query.updateQuizQuestions(questionsToSave, quizIdToSave);
+    // Promise.all([Query.deleteQuizQuestions(questionsToDelete), Query.updateQuizQuestions(questionsToSave, quizIdToSave)]);
     // Query.updateQuizQuestions(questionsToSave, quizIdToSave);
-    res.status(200).send('success');
+    res.end('{"success" : "Updated Successfully", "status" : 200}');
   })
 
 router.put('/clone/:quizId', ensureAuthenticated, async (req, res) => {
@@ -224,10 +232,10 @@ router.get('/compose', ensureAuthenticated, async (req, res) => {
   }
   const dataset = {};
   dataset.details = {id: quizId, composerId: userId, 
-    title: 'New Quiz', isVisible: false, isDraft: true};
+    title: 'New Quiz', isVisible: false, isDraft: true, imgURL: '/images/180x120.png'};
   dataset.rows = [
     {quizId, id: questionId, text: 'New Question', questionOrder: 1, 
-      questionTypeId:2, timeLimitId: 2,
+      questionTypeId:2, timeLimitId: 2, imgURL: '/images/540x360.png',
       Answers: [
         {questionId, id: uuidv4()},
         {questionId, id: uuidv4()},
@@ -237,8 +245,8 @@ router.get('/compose', ensureAuthenticated, async (req, res) => {
     }];
   dataset.count = 1;
 
-  res.render('user/compose', {
-    title: 'quiz editor page',
+  res.render('user/edit', {
+    title: 'quiz compose page',
     dataset,
   });
 });
