@@ -1,4 +1,4 @@
-const models = require('./db/models');
+const models = require('../db/models');
 
 for (let model of Object.keys(models)) {
   if (models[model].name === 'Sequelize') continue;

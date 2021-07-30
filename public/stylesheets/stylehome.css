@@ -50,98 +50,52 @@ h2 {
   color: white;
 }
 */
-#question-field {
-  border-style: groove;
-  border-width: 1px;
-  padding: 10px;
+.img-wrapper {
+  position: relative;
 }
-.question {
-  width: 400px;
+
+.img-responsive {
+  width: 100%;
+  height: auto;
 }
-.correct {
-  width: 50px;
+
+.img-overlay {
+  position: absolute;
+  bottom: 0.625rem;
+  right: 0.625rem;
   text-align: center;
 }
 
-#title {
-  text-align: center;
-  font-size: 50px;
-  color: white;
-}
-#subtitle {
-  color: white;
-  text-align: center;
-  font-size: 20px;
-}
-#link {
-  color: white;
-}
-#game-list {
-  text-align: center;
-}
-#back {
-  color: white;
-  text-align: center;
-}
-#gameButton {
-  font-size: 80px;
-}
-#gameButton:hover {
-  cursor: pointer;
-}
-#name {
-  width: 50%;
-  padding: 12px 0px;
-  margin: 8px 0;
+.img-overlay:before {
+  content: ' ';
   display: block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-right: auto;
-  margin-left: auto;
-  font-size: 20px;
-  text-align: center;
-}
-#pin {
-  width: 50%;
-  padding: 12px 0px;
-  margin: 8px 0;
-  display: block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-right: auto;
-  margin-left: auto;
-  font-size: 20px;
-  text-align: center;
+  /* adjust 'height' to position overlay content vertically */
+  height: 50%;
 }
 
-#label {
-  display: block;
-  text-align: center;
-  font-size: 25px;
-  color: white;
-}
-#host {
-  color: white;
-  text-decoration: none;
-}
-#host:hover {
-  text-decoration: underline;
+.cbtn{
+  position: absolute;
+  left: 5rem;
 }
 
-#submit {
-  width: 50%;
-  /* background-color: #4caf50; */
-  /* color: white; */
-  padding: 14px 20px;
-  margin: 8px 0;
-  /* border: none; */
-  /* border-radius: 4px; */
-  cursor: pointer;
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
-  font-size: 20px;
-  /* background-color: #3a3b3a; */
+.inputset{
+border-radius: 5px;  
+margin-top: 5px;
+}
+
+.form-check-input:hover{
+transform: scale(1.1);
+transition: all .2s ease-in-out;
+}
+
+.set-check{
+margin-left: 10px;
+width: 2rem;
+ height: 2rem; 
+}  
+
+.set-check:hover{
+transform: scale(1.2);
+transition: all .2s ease-in-out;
+}
 }

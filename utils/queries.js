@@ -11,7 +11,9 @@ const {
   QuestionType,
   TimeLimit,
   Player,
+  PlayerQuestion,
   PlayerAnswer,
+  Game,
   sequelize,
 } = require("../db/models");
 const { Op } = require("sequelize");
@@ -26,14 +28,15 @@ class Query {
     }
   }
 
-  static async getQuizzesOfUser(theUserId) {
-    if (theUserId == null) {
-      throw new Error("no userId is given");
+
+  static async getQuizzesOfUser(composerId) {
+    if (composerId == null) {
+      throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(theUserId);
+    const theUser = await User.findByPk(composerId);
     const count = await theUser.countQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: false,
       },
     });
@@ -43,7 +46,7 @@ class Query {
     }
     for (const quiz of await theUser.getQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: false,
       },
       attributes: [
@@ -81,21 +84,22 @@ class Query {
       raw: true,
     })) {
       console.log(quiz);
-      //const rec = quiz.toJSON();
+
       quiz.editEnabled = true;
       rows.push(quiz);
     }
     return { count, rows };
   }
 
-  static async getDraftQuizzesOfUser(theUserId) {
-    if (theUserId == null) {
-      throw new Error("no userId is given");
+
+  static async getDraftQuizzesOfUser(composerId) {
+    if (composerId == null) {
+      throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(theUserId);
+    const theUser = await User.findByPk(composerId);
     const count = await theUser.countQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: true,
       },
     });
@@ -105,7 +109,7 @@ class Query {
     }
     for (const quiz of await theUser.getQuizzes({
       where: {
-        composerId: theUserId,
+        composerId,
         isDraft: true,
       },
       attributes: [
@@ -142,7 +146,6 @@ class Query {
       order: [["updatedAt", "DESC"]],
       raw: true,
     })) {
-      //const rec = quiz.toJSON();
       quiz.editEnabled = true;
       rows.push(quiz);
     }
@@ -154,6 +157,7 @@ class Query {
       throw new Error('no userId is given');
     }
     const theUser = await User.findByPk(composerId);
+
     const count = await Quiz.count({
       where: {
         composerId: {
@@ -197,28 +201,29 @@ class Query {
       order: [['updatedAt', 'DESC']],
       raw: true,
     })) {
-      // const rec = quiz.toJSON();
-      // rec.editEnabled = false;
+
       quiz.editEnabled = false;
-      // rows.push(rec);
       rows.push(quiz);
     }
     return { count, rows };
   }
 
-  static async getQuestionsOfQuiz(theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizId is given");
-    }
 
-    const theQuiz = await Quiz.findByPk(theQuizId.id);
+  static async getQuestionsOfQuiz(quizId) {
+    if (quizId == null) {
+      throw new Error('no quizId is given');
+    }
+    const theQuiz = await Quiz.findByPk(quizId);
+
     const count = await theQuiz.countQuestions();
     const rows = [];
     if (!theQuiz) {
       return null;
     }
     for (const question of await theQuiz.getQuestions({
-      where: { quizId: theQuizId.id },
+
+      where: { quizId },
+
       attributes: [
         "quizId",
         "id",
@@ -268,45 +273,39 @@ class Query {
     return { count, rows };
   }
 
-  static async getQuestionsOfQuizWithAnswers(theQuizId, random = false) {
-    const { count, rows } = await this.getQuestionsOfQuiz(theQuizId);
+  static async getQuestionsOfQuizWithAnswers(quizId, random = false) {
+    const { count, rows } = await this.getQuestionsOfQuiz(quizId);
     for (const question of rows) {
       question.Answers = await this.getAnswersOfQuestion(question.id, random);
     }
     return { count, rows };
   }
 
-  static async getQuestionOfQuizByQNumber(theQuizId, qNumber) {
-    return Question.findOne({
-      where: { quizId: theQuizId, questionOrder: qNumber },
-      raw: true,
-    });
+
+  static async getQuestionOfQuizByQNumber(quizId, questionOrder) {
+    return Question.findOne({ where: { quizId, questionOrder }, raw: true });
   }
 
-  static async getQuestionOfQuizByQNumberWithAnswers(
-    theQuizId,
-    qNumber,
-    random = false
-  ) {
-    const question = await this.getQuestionOfQuizByQNumber(theQuizId, qNumber);
+  static async getQuestionOfQuizByQNumberWithAnswers(quizId, questionOrder, random = false) {
+    const question = await this.getQuestionOfQuizByQNumber(quizId, questionOrder);
     question.Answers = await this.getAnswersOfQuestion(question.id, random);
     return question;
   }
 
-  static async getQuizDataset(theQuizId) {
-    const details = await this.getQuizDetails(theQuizId);
-    const { count, rows } = await this.getQuestionsOfQuizWithAnswers(theQuizId);
+  static async getQuizDataset(quizId) {
+    const details = await this.getQuizDetails(quizId);
+    const { count, rows } = await this.getQuestionsOfQuizWithAnswers(quizId);
     return { details, count, rows };
   }
 
-  static async getQuizDetails(theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizId is given");
+  static async getQuizDetails(quizId) {
+    if (quizId == null) {
+      throw new Error('no quizId is given');
     }
-    return await Quiz.findByPk(theQuizId, { raw: true }); /* .toJSON(); */
+    return await Quiz.findByPk(quizId, { raw: true }); /* .toJSON(); */
   }
 
-  static async cloneQuizDataset(dataset, newComposerId) {
+  static async cloneQuiz(dataset, newComposerId) {
     if (newComposerId == null) {
       throw new Error("no composerId is given");
     }
@@ -330,9 +329,10 @@ class Query {
     return newQuiz.id;
   }
 
-  static async cloneQuizQuestions(rows, theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizId is given");
+
+  static async cloneQuizQuestions(rows, quizId) {
+    if (quizId == null) {
+      throw new Error('no quizId is given');
     }
     if (rows == null) {
       throw new Error("no row data is given");
@@ -340,7 +340,7 @@ class Query {
     for (const question of rows) {
       const newQuestionId = uuidv4();
       question.id = newQuestionId;
-      question.quizId = theQuizId;
+      question.quizId = quizId;
       question.updatedAt = null;
       for (const answer of question.Answers) {
         const newAnswerId = uuidv4();
@@ -358,30 +358,46 @@ class Query {
     });
   }
 
-  static async updateQuizDataset(dataset, theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizId is given");
+
+  static async updateQuizDataset(dataset, quizId) {
+    if (quizId == null) {
+      throw new Error('no quizId is given');
     }
     if (dataset == null) {
       throw new Error("no dataset is given");
     }
-    await this.updateQuizDetails(dataset.details, theQuizId);
-    await this.updateQuizQuestions(dataset.rows, theQuizId);
+    await this.updateQuizDetails(dataset.details, quizId);
+    await this.updateQuizQuestions(dataset.rows, quizId);
   }
 
-  static async updateQuizDetails(details, theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizId is given");
+
+  static async updateQuizDetails(details, quizId) {
+    if (quizId == null) {
+      throw new Error('no quizId is given');
     }
     if (details == null) {
       throw new Error("no detail data is given");
     }
-    await Quiz.update(details, { where: { id: theQuizId } });
+    try {
+      const [QD, createdQD] = await Quiz.findOrCreate({
+        where: { id: quizId },
+        defaults: details,
+      });
+      console.log('#5 createdQD:>> ', createdQD, QD.toJSON() );
+      if (!createdQD) {
+        QD.update(details);
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    }
+    // old code
+    // await Quiz.update(details, { where: { id: quizId } });
   }
 
-  static async updateQuizQuestions(rows, theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizId is given");
+
+  static async updateQuizQuestions(rows, quizId) {
+    if (quizId == null) {
+      throw new Error('no quizId is given');
     }
     if (rows == null) {
       throw new Error("no dataset is given");
@@ -427,27 +443,59 @@ class Query {
     });
   }
 
+  static async deleteQuiz(quizToDelete) {
+    if (quizToDelete == null) {
+      throw new Error('no quizlist is given');
+    }
+    try {
+      // delete questions
+      const questionsToDelete = (
+        await Question.findAll({
+          where: { quizId:  quizToDelete },
+          attributes: ['id'],
+          raw: true,
+        })
+      ).map(q => q.id);
+      await this.deleteQuizQuestions(questionsToDelete);
+
+      await Quiz.destroy({
+        where: {
+          id: quizToDelete,
+        },
+      });
+    } catch (error) {
+    console.log('error :>> ', error);      
+    }
+    return true;
+  }
+
   static async deleteQuizzes(quizzesToDelete) {
     if (quizzesToDelete == null) {
       throw new Error("no quizlist is given");
     }
-    // delete questions
-    const questionsToDelete = (
-      await Question.findAll({
-        where: { quizId: { [Op.in]: quizzesToDelete } },
-        attributes: ["id"],
-        raw: true,
-      })
-    ).map((q) => q.id);
-    await this.deleteQuizQuestions(questionsToDelete);
 
-    await Quiz.destroy({
-      where: {
-        id: {
-          [Op.in]: quizzesToDelete,
+    try {
+      // delete questions
+      const questionsToDelete = (
+        await Question.findAll({
+          where: { quizId: { [Op.in]: quizzesToDelete } },
+          attributes: ['id'],
+          raw: true,
+        })
+      ).map(q => q.id);
+      await this.deleteQuizQuestions(questionsToDelete);
+
+      await Quiz.destroy({
+        where: {
+          id: {
+            [Op.in]: quizzesToDelete,
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+    console.log('error :>> ', error);      
+    }
+    return true;
   }
 
   static async deleteQuizQuestions(questionsToDelete) {
@@ -510,21 +558,13 @@ class Query {
     const theQuiz = await Quiz.findByPk(theQuizId);
     const question = await theQuiz.getQuestions({
       where: { quizId: theQuizId, questionOrder: qNumber },
-      attributes: [
-        'quizId',
-        'id',
-        'text',
-        'questionOrder',
-        [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
-        [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
-        [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
-        // 'questionTypeId',
-        'timeLimitId',
-        'imgURL',
-        'imgAltText',
-        'imgCredit',
-        'createdAt',
-      ],
+      attributes: {
+        include: [
+          [sequelize.fn('MAX', sequelize.col('QuestionType.value')), 'qType'],
+          [sequelize.fn('MAX', sequelize.col('TimeLimit.value')), 'timer'],
+          [sequelize.fn('COUNT', sequelize.col('Answers.id')), 'numberOfChoices'],
+        ]
+      },
       include: [
         {
           model: TimeLimit,
@@ -554,8 +594,7 @@ class Query {
       order: ['questionOrder'],
       raw: true,
     });
-    const count = question[0].questionTypeId == 1 ? 2 : 4;
-    // const count = await Answer.count({ where: { questionId: question.id } });
+    const count = question[0].questionTypeId === 1 ? 2 : 4;
     const rows = [];
     for (const answer of await Answer.findAll({
       where: { questionId: question[0].id },
@@ -578,8 +617,8 @@ class Query {
   }
 
   static async isAnswerCorrectByAnsNum(questionId, answerNum) {
-    if (questionId == null && answerId == null) {
-      throw new Error("no questionId and AnswerId is given");
+    if (questionId == null && answerNum == null) {
+      throw new Error('no questionId and AnswerId is given');
     }
     const result = await Answer.findOne({
       where: { questionId, answerOrder: answerNum },
@@ -587,39 +626,65 @@ class Query {
     return result.isCorrect;
   }
 
-  static async isQuizEditable(theQuizId, theUserId) {
-    if (theQuizId == null) {
-      throw new Error("no AnswerId is given");
+  static async isQuizEditable(quizId, composerId) {
+    if (quizId == null) {
+      throw new Error('no AnswerId is given');
     }
-    const result = await Quiz.findOne({
-      where: { id: theQuizId, composerId: theUserId },
-    });
+    const result = await Quiz.findOne({ where: { id: quizId, composerId } });
     return !!result;
   }
 
-  static async quizExists(theQuizId) {
-    if (theQuizId == null) {
-      throw new Error("no quizID is given");
+  static async quizExists(quizId) {
+    if (quizId == null) {
+      throw new Error('no quizID is given');
     }
-    const result = await Quiz.findOne({ where: { id: theQuizId } });
+    const result = await Quiz.findOne({ where: { id: quizId } });
     return !!result;
   }
 
-  static async savePlayerQuestionScore(
-    playerId,
-    gameId,
-    questionId,
-    answerId,
-    questionScore
-  ) {
+  static async savePlayerQuestionScore(playerId, questionId, answerId, questionScore) {
     try {
-      await PlayerAnswer.create({
-        playerId,
-        gameId,
-        questionId,
-        answerId,
-        questionScore,
+      const [pQ, createdPQ] = await PlayerQuestion.findOrCreate({
+        where: {
+          playerId,
+          questionId,
+        },
+        defaults: { playerId, questionId,  questionScore },
       });
+      console.log('#537 createdPQ:>> ', createdPQ, pQ.toJSON() );
+      if (!createdPQ) {
+        pQ.update({questionScore});
+      }
+      const [pA, createdPA] = await PlayerAnswer.findOrCreate({
+        where: {
+          playerId,
+          questionId,
+        },
+        defaults: { playerId, questionId, answerId },
+      });
+      if (!createdPA) {
+        pA.update({answerId});
+      }
+      return true;
+    } catch (error) {
+      console.log('error :>> ', error);
+      return false;
+    }
+  }
+
+  static async savePlayerGameScore(playerId, gameId, gameScore) {
+    try {
+     const [player, created] = await Player.findOrCreate({
+        where: { id: playerId, gameId },
+        defaults: {
+          id: playerId,
+          gameId,
+          gameScore,
+        },
+      });
+      if (!created) {
+        player.update({gameScore});
+      }
       return true;
     } catch (error) {
       console.log("error :>> ", error);
@@ -627,18 +692,31 @@ class Query {
     }
   }
 
-  static async savePlayerGameScore(playerId, gameId, questionId, gameScore) {
+  static async getPlayersQuestionScores(gameId, qNumber) {
+    if (gameId == null) {
+      throw new Error('no gameId is given');
+    }
+    if (qNumber == null) {
+      throw new Error('no question number is given');
+    }
     try {
-      await Player.create({
-        playerId,
-        gameId,
-        questionId,
-        gameScore,
+      const {quizId} = await Game.findOne({ where: { id: gameId }, attributes: ['quizId'], raw: true });
+      const playerListInGame = (await Player.findAll({ where: { gameId }, attributes: ['id'], raw: true })).map((e) => {return e.id});
+      const {id: questionId} = await Question.findOne({ where: { quizId, questionOrder: qNumber }, attributes: ['id'], raw: true });
+      return await PlayerQuestion.findAll({
+        where: { questionId, playerId: { [Op.in]: playerListInGame }},
+        attributes: [
+          'questionScore',
+          ],
+          include: {
+            model: Player,
+            attributes: ['nickName']
+          },
+          order: [['questionScore', 'DESC']],
+          raw: true
       });
-      return true;
     } catch (error) {
-      console.log("error :>> ", error);
-      return false;
+      console.log('error :>> ', error);
     }
   }
 }

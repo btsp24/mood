@@ -25,9 +25,9 @@ module.exports = {
           isVisible: !Math.floor(Math.random() * 2),
           isDraft: !Math.floor(Math.random() * 2),
           lobbyMusicId: Math.floor(1 + Math.random() * 13),
-          imgURL: `https://picsum.photos/180/120?random=${index}`,
-          imgAltText: 'picsum.photos/',
-          imgCredit: 'downloaded from https://picsum.photos',
+          imgURL: '/images/180x120.png',
+          imgAltText: 'placeholder img',
+          imgCredit: 'placeholder image',
           createdAt: date,
           updatedAt: date,
         };

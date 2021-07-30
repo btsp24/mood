@@ -1,83 +1,59 @@
 <!DOCTYPE html>
-<html lang="tr">
-  <%- include('../partials/headerhome', {title}); %>
-  <link rel="stylesheet" href="../stylesheets/stylecompose.css" />
+<html lang="en">
+<%- include('../partials/headerhome', {title}); %>
+<link rel="stylesheet" href="/stylesheets/stylecompose.css" />
 
-  <body>
-    <nav class="navbar-light bg-light sidebar" id="mySidebar">
-      <div class="dismiss">
-        <i class="fas fa-arrow-right" id="closesign"></i>
-      </div>
+<body>
+  <div class="content">
+    <a class="btn btn-primary btn-customized open-menu" href="#" role="button" style="margin-top: 4.5rem" id="menubtn">
+      <i class="fas fa-align-right"></i> <span>Menu</span>
+    </a>
+  </div>
 
-      <!-- Question  links-->
-      <a class="navbar-brand" href="#">Question List</a>
-      <nav class="nav nav-pills flex-column">
-        <hr style="color: rgb(14, 119, 105); height: 3px" />
-        <ol>
-          <% dataset.rows.forEach(function(question){ %>
-          <li>
-            <a class="nav-link btn btn-primary" href="#question<%= question.questionOrder %>"
-              >Question <%= question.questionOrder %></a
-            >
-          </li>
-          <% }); %>
-        </ol>
-      </nav>
-    </nav>
-    <!-- End sidebar -->
-
-    <div class="content">
-      <a
-        class="btn btn-primary btn-customized open-menu"
-        href="#"
-        role="button"
-        style="margin-top: 4.5rem"
-        id="menubtn"
-      >
-        <i class="fas fa-align-right"></i> <span>Menu</span>
-      </a>
+  <nav class="navbar-light bg-light sidebar" id="mySidebar">
+    <div class="dismiss">
+      <i class="fas fa-arrow-right" id="closesign"></i>
     </div>
-    <!-- navigation -->
-    <nav
-      class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase"
-      id="mainNav"
-      style="padding-top: 0.1rem; padding-bottom: 0.1rem"
-    >
-      <div class="container-fluid">
-        <div>
-          <img class="img-thumbnail" src="../images/logo.png" style="height: 2.7rem" id="logo" />
-          <!-- settings button -->
-          <button
-            class="btn mx-sm-1 navbar-toggler"
-            id="gearbtn"
-            data-bs-target=".bd-example-modal-lg"
-            data-bs-toggle="modal"
-            aria-label="Toggle navigation"
-            style="border: 0rem"
-          >
-            <style>
-              .btn:active {
-                transform: translateY(4px);
-              }
-            </style>
 
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
-              fill="azure"
-              class="bi bi-gear-fill gear"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div class="collapse navbar-collapse" id="SETTINGS">
-          <button
-            class="
+    <!-- Question  links-->
+    <a class="navbar-brand" href="#">Question List</a>
+    <nav class="nav nav-pills flex-column">
+      <hr style="color: rgb(14, 119, 105); height: 3px" />
+      <ol id='questionList'>
+        <% dataset.rows.forEach(function(question){ %>
+        <li id="navquestion<%= question.questionOrder %>">
+          <a class="nav-link btn btn-primary" href="#question<%= question.questionOrder %>">Question
+            <%= question.questionOrder %></a>
+        </li>
+        <% }); %>
+      </ol>
+    </nav>
+  </nav>
+  <!-- End sidebar -->
+  <!-- navigation -->
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase" id="mainNav"
+    style="padding-top: 0.1rem; padding-bottom: 0.1rem">
+    <div class="container-fluid">
+      <div>
+        <img class="img-thumbnail" src="../images/logo.png" style="height: 2.7rem" id="logo" />
+        <!-- settings button -->
+        <button class="btn mx-sm-1 navbar-toggler" id="gearbtn" data-bs-target=".bd-example-modal-lg"
+          data-bs-toggle="modal" aria-label="Toggle navigation" style="border: 0rem">
+          <style>
+            .btn:active {
+              transform: translateY(4px);
+            }
+          </style>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="azure" class="bi bi-gear-fill gear"
+            viewBox="0 0 16 16">
+            <path
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+          </svg>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="SETTINGS">
+        <button class="
               btn btn-primary
               text-uppercase
               bg-primary bg-gradient
@@ -88,428 +64,577 @@
               py-1
               px-0 px-lg-2
               mx-lg-4
-            "
-            id="btn-settings"
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target=".bd-example-modal-lg"
-          >
-            SETTINGS
-          </button>
-        </div>
-
-        <!-- Nav Links -->
-        <button
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarResponsive"
-          class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded"
-          aria-controls="navbarResponsive"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          id="toggle"
-        >
-          <i class="fa fa-bars"></i>
+            " id="btn-settings" type="button" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">
+          SETTINGS
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item mx-0 mx-lg-1" id="exit">
-              <a
-                class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded"
-                href="#"
-                >Exıt</a
-              >
-            </li>
-            <li class="nav-item mx-0 mx-lg-1" id="done">
-              <a
-                class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded"
-                href="#c"
-                >Done</a
-              >
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
 
-    <!--                   MODAL CODES                    -->
-    <!--                   MODAL CODES                    -->
-    <!--                   MODAL CODES                    -->
-
-    <div
-      class="modal fade bd-example-modal-lg"
-      tabindex="-1"
-      aria-labelledby="ModalLabel"
-      aria-hidden="true"
-      data-bs-whatever=""
-      data-bs-backdrop="static"
-    >
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <section class="row container-fluid px-3">
-            <h2 class="px-5">Quiz Summary</h2>
-            <div class="col-8 d-flex flex-column py-2">
-              <label class="modallabel py-2" id="title">Title</label>
-
-              <input
-                data-tag="quizTitle"
-                class="inputset form-control form-control-lg d-lg-flex border-primary border rounded"
-                type="text"
-                placeholder="Enter quiz title"
-                maxlength="80"
-                value="<%= dataset.details.title %>"
-              />
-              <label class="modallabel py-2" id="title">Descripton</label>
-              <textarea
-                rows="3"
-                data-tag="quizDescription"
-                class="inputset border rounded border-primary orm-control-lg d-lg-flex"
-                type="text"
-                maxlength="260"
-              >
-<%= dataset.details.description %> </textarea
-              >
-            </div>
-
-            <div class="imgarea col-4 py-2 flex-column d-flex">
-              <span class="imglabel">Cover image</span>
-              <div class="drop-zone border-primary border-1">
-                <img src="<%= dataset.details.imgURL %>" alt="" srcset="" />
-
-                <!-- <img src="" name="imgURL" class="drop-zone-input" data-tag="imgURL"> -->
-                <!--               <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or click to
-                upload</span> -->
-              </div>
-            </div>
-          </section>
-
-          <section class="row px-3 py-3">
-            <div class="col-3 d-flex flex-column">
-              <label for="Music" class="selectlabel" style="font-weight: bold">Music</label>
-              <select class="form-select border-primary" data-tag="lobbyMusicId" style="font-weight: bold">
-                <option value="1" id="music1">Music-1</option>
-                <option value="1" id="music2">Music-2</option>
-                <option value="1" id="music3">Music-3</option>
-                <option value="1" id="music4">Music-4</option>
-                <option value="1" id="music4">Music-5</option>
-                <option value="1" id="music4">Music-6</option>
-                <option value="1" id="music4">Music-7</option>
-                <option value="1" id="music4">Music-8</option>
-              </select>
-            </div>
-            <div class="col-3 py-3 d-flex flex-column">
-              <form action="">
-                <input type="checkbox" data-tag="isVisible" checked="checked" class="form-check-input
-                border-success set-check" style="border-radius: 30px; background-color: green; <%=
-                dataset.details.isChecked ? "checked=\"checked" : '' %>" >
-                <label class="selectlabel py-1" style="font-weight: bold">Visible to users </label>
-              </form>
-            </div>
-
-            <div class="col-5 py-3 d-flex flex-column">
-              <form action="">
-                <input
-                  type="checkbox"
-                  data-tag="isDraft"
-                  class="form-check-input border-primary set-check"
-                  style="border-radius: 30px"
-                />
-                <label class="selectlabel px-1 py-1" style="font-weight: bold">Check to save as draft</label>
-              </form>
-            </div>
-          </section>
-
-          <section class="stbtn row container-fluid px-3 py-3" style="text-align: center">
-            <div class="stbtn">
-              <button
-                class="btn btn-success"
-                type="button"
-                style="margin-right: 10px; width: 200px"
-                data-tag="Doneset"
-              >
-                <span style="font-weight: bold">Done</span>
-              </button>
-
-              <button
-                class="btn btn-secondary"
-                type="button"
-                style="margin-left: 10px; width: 200px"
-                data-bs-dismiss="modal"
-              >
-                <span style="font-weight: bold">Close</span>
-              </button>
-            </div>
-          </section>
-        </div>
+      <!-- Nav Links -->
+      <button data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" id="toggle">
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item mx-0 mx-lg-1" id="exit">
+            <a class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#"
+              onclick="location.href = document.referrer; return false;">Exit</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1" id="done">
+            <a id="questions-done"
+              class="nav-link active bg-primary bg-gradient border rounded py-2 px-0 px-lg-2 rounded" href="#">Done</a>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
 
-    <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questionList">
-      <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', {data:
+  <!--                   MODAL CODES                    -->
+  <div id="modal-details" class="modal fade bd-example-modal-lg" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true"
+    data-bs-whatever="" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <section class="row container-fluid px-3">
+          <h2 class="px-5">Quiz Summary</h2>
+          <div class="col-8 d-flex flex-column py-2">
+            <label class="modallabel py-2" id="title">Title</label>
+
+            <input data-tag="quizTitle"
+              class="inputset form-control form-control-lg d-lg-flex border-primary border rounded" type="text"
+              placeholder="Enter quiz title" maxlength="80" value="<%= dataset.details.title %>" />
+            <label class="modallabel py-2" id="title">Descripton</label>
+            <textarea rows="3" data-tag="quizDescription"
+              class="inputset border rounded border-primary orm-control-lg d-lg-flex" type="text" maxlength="260">
+              <%= dataset.details.description %> </textarea>
+          </div>
+
+          <div class="imgarea col-4 py-2 flex-column d-flex">
+            <span class="imglabel">Cover image</span>
+            <div id="my-dropzone-cover" class=" dropzone  border-success border-1" data-tag="imgURL">
+
+            </div>
+          </div>
+        </section>
+
+        <section class="row px-3 py-3">
+          <div class="col-3 d-flex flex-column">
+            <label for="Music" class="selectlabel" style="font-weight: bold">Music</label>
+            <select id="lobbyMusicId" class="form-select border-primary" data-tag="lobbyMusicId"
+              style="font-weight: bold">
+              <option value="1" <%= dataset.details.lobbyMusicId == 1 ? "selected": "" %> id="music1">Music-1</option>
+              <option value="2" <%= dataset.details.lobbyMusicId == 2 ? "selected": "" %> id="music2">Music-2</option>
+              <option value="3" <%= dataset.details.lobbyMusicId == 3 ? "selected": "" %> id="music3">Music-3</option>
+              <option value="4" <%= dataset.details.lobbyMusicId == 4 ? "selected": "" %> id="music4">Music-4</option>
+              <option value="5" <%= dataset.details.lobbyMusicId == 5 ? "selected": "" %> id="music5">Music-5</option>
+              <option value="6" <%= dataset.details.lobbyMusicId == 6 ? "selected": "" %> id="music6">Music-6</option>
+              <option value="7" <%= dataset.details.lobbyMusicId == 7 ? "selected": "" %> id="music7">Music-7</option>
+              <option value="8" <%= dataset.details.lobbyMusicId == 8 ? "selected": "" %> id="music8">Music-8</option>
+              <option value="9" <%= dataset.details.lobbyMusicId == 9 ? "selected": "" %> id="music9">Music-9</option>
+              <option value="10" <%= dataset.details.lobbyMusicId == 10 ? "selected": "" %> id="music10">Music-10
+              </option>
+              <option value="11" <%= dataset.details.lobbyMusicId == 11 ? "selected": "" %> id="music11">Music-11
+              </option>
+              <option value="12" <%= dataset.details.lobbyMusicId == 12 ? "selected": "" %> id="music12">Music-12
+              </option>
+              <option value="13" <%= dataset.details.lobbyMusicId == 13 ? "selected": "" %> id="music13">Music-13
+              </option>
+            </select>
+          </div>
+          <div class="col-3 py-3 d-flex flex-column">
+            <form action="">
+              <input id="isVisible" <%= dataset.details.isVisible ? "checked" : "" %> type="checkbox"
+                data-tag="isVisible" class="form-check-input
+                border-success set-check" style="border-radius: 30px; background-color: green;">
+              <label class="selectlabel py-1" style="font-weight: bold">Visible to users </label>
+            </form>
+          </div>
+
+          <div class="col-5 py-3 d-flex flex-column">
+            <form action="">
+              <input id="isDraft" <%= dataset.details.isDraft ? "checked" : "" %> type="checkbox" data-tag="isDraft"
+                class="form-check-input border-primary set-check" style="border-radius: 30px" />
+              <label class="selectlabel px-1 py-1" style="font-weight: bold">Check to save as draft</label>
+            </form>
+          </div>
+        </section>
+
+        <section class="stbtn row container-fluid px-3 py-3" style="text-align: center">
+          <div class="stbtn">
+            <button id="btn-quiz-done" class="btn btn-success" type="button" style="margin-right: 10px; width: 200px"
+              data-tag="Doneset">
+              <span style="font-weight: bold">Done</span>
+            </button>
+
+            <button id="btn-quiz-cancel" class="btn btn-secondary" type="button" style="margin-left: 10px; width: 200px"
+              data-bs-dismiss="modal">
+              <span style="font-weight: bold">Close</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <ol class="container-fluid px-0" style="padding-top: 3rem" type="none" id="questions">
+    <% dataset.rows.forEach(function(question){ %> <%- include('../partials/questioncard', { data:
       question}); %> <% }); %>
-      <!-- <li class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="uuidv4-xxxxx" data-id="id"
-      data-composer-id="uuidv4-xxxxx" data-question-order="questionOrder" data-spy="scroll" data-bs-target="#mySidebar"
-      id="question1">
+  </ol>
 
+ <!-- navlink template  hidden -->
+<ul class="navlink-template" hidden>
+  <li>
+    <a class="nav-link btn btn-primary" href="#question??">Question??
+      </a>
+  </li>
+</ul>  
 
+ <!-- question template  hidden -->
+<ul class="question-template" hidden>
+  <li class="col-lg-10 offset-lg-0 text-center d-flex flex-column py-5 " data-quiz-id="" data-id=""
+  data-question-order="" data-spy="scroll" data-bs-target="#mySidebar">
+   <input data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
+     type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;" value="">
+     <ul class="row qinfo" style="margin-top: 25px" type="none">
+      <div class="col-2 col-lg-2 ">
+        <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
+        <select class="form-select border-success" data-tag="timeLimitId">
+          <option value="1" id="10s">10 seconds</option>
+          <option value="2" selected id="20s">20 seconds</option>
+          <option value="3" id="30s">30 seconds</option>
+          <option value="4" id="1m">1 minute</option>
+          <option value="5" id="1m30s">1 minute 30 seconds</option>
+          <option value="6" id="2m">2 minutes</option>
+          <option value="7" id="4m">4 minutes</option> 
+        </select>
+      </div>
+       <div class="dropzone-container col-6 col-lg-6 offset-1 offset-lg-1 "> 
+        <div id="" class="dropzone border-success border-1 dz-clickable" src='/images/540x360.png' data-tag="imgURL">  
+         </div>
+     </div>
+ 
+      <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
+        <label for="Question Type" class="for selectlabel border-info">Question Type</label>
+        <select class="form-select border-success" data-tag="questionTypeId" >
+  
+          <option value="1">True or False</option>
+          <option value="2">Multiple choice</option>
+  
+        </select>
+      </div>
+  
+    </ul>
 
-      <input data-tag="text" class="qtext border rounded border-success shadow-sm form-control-lg d-lg-flex required"
-        type="text" placeholder="Start typing your question" maxlength="120" style="margin-left: 40px;">
+    <div class="btngroup ">
+      <button class="btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
+          style="font-weight:bold">Clone Question</span></button>
+  
+      <button class="btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
+          style="font-weight:bold">Add Question </span></button>
+  
+      <button class="btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
+        <span style="font-weight:bold;">Delete</span> </button>
+  
+    </div>
+  </li>
 
-
-      <ul class="row qinfo" style="margin-top: 25px" type="none">
-
-
-        <div class="col-2 col-lg-2 ">
-
-          <label for="Time Limit" class="selectlabel " id="tlimit">Time Limit</label>
-          <select class="form-select border-success" data-tag="timeLimitId">
-
-            <option value="1" id="10s">10 seconds</option>
-            <option value="1" id="20s">20 seconds</option>
-            <option value="1" id="30s">30 seconds</option>
-            <option selected id="1m">1 minute</option>
-            <option value="1" id="1m30s">1 minute 30 seconds</option>
-            <option value="1" id="2m">2 minutes</option>
-            <option value="1" id="3m">3 minutes</option>
-            <option value="1" id="4m">4 minutes</option>
-
-          </select>
-
+</ul>
+ <div id='answer-templates' hidden>
+ <!-- true false  hidden -->
+ <ul class="row trueFalse" style="margin-top: 30px;" data-tag="Answers" hidden>
+  <li class="col-lg-6  row dborder " data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
+    <div class="col-11 align-self-center">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
+          style="background-color: #228b03; color: white; font-weight: 400; border: none;">
+        <input data-tag="isCorrect" type="checkbox" class="form-check-input" 
+          style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
+      </div>
+    </div>
+  </li>
+  <li class="col-lg-6 row eborder" data-question-id="" data-id="">
+    <div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
+    <div class="col-11 align-self-center ">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
+          style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
+        <input data-tag="isCorrect" type="checkbox" class=" form-check-input" 
+          style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
+      </div>
+    </div>
+  </li>
+</ul>
+<!-- multiple choice hidden -->
+<ul class="row multipleChoice" style="margin-top: 30px;" data-tag="Answers" hidden>
+  <li class="col-lg-6 row borderred  cborder" data-question-id="" data-id="">
+    <div class="col-1"><i> <img src="/images/kirmizi.png" alt=""></i></div>
+    <div class="col-11 align-self-center ">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class="inputa col-11 form-control form-control-lg " type="text" placeholder="Add answer 1 (required)" value="">
+        <input data-tag="isCorrect" type="checkbox" class=" form-check-input" style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;">
+      </div>
+    </div>
+  </li>
+  <li class="col-lg-6 row borderblue cborder" data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/mavi.png" alt=""></i></div>
+    <div class="col-11 align-self-center ">
+      <div class=" input-group px-lg-2">
+        <input data-tag="text" class=" inputb col-11 form-control form-control-lg required" placeholder="Add answer 2 (required)" value="">
+        <input data-tag="isCorrect" type="checkbox" class="form-check-input" 
+          style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
+      </div>
+    </div>
+  </li>
+  <li  class="col-lg-6 row cborder borderyellow " data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/sari.png" alt=""></i></div>
+    <div class="col-11 align-self-center">
+      <div class=" input-group px-lg-2 ">
+        <input data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text" placeholder="Add answer 3 (optional)" value="">
+        <input data-tag="isCorrect"type="checkbox" class="form-check-input" style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
+      </div>
+    </div>
+  </li>
+  <li class="col-lg-6 bordergreen row cborder" data-question-id="" data-id="">
+    <div class="col-1"><i><img src="/images/yesil.png" alt=""></i></div>
+      <div class="col-11 align-self-center">
+        <div class=" input-group px-lg-2">
+          <input data-tag="text" class="inputd form-control form-control-lg" type="text" placeholder="Add answer 4 (optional)" value="">
+          <input data-tag="isCorrect" type="checkbox" class="form-check-input"
+            style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px">
         </div>
+      </div>
+  </li>
+</ul>
+</div> 
 
+  <%- include('../partials/footer') %>
+  <script>
+    
+    Dropzone.prototype.defaultOptions.addRemoveLinks = true;
+    Dropzone.prototype.defaultOptions.dictDefaultMessage = 'Drop files or click here to upload';
+    Dropzone.prototype.defaultOptions.paramName = 'file';
+    Dropzone.prototype.defaultOptions.maxFilesize = 2;
+    Dropzone.prototype.defaultOptions.url = '/upload';
+    Dropzone.prototype.defaultOptions.resizeHeight = 240;
+    Dropzone.prototype.defaultOptions.thumbnailMethod= 'crop';
+    // Dropzone.prototype.defaultOptions.thumbnailHeight = 240;
+    Dropzone.prototype.defaultOptions.thumbnailWidth = 300;
+    Dropzone.prototype.defaultOptions.acceptedFiles= 'image/jpeg, image/gif, image/png, image/bmp';
+    
+    <% dataset.rows.forEach(function(question) { %>        
+      Dropzone.options.myDropzone<%=JSON.stringify(question.questionOrder) %> = {
+        // thumbnailWidth: 360,
+        // thumbnailHeight: 240,
+        init : function() {
+          const mockFile = {
+            name: 'FileName',
+            size: '1000', 
+            type: 'image/jpeg',
+            accepted: true            // required if using 'MaxFiles' option
+          };
+          this.files.push(mockFile);    // add to files array
+          this.emit("addedfile", mockFile);
+          this.emit("thumbnail", mockFile, '<%=question.imgURL %>');
+          this.emit("complete", mockFile);
+          this.on("success", function(file, serverResponse) {
+            // Called after the file successfully uploaded.
+            // If the image is already a thumbnail:
+            this.emit('thumbnail', file, '/'+serverResponse.path);
+            // If it needs resizing:
+            // this.createThumbnailFromUrl(file, '/'+serverResponse.path);
+          });
+        }
+      }
+      
+      <% }); %>
+      
+      Dropzone.options.myDropzoneCover = {
+        resizeHeight: 120,
+        thumbnailWidth: 180,
+        thumbnailHeight: 120,
+        thumbnailMethod: 'crop',
+        init : function() {
+          const mockFile = {
+            name: 'FileName',
+            size: '1000', 
+            type: 'image/jpeg',
+            accepted: true            // required if using 'MaxFiles' option
+          };
+        this.files.push(mockFile);    // add to files array
+        this.emit("addedfile", mockFile);
+        this.emit("thumbnail", mockFile, '<%=dataset.details.imgURL %>');
+        this.emit("complete", mockFile);
+        this.on("success", function(file, serverResponse) {
+          // Called after the file successfully uploaded.
+          // If the image is already a thumbnail:
+          this.emit('thumbnail', file, '/'+serverResponse.path);
+          // If it needs resizing:
+          // this.createThumbnailFromUrl(file, '/'+serverResponse.path);
+        });
+      }
+    };
+    
+    // Dropzone.autoDiscover = false;
+    $(document).ready(function () {
+      const uuid = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c =>(c^(window.crypto||window.msCrypto).getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+      const details = <%-JSON.stringify(dataset.details) %> ;
+      const title = <%-JSON.stringify(dataset.details.title) %> ;
+      const count = <%-JSON.stringify(dataset.count) %> ;
+      const rows = <%-JSON.stringify(dataset.rows) %> ;
+      let detailsSaved = false;
+      const questionsToDelete = [];
+      
+      // question type change handler
+      $('[data-tag="questionTypeId"]').on('change', function (e) {
+        const currentQId = $(this).closest('li').attr('id');
+        const currentQNr = $(this).closest('li.col-lg-10').attr('id').substr(8);
+        console.log('currentQNr :>> ', currentQNr);
+        const selectVal = e.target.value;
+        let $el;
+        if ($(this).val() == 1) {
+            // true false
+            $el = $('#answer-templates ul.trueFalse').clone();
+            
+            $el.toggleClass('trueFalse');
+            
+            for (let i = 0; i < 2; i++) {
+              $el.find('li').attr('data-id', function(index) { return $(this).attr('data-id') ?? uuid(); });          
+            }
+            
+          } else {
+            // multiple
+            $el = $('#answer-templates ul.multipleChoice').clone();
 
+            $el.toggleClass('multipleChoice');
+              for (let i = 0; i < 4; i++) {
+              $el.find('li').attr('data-id', function(index) { return $(this).attr('data-id') ?? uuid() });           
+            }
+          }
+          $el.attr('id',`question${currentQNr}Answers`);
+          $el.find('li').attr('id', function(index) {
+            return `question${currentQNr}Answers${index+1}`
+          });
+          $el.find('li').attr('data-question-id', currentQId );
+          $el.show().prop('hidden', false);
+          $(`#question${currentQNr}Answers`).replaceWith($el);
+          console.log(`#question${currentQNr}Answers`);
+      })
 
-        <div class="col-6 col-lg-6 offset-1 offset-lg-1 drop-zone border-success border-1">
+      // clone question
+      $('button.btn-success').on('click', function(e){
+        const newQueNr = $(this).closest('li').data('questionOrder')+1;
+        const hrClone = $(this).closest('li').next('hr').clone();
+        const clone = $(this).closest('li').clone(true, true);
+        // clone.find('[data-tag="imgURL"]').prop('id',`my-dropzone${newQueNr}`);       
+        const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
+        $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
+        $(this).closest('li').after(clone).after(hrClone);
+        // call reorder nav and reorder questions function
+       updateQuestionOrder()
+      })
 
-          <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
+      // add question
+      $('button.btn-primary').on('click', function(e){
+        const currentQuizId = $(this).closest('li').data('quizId');
+        const newQueNr = $(this).closest('li').data('questionOrder')+1;
 
-          <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or
-            click to upload</span>
-        </div>
+        const hrClone = $(this).closest('li').next('hr').clone();
+        const qClone = $('ul.question-template li').clone(true, true);
+        qClone.prop('data-id', uuid());
+        qClone.prop('id', `question${newQueNr}`);
+        qClone.prop('data-quiz-id', currentQuizId );
+        qClone.find(`[data-tag="questionTypeId"] option[value="2"]`).prop({defaultSelected: true});
+        const aClone = $('#answer-templates ul.multipleChoice').clone(true, true).prop('hidden',false);
+        aClone.prop('id',`question${newQueNr}Answers`);
 
+        qClone.find('.btngroup').before(aClone);        
+        const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
+        $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
+        $(this).closest('li').after(qClone).after(hrClone).show();
+        // call reorder nav and reorder questions function
+        updateQuestionOrder()
+        $(`#question${newQueNr}questionTypeId option[value="2"]`).prop({defaultSelected: true});
+      })
 
-        <div class="col-2 col-lg-2 offset-1 offset-lg-1 ">
-          <label for="Question Type" class="for selectlabel border-info">Question Type</label>
-          <select class="form-select  border-success" data-tag="questionTypeId">
+      // delete question
+      $('button.btn-danger').on('click', function(e){
+        const count = $('li.col-lg-10').length-1;
+        if (count > 1) {
+          const qId = $(this).closest('li').data('id');
+          questionsToDelete.push(qId);
+          const hr = $(this).closest('li').next('hr').remove();
+          $(this).closest('li').remove();
+          $(`#nav${$(this).closest('li').prop('id')}`).remove();
+        }
+        // call reorder nav and reorder questions function
+        updateQuestionOrder()
+      })
 
-            <option selected>Quiz</option>
-            <option value="1">True or False</option>
+      function updateQuestionOrder() {
+        // #questionList
+        $('#questionList').each(function(i) {
+          $(this).find('li').prop('id', function(index) {
+            return `navquestion${index+1}`
+          });
+          $(this).find('li a').each(function(index) {
+            $(this).prop('href', `#question${index+1}`)
+            $(this).text(`Question ${index+1}`)
+          });
+        });
+        // #questions
+        $('#questions>li').each(function(index){
+          $(this).prop('id',`question${index+1}`);
+          $(this).prop('data-question-order',`${index+1}`);
+          $(this).children('input').prop('id', `question${index+1}text`);
+          $(this).children('ul').find('[data-tag="timeLimitId"]').prop('id', `timeLimitId${index+1}`);
+          $(this).children('ul').find('[data-tag="imgURL"]').prop('id', `my-dropzone${index+1}`);
+          $(this).children('ul').find('[data-tag="questionTypeId"]').prop('id', `question${index+1}questionTypeId`);
+          // $(this).children('ul').find('[data-tag="Answers"]').prop('id', `question${index+1}Answers`);
+        });
+        $('#questions [data-tag="Answers"]').each(function(i) {
+          $(this).find('li').prop('id', function(j) {
+            return `question${i+1}Answers${j+1}`
+          });
+          $(this).find('li [data-tag="text"]').prop('id', function(j) {
+            return `question${i+1}Answers${j+1}text`
+          });
+          $(this).find('li [data-tag="isCorrect"]').prop('id', function(j) {
+            return `question${i+1}Answers${j+1}isCorrect`
+          });
+        });        
+        // prop('id', function(index) {
+        //   return `question${index+1}`
+        // })
+        // $('#questions>li').prop('data-question-order', function(index) {
+        //   return `${index+1}`
+        // })
+        // $('#questions li>input').prop('id', function(index) {
+        //   return `question${index+1}text`
+        // });
+        // $('#questions li>ul [data-tag="timeLimitId"]').prop('id', function(index) {
+        //   return `timeLimitId${index+1}`
+        // }); 
+        // $('#questions li>ul [data-tag="imgURL"]').prop('id', function(index) {
+        //   return `my-dropzone${index+1}`
+        // });             
+        // $('#questions li>ul [data-tag="questionTypeId"]').prop('id', function(index) {
+          // return `question${index+1}questionTypeId`
+        // });             
+        $('#questions [data-tag="Answers"]').prop('id', function(index) {
+          return `question${index+1}Answers`
+        });
+      }
 
-          </select>
-        </div>
+      // quiz detail page done button handler
+      $('#btn-quiz-done').on('click', {
+        details: details
+      },async (event) => {
+        // console.table(event.data.details);
+        const newDetails = JSON.parse(JSON.stringify(event.data.details));
+        newDetails.title = $('[data-tag="quizTitle"]').val();
+        newDetails.description = $('[data-tag="quizDescription"]').val();
+        newDetails.isVisible = $('[data-tag="isVisible"]').prop('checked');
+        newDetails.isDraft = $('[data-tag="isDraft"]').prop('checked');
+        newDetails.lobbyMusicId = $('[data-tag="lobbyMusicId"]').val();
+        newDetails.imgURL = $('div.imgarea [data-dz-thumbnail]').prop('src'); 
+        await $.ajax({
+          type: "put",
+          dataType: 'json', // Set datatype - affects Accept header
+          url: `/save/details`,
+          data: {details: JSON.stringify(newDetails)},
+        }).done(function() {
+          detailsSaved = true;
+          $('#modal-details').modal('hide'); 
+        });
+      })
 
-      </ul>
-      <!-- Answer Choices -->
-      <!--       <ul class="row" style="margin-top: 30px;" data-tag="Answers">
-        <li class="col-lg-6 row borderred  cborder" data-question-id="" data-id="">
+      // questions page done button handler
+      $('#questions-done').on('click', { 
+        details,
+        questions: rows,
+        oldCount: count
+      }, (event) => {
+        const newQuestions = []; // JSON.parse(JSON.stringify(event.data.questions));
+        const quizId = event.data.details.id;
+        // get current questionCount from dom 
+        // refactor with global var like questionCount ??
+        const oldCount = event.data.oldCount;
+        const newCount = $('[data-question-order]').length-1;
+        // console.log('newCount :>> ', newCount);
+        const willDelete = newCount - oldCount < 0 ? true : false;
+        // decide if delete needed else we may add new questions
+        if (willDelete) {
+          for (let k = newCount; k < oldCount; k++) {
+            delete newQuestions[k];
+          }
+        }
+        for (let i = 1; i <= newCount; i++) {
+          const uid = uuid();
+          const questionId = !$(`#question${i}`).data('id') ? uid : $(`#question${i}`).data('id');
+          const midObj = {};
+          midObj.text = $(`#question${i}text`).val();
+          midObj.questionTypeId = $(`#question${i}questionTypeId`).val();
+          midObj.timeLimitId = $(`#timeLimitId${i}`).val();
+          midObj.imgURL = $(`#question${i}>ul.qinfo img`).prop('src');
+          midObj.quizId = quizId;  
+          midObj.id = questionId;  
+          midObj.questionOrder = i;
+          midObj.Answers = [];
+          newQuestions.push(midObj);
+          // newQuestions[i - 1] = midObj;
 
-          <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
+          const oldCountAnswer = newQuestions[i - 1].questionTypeId == 1 ? 2 : 4;
+          const newCountAnswer = $(`#question${i}questionTypeId`).val() == 1 ? 2 : 4;
+          const willDeleteAnswer = newCountAnswer - oldCountAnswer < 0 ? true : false;
+          // decide if delete needed else we may add new questions
+          if (willDeleteAnswer) {
+            // console.log('will delete answers of', newQuestions[i - 1]);
+            for (let j = newCountAnswer; j < oldCountAnswer; j++) {
+              delete newQuestions[i - 1].Answers[j];
+            }
+          }
+          for (let j = 1; j <= newCountAnswer; j++) {
+            const answerId = $(`#question${i}Answers${j}`).data('id') ?? uuid();
+            const midAnsObj = {};
+            midAnsObj.text = $(`#question${i}Answers${j}text`).val();
+            midAnsObj.answerOrder = j;
+            midAnsObj.isCorrect = $(`#question${i}Answers${j}isCorrect`).prop('checked');
+            midAnsObj.questionId = questionId;
+            midAnsObj.id = answerId;
+            newQuestions[i - 1].Answers.push(midAnsObj);
+            // newQuestions[i - 1].Answers[j - 1] = midAnsObj;
+          }
+        };
+          $('#btn-quiz-done').click();
+        console.log('questionsToDelete :>> ', questionsToDelete);
+          $.ajax({
+            type: "put",
+            dataType: 'json', // Set datatype - affects Accept header
+            url: `/save/quiz`,
+            data: {rows: JSON.stringify(newQuestions), questionsToDelete: JSON.stringify(questionsToDelete), quizId},
+          }).done(function() {
+            window.location.href = '/home'
+        });
+      })
 
-          <div class="col-11 align-self-center ">
-            <div class=" input-group px-lg-2">
-
-              <input data-tag="text" class="inputa col-11 form-control form-control-lg " type="text"
-                placeholder="Add answer 1 (required)">
-
-              <input data-tag="isCorrect" type="checkbox" class=" form-check-input"
-                style="margin-left:5px; border-radius:20px;  width:50px; height: 2.5rem; background-color: #eb1c1c;">
-            </div>
-          </div>
-
-        </li>
-
-        <li class="col-lg-6 row borderblue cborder" data-question-id="" data-id="">
-
-          <div class="col-1"><i><img src="../images/mavi.png" alt=""></i></div>
-          <div class="col-11 align-self-center ">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class=" inputb col-11 form-control form-control-lg required"
-                placeholder="Add answer 2 (required)">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style="width: 50px; height: 2.5rem; background-color: rgb(3, 81, 182); border-radius: 20px; margin-left: 5px;">
-
-            </div>
-          </div>
-        </li>
-
-        <li class="col-lg-6 row cborder borderyellow " data-question-id="" data-id="">
-
-          <div class="col-1"><i><img src="../images/sari.png" alt=""></i></div>
-          <div class="col-11 align-self-center">
-            <div class=" input-group px-lg-2 ">
-              <input data-tag="text" class="inputc col-11 form-control form-control-lg required " type="text"
-                placeholder="Add answer 3 (optional)">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style=" width: 50px; height: 2.5rem; background-color: #fcce00; border-radius: 20px; margin-left: 5px;">
-
-            </div>
-          </div>
-
-        </li>
-
-        <li class="col-lg-6 bordergreen row cborder ">
-
-          <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
-          <div class="col-11 align-self-center">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class="inputd form-control form-control-lg" type="text"
-                placeholder="Add answer 4 (optional)">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style="width: 50px; height: 2.5rem; background-color: #228b03; border-radius: 20px;margin-left: 5px;">
-
-            </div>
-          </div>
-          </div>
-        </li>
-
-      </ul> -->
-
-      <!--       <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
-
-        <li class="col-lg-6  row dborder ">
-
-          <div class="col-1"><i><img src="../images/yesil.png" alt=""></i></div>
-          <div class="col-11 align-self-center">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
-                style="background-color: #228b03; color: white; font-weight: 400; border: none;">
-              <input data-tag="isCorrect" type="checkbox" class="form-check-input" value=""
-                style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #228b03; ">
-
-            </div>
-          </div>
-
-        </li>
-
-        <li class="col-lg-6 row eborder" data-question-id="" data-id="">
-
-          <div class="col-1"><i> <img src="../images/kirmizi.png" alt=""></i></div>
-
-          <div class="col-11 align-self-center ">
-            <div class=" input-group px-lg-2">
-              <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
-                style="background-color: #eb1c1c; color: white; font-weight: 400; border: none;">
-
-              <input data-tag="isCorrect" type="checkbox" class=" form-check-input"
-                style="margin-left:5px; border-radius:20px; border-style: solid; border-width: 3px; border-color: white;  width:50px; height: 2.5rem; background-color: #eb1c1c; ">
-            </div>
-          </div>
-        </li>
-
-      </ul> -->
-
-      <!--       <div class="btngroup ">
-
-        <button class=" btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
-            style="font-weight:bold">Clone Question</span></button>
-
-        <button class=" btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
-            style="font-weight:bold">Add Question </span></button>
-
-        <button class=" btn btn-danger" type="button" style="margin-top: 10px; width: 200px;" data-tag="delete">
-          <span style="font-weight:bold;">Delete</span> </button>
-
-      </div> -->
-
-      <!--     </li>
-    <hr style="color: rgb(14, 119, 105); height: 3px;"> -->
-    </ol>
-
-    <%- include('../partials/footer') %>
-    <script>
-      $(document).ready(function () {
-        const details = <%-JSON.stringify(dataset.details) %> ;
-        const title = <%-JSON.stringify(dataset.details.title) %> ;
-        const count = <%-JSON.stringify(dataset.count) %> ;
-        const rows = <%-JSON.stringify(dataset.rows) %> ;
-        console.log('details.text :>> ', title);
-        console.log('count :>> ', count);
-        console.log('rows :>> ', rows);
-
+      // side menu ui animation
       $('.dismiss, .overlay').on('click', function () {
         $('.sidebar').removeClass('active');
 
       });
 
+      // side menu ui animation
       $('.open-menu').on('click', function (e) {
-      e.preventDefault();
-      $('.sidebar').addClass('active');
+        e.preventDefault();
+        $('.sidebar').addClass('active');
 
-      // close opened sub-menus
-      $('.collapse.show').toggleClass('show');
-      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-
+        // close opened sub-menus
+        $('.collapse.show').toggleClass('show');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
       });
+    });
+  </script>
+</body>
 
-      });
-
-      document.querySelectorAll(".drop-zone-input").forEach((inputElement) => {
-        const dropZoneElement = inputElement.closest(".drop-zone");
-
-        dropZoneElement.addEventListener("click", (e) => {
-          inputElement.click();
-        });
-
-        inputElement.addEventListener("change", (e) => {
-          if (inputElement.files.length) {
-            updateThumbnail(dropZoneElement, inputElement.files[0]);
-          }
-        });
-
-        dropZoneElement.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          dropZoneElement.classList.add("drop-zone-over");
-        });
-
-        ["dragleave", "dragend"].forEach((type) => {
-          dropZoneElement.addEventListener(type, (e) => {
-            dropZoneElement.classList.remove("drop-zone-over");
-          });
-        });
-
-        dropZoneElement.addEventListener("drop", (e) => {
-          e.preventDefault();
-
-          if (e.dataTransfer.files.length) {
-            inputElement.files = e.dataTransfer.files;
-            updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-          }
-
-          dropZoneElement.classList.remove("drop-zone-over");
-        });
-      });
-
-      //Updates the thumbnail on a drop zone element.
-
-      function updateThumbnail(dropZoneElement, file) {
-        let thumbnailElement = dropZoneElement.querySelector(".drop-zone-img");
-
-        // First time - remove the prompt
-        if (dropZoneElement.querySelector(".drop-zone-prompt")) {
-          dropZoneElement.querySelector(".drop-zone-prompt").remove();
-        }
-
-        // First time - there is no thumbnail element, so lets create it
-        if (!thumbnailElement) {
-          thumbnailElement = document.createElement("div");
-          thumbnailElement.classList.add("drop-zone-img");
-          dropZoneElement.appendChild(thumbnailElement);
-        }
-
-        thumbnailElement.dataset.label = file.name;
-
-        // Show thumbnail for image files
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-          };
-        } else {
-          thumbnailElement.style.backgroundImage = null;
-        }
-      }
-    </script>
-  </body>
 </html>

@@ -43,7 +43,6 @@ uploads/*.jpg
 uploads/*.jpeg
 uploads/*.bmp
 
-
 # Dependency directories
 node_modules/
 jspm_packages/

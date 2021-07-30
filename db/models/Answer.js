@@ -40,6 +40,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'answerId',
       target: 'id',
       through: 'PlayerAnswer',
+      constraints: false,
+    });
+
+    Answer.hasMany(models.PlayerAnswer, {
+      foreignKey: 'answerId',
+      target: 'id',
+      constraints: false,
     });
   };
 

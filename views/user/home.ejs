@@ -1,7 +1,96 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
   <%- include('../partials/headerhome', {title}); %>
   <body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-primary d-xl-flex text-uppercase" id="mainNav"
+    style="padding-top: 0.1rem; padding-bottom: 0.1rem;">
+    <div class="container-fluid">
+      <div>
+        <img class="img-thumbnail" src="/images/logo.png" style="height: 2.70rem;" id="logo">
+        <!-- compose button -->
+      </div>
+      <a href="/compose" class="cbtn btn btn-primary bg-primary bg-gradient border rounded shadow  px-2  "
+        type="button">
+        Compose
+        <style>
+          .btn:active {
+            transform: translateY(4px);
+          }
+        </style>
+      </a>
+<!--  profile button <%#        <button class="btn align-self-end   " id="" type="button" data-bs-toggle="modal"
+        data-bs-target=".bd-example-modal-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="1.5em" viewBox="0 0 24 24" fill="white"
+          style="color: white" class="view-profile border rounded-circle ms-auto">
+          <path
+            d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>  %> -->
+    </div>
+  </nav> 
+  <!-- modal dialog <%#   <div class="modal fade bd-example-modal-lg" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true"
+    data-bs-whatever="" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <section class=" row container-fluid px-3">
+          <h2 class="px-5">Quiz Summary</h2>
+          <div class="col-8  d-flex flex-column py-2">
+            <label class="modallabel py-2 " id="title">Title</label>
+            <input data-tag="quizText"
+              class="inputset form-control form-control-lg d-lg-flex  border-primary  border rounded " type="text"
+              placeholder="Enter quiz title" maxlength="80">
+            <label class="modallabel  py-2">Descripton</label>
+            <textarea rows="3" data-tag="quizDescription"
+              class=" inputset border rounded border-primary  orm-control-lg d-lg-flex" type="text"
+              maxlength="260"> </textarea>
+          </div>
+        </section>
+        <section class="row  px-3 py-3">
+          <div class=" col-3 d-flex flex-column ">
+            <label for="Music" class=" selectlabel" style="font-weight:bold">Music</label>
+            <select class="form-select border-primary" data-tag="lobbyMusicId" style="font-weight:bold ;">
+              <option value="1" id="music1">Music-1</option>
+              <option value="1" id="music2">Music-2</option>
+              <option value="1" id="music3">Music-3</option>
+              <option value="1" id="music4">Music-4</option>
+              <option value="1" id="music4">Music-5</option>
+              <option value="1" id="music4">Music-6</option>
+              <option value="1" id="music4">Music-7</option>
+              <option value="1" id="music4">Music-8</option>
+            </select>
+          </div>
+          <div class="col-3 py-3  d-flex flex-column">
+            <form action="">
+              <input type="checkbox" data-tag="isVisible" checked="checked"
+                class="form-check-input border-success set-check" style="border-radius: 30px; background-color: green;">
+              <label class="selectlabel  py-1" style="font-weight:bold">Visibile to users </label>
+            </form>
+          </div>
+
+          <div class="col-5  py-3 d-flex flex-column">
+            <form action="">
+              <input type="checkbox" data-tag="isDraft" class="form-check-input border-primary set-check"
+                style="border-radius: 30px;  ">
+              <label class="selectlabel px-1 py-1" style="font-weight:bold">Check to save as
+                draft</label>
+            </form>
+          </div>
+        </section>
+        <section class=" stbtn row container-fluid px-3 py-3" style="text-align: center;">
+          <div class="stbtn">
+            <button class=" btn btn-success" type="button" style="margin-right: 10px; width: 200px;" data-tag="Doneset">
+              <span style="font-weight:bold">Done</span></button>
+            <button class=" btn btn-secondary" type="button" style="margin-left: 10px; width: 200px;"
+              data-bs-dismiss="modal"> <span style="font-weight:bold">Close</span></button>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </div>      %> -->
     <h1><%= title %></h1>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
@@ -59,86 +148,50 @@
         <% sharedQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz}); %> <% }); %>
       </div>
     </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete Quiz?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure to delete the Quiz?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+        <a id='confirmButton' href="" type="button" class="btn btn-danger btn-sm">Confirm</a>
+      </div>
+    </div>
+  </div>
+</div>
     <%- include('../partials/footer') %>
-    <!--     <script>
-      console.log('from :>> ', '🏡');
-      // const socket = io();
-      const quizList = [];
-      function quizCard(data) {
-        return (
-          '<div class="card mb-12" >' /* style="max-width: 720px;" */ +
-          '<div class="row no-gutters">' +
-          '<div class="col-md-4">' +
-          '<img src=' +
-          `${data.imgURL}` +
-          ' class="card-img" style="width:300px" alt="...">' +
-          '</div>' +
-          '<div class="col-md-8">' +
-          '<div class="card-body">' +
-          '<h5 class="card-title">' +
-          `${data.title}` +
-          '</h5>' +
-          '<p class="card-text">' +
-          `${data.numberOfQuestions}` +
-          '</br>' +
-          `${data.composerName}` +
-          '</p>' +
-          '<a href=' +
-          `"/lobby?quizId=${data.id}"` +
-          ' data-id=' +
-          `${data.id}` +
-          ' class="btn btn-primary">Play</a>' +
-          '<p class="card-text"><small class="text-muted">' +
-          `${data.createdAt}` +
-          '</small></p></div></div></div></div>'
-        );
-      }
+<script>
+  $(document).ready(function () {
+    $('.btn-danger').on('click', function (e) {
+      const quizIdToDelete = $(this).data('id');
+      $('#confirmButton').on('click', () => {
+        $.ajax({
+          type: "DELETE",
+          url: `/delete/${quizIdToDelete}`,
+          success: function(msg){
+          }
+        });
+      })
+    })
 
-      // socket.on('connect', () => {
-      // socket.on('redirect', destination => {
-      //   window.location.href = destination;
-      // });
-
-      // console.log('connected :>> ', socket.io.engine.id);
-
-      // set socketid to actual userid for host
-      // socket.emit('UUID-request');
-
-      // socket.on('UUID-response', newUUID => {
-      //   console.log({ old: socket.io.engine.id, new: newUUID });
-      //   socket.io.engine.id = newUUID;
-      // });
-      // ask my quiz list
-      socket.emit('quizList-request');
-      socket.emit('draft-quizList-request');
-      socket.emit('shared-quizList-request');
-
-      socket.on('quizList-response', quizData => {
-        console.log('quizzes :>> ', quizData);
-        if (quizData.rows != null) {
-          quizData.rows.forEach(quiz => {
-            console.log('quiz :>> ', quiz);
-            $('#home').append(quizCard(quiz));
-          });
-        }
+    $('.btn-info').on('click', function (e) {
+      const quizIdToClone = $(this).data('id');
+      $.ajax({
+        type: "PUT",
+        url: `/clone/${quizIdToClone}`,
+        success: function(msg){
+          }
       });
-      socket.on('draft-quizList-response', quizData => {
-        if (quizData != null) {
-          quizData.rows.forEach(quiz => {
-            console.log('quiz :>> ', quiz);
-            $('#drafts').append(quizCard(quiz));
-          });
-        }
-      });
-      socket.on('shared-quizList-response', quizData => {
-        if (quizData != null) {
-          quizData.rows.forEach(quiz => {
-            //console.log("quiz :>> ", quiz);
-            $('#shared').append(quizCard(quiz));
-          });
-        }
-      });
-      // });
-    </script> -->
+    })
+  });
+</script>
   </body>
 </html>

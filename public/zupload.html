@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Bootswatch lumen -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootswatch@5.0.2/dist/lumen/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <!--   <link rel="stylesheet" href="../stylesheets/stylehome.css" /> -->
+    <link rel="icon" href="/images/logo.png" type="img" />
+    <title>welcome zupload</title>
+  </head>
+
+  <body>
+    <div id="actions" class="row my-4">
+      <div class="col-lg-7">
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <span class="btn btn-success fileinput-button dz-clickable">
+          <i class="icon-plus small-text"></i>
+          <span>Add files...</span>
+        </span>
+        <button type="submit" class="btn btn-primary start">
+          <i class="icon-arrow-circle-o-up icon-offset"></i>
+          <span>Start upload</span>
+        </button>
+        <button type="reset" class="btn btn-warning text-white cancel">
+          <i class="icon-ban icon-offset"></i>
+          <span>Cancel upload</span>
+        </button>
+      </div>
+
+      <div class="col-lg-5">
+        <!-- The global file processing state -->
+        <span class="fileupload-process">
+          <div
+            id="total-progress"
+            class="progress progress-striped active"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <div class="progress-bar progress-bar-success" style="width: 0%" data-dz-uploadprogress=""></div>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div id="drop-area">
+      <div class="files" id="previews">
+        <div
+          id="template"
+          class="
+            position-relative
+            bg-white
+            d-flex
+            justify-content-between
+            py-2
+            border border-top-0 border-right-0 border-left-0
+          "
+        >
+          <!-- This is used as the file preview template -->
+          <div>
+            <span class="preview"><img data-dz-thumbnail /></span>
+          </div>
+          <div>
+            <p class="name" data-dz-name></p>
+            <strong class="error text-danger" data-dz-errormessage></strong>
+          </div>
+          <div>
+            <p class="size" data-dz-size></p>
+            <div
+              class="progress progress-striped active"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div class="progress-bar progress-bar-success" style="width: 0%" data-dz-uploadprogress></div>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-primary start">
+              <i class="icon-arrow-circle-o-up icon-offset"></i>
+              <span>Start</span>
+            </button>
+            <button data-dz-remove class="btn btn-warning text-white cancel">
+              <i class="icon-ban icon-offset"></i>
+              <span>Cancel</span>
+            </button>
+            <button data-dz-remove class="btn btn-danger delete">
+              <i class="icon-times-circle-o icon-offset"></i>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+      #drop-area {
+        border: 1px dashed #007bff;
+        border-radius: 20px;
+        padding: 20px;
+        min-height: 400px;
+        width: 100%;
+        position: relative;
+      }
+      #drop-area:before {
+        content: 'Drop your image files here.';
+        position: absolute;
+        left: 50%;
+        width: 300px;
+        margin-left: -150px;
+        margin-top: -10px;
+        top: 50%;
+        height: 20px;
+      }
+    </style>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="javascripts/dropzone.min.js"></script>
+    <script>
+      // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+      var previewNode = document.querySelector('#template');
+      previewNode.id = '';
+      var previewTemplate = previewNode.parentNode.innerHTML;
+      previewNode.parentNode.removeChild(previewNode);
+
+      var myDropzone = new Dropzone(document.body, {
+        // Make the whole body a dropzone
+        url: '/target-url', // Set the url
+        thumbnailWidth: 80,
+        thumbnailHeight: 80,
+        parallelUploads: 20,
+        previewTemplate: previewTemplate,
+        autoQueue: false, // Make sure the files aren't queued until manually added
+        previewsContainer: '#previews', // Define the container to display the previews
+        clickable: '.fileinput-button', // Define the element that should be used as click trigger to select files.
+      });
+
+      myDropzone.on('addedfile', function (file) {
+        // Hookup the start button
+        file.previewElement.querySelector('.start').onclick = function () {
+          myDropzone.enqueueFile(file);
+        };
+      });
+
+      // Update the total progress bar
+      myDropzone.on('totaluploadprogress', function (progress) {
+        document.querySelector('#total-progress .progress-bar').style.width = progress + '%';
+      });
+
+      myDropzone.on('sending', function (file) {
+        // Show the total progress bar when upload starts
+        document.querySelector('#total-progress').style.opacity = '1';
+        // And disable the start button
+        file.previewElement.querySelector('.start').setAttribute('disabled', 'disabled');
+      });
+
+      // Hide the total progress bar when nothing's uploading anymore
+      myDropzone.on('queuecomplete', function (progress) {
+        document.querySelector('#total-progress').style.opacity = '0';
+      });
+
+      // Setup the buttons for all transfers
+      // The "add files" button doesn't need to be setup because the config
+      // `clickable` has already been specified.
+      document.querySelector('#actions .start').onclick = function () {
+        myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+      };
+      document.querySelector('#actions .cancel').onclick = function () {
+        myDropzone.removeAllFiles(true);
+      };
+    </script>
+  </body>
+</html>
