@@ -105,7 +105,7 @@ io.on('connection', socket => {
   const playerScoreList = [];
   // console.log('socket@connection#107 :>> ', socket);
   // const cookies = cookie.parse(socket.request.headers.cookie || '');
-  console.log('client connected socket.conn.id :>>', cookies);
+  // console.log('client connected socket.conn.id :>>', cookies);
 
   //console.log('socket.conn.id :>> ', socket.conn.id);
   if (!app.locals.user) {
@@ -119,7 +119,8 @@ io.on('connection', socket => {
       if (!hjData) {
         socket.emit('noGameFound');
       } else {
-        const questions = await Query.getQuestionsOfQuiz(hjData);
+        const hjDataQuizId = hjData.id;
+        const questions = await Query.getQuestionsOfQuiz(hjDataQuizId);
 
         if (questions) {
           // new pin for the given game
@@ -127,7 +128,7 @@ io.on('connection', socket => {
           //console.log("000000000000000000000",gamePin)
           games.addGame(gamePin, socket.conn.id, false, {
             gameId: uuidv4(),
-            quizId: hjData,
+            quizId: hjDataQuizId,
             questionLive: false,
             questionCount: questions.count,
             questionNumber: 1,
@@ -168,7 +169,7 @@ io.on('connection', socket => {
       }
 
       const currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber(
-        game.values.quizId.id,
+        game.values.quizId,
         game.values.questionNumber
       );
 
@@ -191,7 +192,7 @@ io.on('connection', socket => {
   socket.on('player-join', pjData => {
     let gameFound = false;
 
-    for (const game of games) {
+    for (const game of games.games) {
       if (pjData.pin == game.pin) {
         const hostId = game.hostId;
         if (pjData.name != undefined) {
@@ -284,7 +285,7 @@ io.on('connection', socket => {
       player.values.answerSelected = givenAnswer;
       theGame.values.playersAnswered += 1;
 
-      console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXxccccc', theGame.values.quizId.id);
+      console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXxccccc', theGame.values.quizId);
       const answersOfQuestion = await Query.getQuestionOfQuizByQNumberWithAnswers(
         theGame.values.quizId,
         theGame.values.questionNumber
