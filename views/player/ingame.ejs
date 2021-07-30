@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <%- include('../partials/header', {title}); %>
   <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
@@ -11,6 +12,7 @@
     <h3 id="title2">Do you see your name on the screen?</h3>
     <div class="loader"></div>
     <br />
+    <%- include('../partials/footer') %>
 
     <script>
       var socket = io({ transports: ['websocket'], upgrade: false });
@@ -24,14 +26,14 @@
           name: urlParams.get('name'),
           pin: urlParams.get('pin'),
         };
-        console.log(params);
+        
         //Tell server that it is player connection
         socket.emit('player-join', params);
       });
 
       //Boot player back to join screen if game pin has no match
       socket.on('noGameFound', function () {
-        window.location.href = '../';
+       // window.location.href = '../';
       });
       //If the host disconnects, then the player is booted to main screen
       socket.on('hostDisconnect', function () {
@@ -40,7 +42,7 @@
 
       //When the host clicks start game, the player screen changes
       socket.on('gameStartedPlayer', function () {
-        window.location.href = '/player/game/' + '?id=' + socket.id;
+        window.location.href = '/playergameblock' + '?id=' + socket.io.engine.id;
       });
     </script>
   </body>

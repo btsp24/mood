@@ -142,12 +142,10 @@
         }); %>
       </div>
       <div class="tab-pane fade" id="drafts" role="tabpanel" aria-labelledby="drafts-tab">
-        <% myDraftQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz});
-        %> <% }); %>
+        <% myDraftQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz}); %> <% }); %>
       </div>
       <div class="tab-pane fade" id="shared" role="tabpanel" aria-labelledby="shared-tab">
-        <% sharedQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz}); %>
-        <% }); %>
+        <% sharedQuizzes.rows.forEach(function(quiz){ %> <%- include('../partials/quizcard', {data: quiz}); %> <% }); %>
       </div>
     </div>
 

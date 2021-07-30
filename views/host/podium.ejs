@@ -1,0 +1,725 @@
+<html>
+<%- include('../partials/header', {title}); %>
+
+    <body>
+        <style>
+            #tsparticles {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                margin: 0;
+            }
+
+            .quiz {
+                color: #fff;
+                font-size: 40px;
+                font-weight: bold;
+                font-family: Arial, Helvetica, sans-serif;
+                margin-top: 5%;
+            }
+
+            .competition-podium {
+                width: 100%;
+                height: 100%;
+                background-color: rgb(8, 60, 143);
+                bottom: 0;
+                top: 0;
+                position: fixed;
+            }
+
+            .window {
+
+                width: 100%;
+                height: 100%;
+                background-color: rgb(8, 60, 143);
+                bottom: 0;
+                top: 0;
+                position: relative;
+            }
+
+            .competition-podium .podium-block-gold {
+
+                position: absolute;
+
+                bottom: 0;
+
+                border-radius: 10px 10px 0px 0px;
+
+                border-style: solid;
+
+                border-color: rgb(19, 104, 206);
+
+                text-align: center;
+            }
+
+            .competition-podium .podium-block-silver {
+
+                margin-left: 33.33%;
+                position: absolute;
+
+                bottom: 0;
+
+                border-radius: 10px 10px 0px 0px;
+
+                border-style: solid;
+
+                border-color: rgb(19, 104, 206);
+
+                text-align: center;
+            }
+
+            .competition-podium .podium-block-bronze {
+
+
+                margin-left: -33.33%;
+                position: absolute;
+
+                bottom: 0;
+
+                border-radius: 10px 10px 0px 0px;
+
+                border-style: solid;
+
+                border-color: rgb(19, 104, 206);
+
+                text-align: center;
+            }
+
+            .place {
+
+                font-size: 16px;
+
+                font-weight: bold;
+
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            .name {
+
+
+                display: none;
+
+                font-size: 20px;
+
+                font-weight: bold;
+
+                font-family: Arial, Helvetica, sans-serif;
+
+                z-index: 10;
+
+                opacity: 1;
+                color: #ffff;
+            }
+
+            .sum {
+
+                font-size: 30px;
+
+                font-weight: bold;
+
+                font-family: Arial, Helvetica, sans-serif;
+
+                width: 100%;
+
+                text-align: center;
+
+                position: absolute;
+
+                bottom: 75px;
+
+                z-index: 10;
+
+                opacity: 1;
+
+                display: none;
+            }
+
+            .competition-podium .podium-block-bronze {
+
+                color: #ffff;
+
+            }
+
+            .competition-podium .podium-block-bronze .podium {
+
+                background: rgb(19, 104, 206);
+
+                height: 0px;
+            }
+
+            .competition-podium .podium-block-gold {
+
+                color: #ffff;
+            }
+
+            .competition-podium .podium-block-gold .podium {
+
+                background: rgb(19, 104, 206);
+
+                height: 0px;
+
+            }
+
+            .competition-podium .podium-block-gold .name {
+
+                color: #fff;
+
+            }
+
+            .competition-podium .podium-block-silver {
+
+                color: #fff;
+
+            }
+
+            .competition-podium .podium-block-silver .podium {
+
+                background: rgb(19, 104, 206);
+
+                height: 0px;
+            }
+
+            .competition-podium .podium-block-silver .name {
+
+                color: #fff;
+            }
+
+
+            audio {
+                display: none;
+            }
+
+
+            #sound {
+                font-size: 16px;
+                color: #eee;
+                position: absolute;
+                width: 50px;
+                padding: 10px;
+                border: none;
+                border-radius: 2px;
+                outline: none;
+                background: rgb(8, 60, 143);
+                box-shadow: 2px 2px 2px 2px rgba(16, 153, 187, 0.4);
+                opacity: 0.8;
+                cursor: pointer;
+                transition: all 0.4s ease-out;
+            }
+
+            #sound.fade:hover {
+                opacity: 0.8;
+            }
+
+            .fade {
+                opacity: 0.2;
+                transform: translate(0, 0);
+            }
+
+            #refresh {
+                font-size: 16px;
+                color: #eee;
+                position: absolute;
+                width: 50px;
+                padding: 10px;
+                border: none;
+                border-radius: 2px;
+                outline: none;
+                background: rgb(8, 60, 143);
+                box-shadow: 2px 2px 2px 2px rgba(16, 153, 187, 0.4);
+                opacity: 0.8;
+                cursor: pointer;
+            }
+
+            #refresh:active {
+                transform: translateY(4px)
+            }
+        </style>
+        <a id="back" href="../">Back</a>
+        <h1 id="title">
+            <%= title %>
+        </h1>
+        <div class="competition-podium row container-fluid justify-content-center">
+
+            <div id="tsparticles">
+
+
+                <div class=" container-fluid d-flex justify-content-center ">
+
+                    <span class="quiz " data-tag="title">Quiz Title</span>
+                </div>
+                <div class=" container-fluid d-flex justify-content-end ">
+
+                    <button type="button" class="btn btn-secondary forward" data-tag="forward">FORWARD</button>
+
+                </div>
+                <div class=" container-fluid d-flex justify-content-end py-5 ">
+                    <audio src="sss.mp3"></audio>
+
+                    <button id="sound">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
+                </div>
+                <div class=" container-fluid d-flex justify-content-end py-1 ">
+
+                    <button id="refresh" onclick="reset_animation()">
+                        <i class=" fas fa-sync-alt" aria-hidden="false"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="col-6 d-flex justify-content-center">
+
+                <div class="col col-2 podium-block-bronze ">
+
+                    <span class="sum" data-tag="sessionScore">sessionScore</span>
+                    <span class="name" data-tag="nickName">nickName</span>
+                    <div>
+                        <span class="place">Third Place</span>
+                    </div>
+                    <div class="podium"></div>
+                </div>
+
+                <div class="col col-2 podium-block-gold ">
+                    <span class="sum" data-tag="sessionScore">sessionScore</span>
+
+                    <span class="name" data-tag="nickName">nickName</span>
+                    <div>
+                        <span class="place">Champion</span>
+                    </div>
+                    <div class="podium">
+
+                        <img src="https://img.icons8.com/emoji/96/000000/sports-medal-emoji.png" / style="width: 50%;"
+                            title="medal">
+                    </div>
+                </div>
+
+                <div class="col col-2 podium-block-silver">
+
+                    <span class="sum" data-tag="sessionScore">sessionScore</span>
+                    <span class="name" data-tag="nickName">nickName</span>
+                    <div>
+                        <span class="place">Runner-up</span>
+                    </div>
+                    <div class="podium"></div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.32.0/tsparticles.min.js"
+            integrity="sha512-9gmr2A20gw/pjOog3qFv0RZh4EmjbXm5gGe1vnSNQQ21pN11bNWPg6wvgGoLDxb7ElHPvnJc2W3Y3SjHbbzG8Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <%- include('../partials/footer') %>
+
+
+
+
+            <script>
+               var socket = io();
+                const urlParams = new URLSearchParams(window.location.search);
+
+                const params = {
+                    id: urlParams.get("id"),
+
+                }
+
+                var timer;
+
+                var time;
+                console.log(params)
+
+                //When host connects to server
+                socket.on('connect', function () {
+
+                    //Tell server that it is host connection from game view
+                    socket.emit('host-join-game', params);
+                    socket.emit("podium")
+                });
+
+                    socket.on('podiumtake', function (data) {
+                    console.log(data)
+                    $('.podium-block-gold .name').text(data[0].name)
+
+                });
+      
+
+
+                setTimeout(() => tsParticles.load("tsparticles", {
+                    fullScreen: {
+                        enable: true
+                    },
+                    particles: {
+                        number: {
+                            value: 0
+                        },
+                        color: {
+                            value: ["#FF0061", "#E1FF00", "#00FF9E", "#48D1CC", "#FF00FF", "FFFF00"]
+                        },
+                        shape: {
+                            type: ["square"]
+                        },
+                        opacity: {
+                            value: {
+                                max: 1,
+                                min: 0.75
+                            },
+                            animation: {
+                                enable: true,
+                                speed: 3,
+                                startValue: "max",
+                                destroy: "min"
+                            }
+                        },
+                        size: {
+                            value: { min: 3, max: 7 }
+                        },
+                        life: {
+                            duration: {
+                                sync: true,
+                                value: 10
+                            },
+                            count: 1
+                        },
+                        move: {
+                            enable: true,
+                            gravity: {
+                                enable: true,
+                                acceleration: 5
+                            },
+                            speed: {
+                                min: 30,
+                                max: 50
+                            },
+                            drift: {
+                                min: -2,
+                                max: 2
+                            },
+                            decay: 0.04,
+                            direction: "none",
+                            outModes: {
+                                default: "destroy",
+                                top: "none"
+                            }
+                        },
+                        rotate: {
+                            value: {
+                                min: 0,
+                                max: 360
+                            },
+                            direction: "random",
+                            move: true,
+                            animation: {
+                                enable: true,
+                                speed: 60
+                            }
+                        },
+                        tilt: {
+                            direction: "random",
+                            enable: true,
+                            move: true,
+                            value: {
+                                min: 0,
+                                max: 360
+                            },
+                            animation: {
+                                enable: true,
+                                speed: 0
+                            }
+                        },
+                        roll: {
+                            enable: true,
+                            speed: {
+                                min: 50,
+                                max: 100
+                            }
+                        },
+                        wobble: {
+                            distance: 50,
+                            enable: true,
+                            move: true,
+                            speed: {
+                                min: 0,
+                                max: 15
+                            }
+                        }
+                    },
+                    interactivity: {
+                        detectsOn: "canvas",
+                        events: {
+                            resize: true
+                        }
+                    },
+
+                    background: {
+                        color: "rgb(8,60,143)"
+                    },
+
+                    emitters: [
+                        {
+                            direction: "top-right",
+                            rate: {
+                                delay: 0.1,
+                                quantity: 30
+                            },
+                            position: {
+                                x: 0,
+                                y: 50
+                            },
+                            size: {
+                                width: 0,
+                                height: 10
+                            },
+                            life: {
+                                duration: 7,
+                                count: 1
+                            }
+
+                        },
+                        {
+                            direction: "top-left",
+                            rate: {
+                                delay: 0.1,
+                                quantity: 30
+                            },
+                            position: {
+                                x: 100,
+                                y: 50
+                            },
+                            size: {
+                                width: 0,
+                                height: 10
+                            },
+                            life: {
+                                duration: 7,
+                                count: 1
+                            }
+                        }
+                    ]
+                }), 5000);
+
+
+            </script>
+
+
+            <script>
+
+                $(document).ready(function () {
+                    function podiumAnimate() {
+
+                        setTimeout(() => {
+                            $('.podium-block-gold .podium').animate({
+                                "height": "350px"
+                            }, 1500)
+                        }, 3000);
+
+                        setTimeout(() => {
+                            $('.podium-block-silver .podium').animate({
+                                "height": "250px"
+                            }, 1500)
+                        }, 1500);
+                        $('.podium-block-bronze .podium').animate({
+                            "height": "200px"
+                        }, 1500);
+
+                    }
+                    podiumAnimate();
+                });
+
+                setTimeout(() => { $('.sum').css('display', 'block'); $('.name').css('display', 'block') }, 4500)
+
+
+            </script>
+
+
+            <script>
+                const button = document.querySelector("#sound");
+                const icon = document.querySelector("#sound > i");
+                const audio = document.querySelector("audio");
+
+                button.addEventListener("click", () => {
+                    if (audio.paused) {
+                        audio.volume = 0.4;
+                        audio.play();
+                        icon.classList.add('fa-volume-up');
+                        icon.classList.remove('fa-volume-mute');
+
+                    } else {
+                        audio.pause();
+                        icon.classList.add('fa-volume-mute');
+                        icon.classList.remove('fa-volume-up');
+                    }
+                    button.classList.add("fade");
+                });
+
+
+
+                function reset_animation() {
+
+                    audio.play();
+                    audio.volume = 0.4;
+                    tsParticles.load("tsparticles", {
+                        fullScreen: {
+                            enable: true
+                        },
+                        particles: {
+                            number: {
+                                value: 0
+                            },
+                            color: {
+                                value: ["#FF0061", "#E1FF00", "#00FF9E", "#48D1CC", "#FF00FF", "FFFF00"]
+                            },
+                            shape: {
+                                type: ["square"]
+                            },
+                            opacity: {
+                                value: {
+                                    max: 1,
+                                    min: 0.75
+                                },
+                                animation: {
+                                    enable: true,
+                                    speed: 3,
+                                    startValue: "max",
+                                    destroy: "min"
+                                }
+                            },
+                            size: {
+                                value: { min: 3, max: 7 }
+                            },
+                            life: {
+                                duration: {
+                                    sync: true,
+                                    value: 10
+                                },
+                                count: 1
+                            },
+                            move: {
+                                enable: true,
+                                gravity: {
+                                    enable: true,
+                                    acceleration: 5
+                                },
+                                speed: {
+                                    min: 30,
+                                    max: 50
+                                },
+                                drift: {
+                                    min: -2,
+                                    max: 2
+                                },
+                                decay: 0.04,
+                                direction: "none",
+                                outModes: {
+                                    default: "destroy",
+                                    top: "none"
+                                }
+                            },
+                            rotate: {
+                                value: {
+                                    min: 0,
+                                    max: 360
+                                },
+                                direction: "random",
+                                move: true,
+                                animation: {
+                                    enable: true,
+                                    speed: 60
+                                }
+                            },
+                            tilt: {
+                                direction: "random",
+                                enable: true,
+                                move: true,
+                                value: {
+                                    min: 0,
+                                    max: 360
+                                },
+                                animation: {
+                                    enable: true,
+                                    speed: 0
+                                }
+                            },
+                            roll: {
+                                enable: true,
+                                speed: {
+                                    min: 50,
+                                    max: 100
+                                }
+                            },
+                            wobble: {
+                                distance: 50,
+                                enable: true,
+                                move: true,
+                                speed: {
+                                    min: 0,
+                                    max: 15
+                                }
+                            }
+                        },
+                        interactivity: {
+                            detectsOn: "canvas",
+                            events: {
+                                resize: true
+                            }
+                        },
+
+                        background: {
+                            color: "rgb(8,60,143)"
+                        },
+
+                        emitters: [
+                            {
+                                direction: "top-right",
+                                rate: {
+                                    delay: 0.1,
+                                    quantity: 30
+                                },
+                                position: {
+                                    x: 0,
+                                    y: 50
+                                },
+                                size: {
+                                    width: 0,
+                                    height: 10
+                                },
+                                life: {
+                                    duration: 7,
+                                    count: 1
+                                }
+
+                            },
+                            {
+                                direction: "top-left",
+                                rate: {
+                                    delay: 0.1,
+                                    quantity: 30
+                                },
+                                position: {
+                                    x: 100,
+                                    y: 50
+                                },
+                                size: {
+                                    width: 0,
+                                    height: 10
+                                },
+                                life: {
+                                    duration: 7,
+                                    count: 1
+                                }
+                            }
+                        ]
+                    })
+                }
+
+
+            </script>
+    </body>
+
+</html>
