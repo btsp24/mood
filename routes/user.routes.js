@@ -233,16 +233,17 @@ router.get('/compose', ensureAuthenticated, async (req, res) => {
   const dataset = {};
   dataset.details = {id: quizId, composerId: userId, 
     title: 'New Quiz', isVisible: false, isDraft: true, imgURL: '/images/180x120.png'};
-  dataset.rows = [
-    {quizId, id: questionId, text: 'New Question', questionOrder: 1, 
-      questionTypeId:2, timeLimitId: 2, imgURL: '/images/540x360.png',
-      Answers: [
-        {questionId, id: uuidv4()},
-        {questionId, id: uuidv4()},
-        {questionId, id: uuidv4()},
-        {questionId, id: uuidv4()},
-      ]
-    }];
+  dataset.rows = [];
+  const row = {quizId, id: questionId, text: 'New Question', questionOrder: 1, 
+  questionTypeId : 2, timeLimitId: 2, imgURL: '/images/540x360.png',
+};
+  row.Answers = [
+    {questionId, id: uuidv4(), answerOrder:1},
+    {questionId, id: uuidv4(), answerOrder:2},
+    {questionId, id: uuidv4(), answerOrder:3},
+    {questionId, id: uuidv4(), answerOrder:4},
+  ]
+  dataset.rows.push(row);
   dataset.count = 1;
 
   res.render('user/edit', {

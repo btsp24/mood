@@ -34,7 +34,7 @@
    </ul>
    <!-- Answer Choices -->
    <ul id="question<%= data.questionOrder %>Answers" class="row" style="margin-top: 30px;" data-tag="Answers">
-     <%  if (data.questionTypeId == 2) { %>
+     <%  if (data.questionTypeId == 2) {   %>
        <% data.Answers.forEach(function(answer){ %> 
            <% switch (answer.answerOrder) {
              case 1 : %>
