@@ -347,12 +347,13 @@ io.on('connection', socket => {
         player.values.answerId = null;
       }
     }
+    let currentQuestion; /* <== */
     const theGame = games.getGame(socket.conn.id);
     theGame.values.playersAnswered = 0;
     theGame.values.questionLive = true;
     theGame.values.questionNumber += 1;
     if (theGame.values.questionNumber <= theGame.values.questionCount) {
-      const currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber(
+      currentQuestion = await Query.getAnswersOfQuestionByQuizIdAndQNumber( /* <== */
         theGame.values.quizId,
         theGame.values.questionNumber
       );
@@ -384,8 +385,10 @@ io.on('connection', socket => {
       io.to(game.pin).emit('GameOver', topFivePlayers);
     }
     if (game.pin) {
-      io.to(game.pin).emit('nextQuestionPlayer');
-      // io.emit('nextQuestionPlayer');
+      if (!!currentQuestion) { /* <== */
+        io.to(game.pin).emit('nextQuestionPlayer', currentQuestion.numberOfChoices); /* <== */
+        // io.emit('nextQuestionPlayer');
+      }
     }
   });
   
