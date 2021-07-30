@@ -13,6 +13,7 @@ katılanlar gösteriliyor
 */
 
 router.get('/lobby/:quizId', ensureAuthenticated, async function (req, res, next) {
+
   const quizId = req.params.quizId;
   const userId = req.user.id;
   if (!!quizId && uuidValidate(quizId) && (await Query.quizExists(quizId))) {
@@ -69,6 +70,12 @@ router.get('/gameover', function (req, res, next) {
   res.app.locals.user = req.user;
   console.log('req.user :>> ', req.user);
   res.render('host/gameover', { title: 'Teacher game over' });
+});
+
+router.get('/podium', function (req, res, next) {
+  res.app.locals.user = req.user;
+  console.log('req.user :>> ', req.user);
+  res.render('host/podium', { title: 'Teacher game over' });
 });
 
 module.exports = router;

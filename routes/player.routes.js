@@ -23,8 +23,8 @@ router.get('/getready', function (req, res, next) {
 
 /* soru metni geliyor ve soru tipi bilgisi
 sonra soru şıkları geliyor ve geri sayım burada başlıyor */
-router.get('/gameblock', function (req, res, next) {
-    res.render('player/gameblock', { title: 'soru cevaplama zamanı' });
+router.get('/playergameblock', function (req, res, next) {
+    res.render('player/playergameblock', { title: 'soru cevaplama zamanı' });
 });
 
 /* burada çok hızlısın vs */

@@ -1,0 +1,138 @@
+
+#btn-settings {
+    font-weight: bold ; letter-spacing: 0.1rem;
+}
+
+
+.borderred{background-color: #eb1c1c;}
+.borderblue{background-color: rgb(3, 81, 182);}
+.borderyellow{background-color: #fcce00;}
+.bordergreen{background-color: #228b03;}
+
+
+.inputset{
+border-radius: 5px;  
+margin-top: 5px;
+}
+
+  [data-tag="truefalse"]{
+    display: none;
+  }
+
+  [data-tag="Answers"]{
+  display: flex;
+  }
+
+
+.imgarea{
+   justify-content: center;
+display: inline-flex;
+}
+
+.ana{
+    background-color: rgb(238, 238, 238);
+    padding: 5px 0px 30px 0px;
+  
+}
+.player {
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pbuttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.playpause-track{
+ padding: 2px;
+  opacity: 0.8;
+}
+
+.playpause-track:hover {
+  opacity: 1.0;
+}
+
+.slider_container {
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+/* Modify the appearance of the slider */
+ .volume_slider {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 12px;
+  background: rgb(8, 60, 143);
+  border-radius: 24px;
+
+}
+
+/* Modify the appearance of the slider thumb */
+ .volume_slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: white;
+  cursor: pointer;
+  border-radius: 24px;
+  
+}
+
+.volume_slider:hover {
+  opacity: 1.0;
+}
+
+
+.volume_slider {
+  width: 25%;
+}
+
+
+.fa-volume-up{
+
+  padding:10px;
+}
+
+.fa-play-circle, .fa-pause-circle {
+  cursor: pointer;
+ font-size: 38px;
+ color: rgb(8, 60, 143);
+
+}
+
+
+.sound-icon {
+  font-size: 12px;
+  color: #eee;
+  border: none;
+  padding: 2px;
+  border-radius: 24px;
+  outline: none;
+  background: rgb(8, 60, 143);
+  opacity: 1;
+  cursor: pointer;
+  transition: all 0.4s ease-out;
+  margin-top: 6px;
+  opacity: 0.8;
+}
+.sound-icon:hover{
+
+  opacity: 1;
+}
+
+#sound{
+  opacity: 0.8;
+  width: 90px;
+  margin-top: 6px;
+  margin-left:0px;
+}
