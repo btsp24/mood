@@ -83,7 +83,7 @@ class Query {
       order: [["updatedAt", "DESC"]],
       raw: true,
     })) {
-      console.log(quiz);
+      // console.log(quiz);
 
       quiz.editEnabled = true;
       rows.push(quiz);
@@ -156,7 +156,7 @@ class Query {
     if (composerId == null) {
       throw new Error('no userId is given');
     }
-    const theUser = await User.findByPk(composerId);
+    // const theUser = await User.findByPk(composerId);
 
     const count = await Quiz.count({
       where: {
@@ -707,10 +707,11 @@ class Query {
         where: { questionId, playerId: { [Op.in]: playerListInGame }},
         attributes: [
           'questionScore',
+          [sequelize.fn("MAX", sequelize.col("Player.nickName")), "nickname"],
           ],
           include: {
             model: Player,
-            attributes: ['nickName']
+            attributes: []
           },
           order: [['questionScore', 'DESC']],
           raw: true
