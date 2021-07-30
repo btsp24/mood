@@ -654,12 +654,12 @@ class Query {
     }
     try {
       const {quizId} = await Game.findOne({ where: { id: gameId }, attributes: ['quizId'], raw: true });
-      console.log('#657 quizId :>> ', quizId);
+      // console.log('#657 quizId :>> ', quizId);
       const playerListInGame = (await Player.findAll({ where: { gameId }, attributes: ['id'], raw: true })).map((e) => {return e.id});
-      console.log('#659 playerListInGame :>> ', playerListInGame);
+      // console.log('#659 playerListInGame :>> ', playerListInGame);
       const {id: questionId} = await Question.findOne({ where: { quizId, questionOrder: qNumber }, attributes: ['id'], raw: true });
-      console.log('#661 questionId :>> ', questionId);
-      const playerQuestionScores = await PlayerQuestion.findAll({
+      // console.log('#661 questionId :>> ', questionId);
+      return await PlayerQuestion.findAll({
         where: { questionId, playerId: { [Op.in]: playerListInGame }},
         attributes: [
           'questionScore',
@@ -667,13 +667,12 @@ class Query {
           ],
           include: {
             model: Player,
-            attributes: [['nickName','Player Nickname']]
+            attributes: ['nickName']
           },
           order: [['questionScore', 'DESC']],
           raw: true
       });
-      console.log('playerQuestionScores :>> ', playerQuestionScores);
-      return playerQuestionScores;
+      // console.log('playerQuestionScores :>> ', playerQuestionScores);
     } catch (error) {
       console.log('error :>> ', error);
     }
