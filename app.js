@@ -104,7 +104,7 @@ const players = new Players();
 // const cookie = require('cookie');
 
 io.on('connection', socket => {
-  const topFivePlayers = [];
+  const playerScoreList = [];
   // console.log('socket@connection#107 :>> ', socket);
   // const cookies = cookie.parse(socket.request.headers.cookie || '');
   // console.log('client connected socket.conn.id :>>', cookies);
@@ -190,7 +190,7 @@ io.on('connection', socket => {
     let gameFound = false;
 
     for (const game of games) {
-      if (pjData.pin === game.pin) {
+      if (pjData.pin == game.pin) {
         const hostId = game.hostId;
         players.addPlayer(hostId, socket.conn.id, pjData.name, {
           questionScore: 0,
@@ -200,7 +200,8 @@ io.on('connection', socket => {
         });
         socket.join(pjData.pin);
         const playersInGame = players.getPlayers(hostId);
-        io.to(pjData.pin).emit('updatePlayerLobby', playersInGame);
+        io.emit('updatePlayerLobby', playersInGame);
+        // io.to(pjData.pin).emit('updatePlayerLobby', playersInGame);
         gameFound = true;
       }
     }
@@ -369,7 +370,8 @@ io.on('connection', socket => {
         return -(a.values.gameScore - b.values.gameScore);
       });
       // const topFivePlayers = [];
-      for (let i = 0; i < 5; i++) {
+      const len = playerList.length;
+      for (let i = 0; i < len; i++) {
         const player = playerList[i];
         const aPlayerRecord = {
           pos: i + 1,
@@ -379,10 +381,10 @@ io.on('connection', socket => {
           questionCount: theGame.values.questionCount,
         };
         console.log('aPlayerRecord#375 :>> ', aPlayerRecord);
-        topFivePlayers.push(aPlayerRecord);
+        playerScoreList.push(aPlayerRecord);
       }
       // check the counter implementation
-      io.to(game.pin).emit('GameOver', topFivePlayers);
+      io.to(game.pin).emit('GameOver', playerScoreList);
     }
     if (game.pin) {
       if (!!currentQuestion) { /* <== */
@@ -393,7 +395,7 @@ io.on('connection', socket => {
   });
   
   socket.on('getTopFive', () => {
-    socket.emit('TopFivePlayer', topFivePlayers);
+    socket.emit('TopFivePlayer', playerScoreList);
   });
 
   // when host starts the game
