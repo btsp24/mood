@@ -249,7 +249,10 @@ io.on('connection', socket => {
         playersToRemove.forEach(exPlayer => {
           players.removePlayer(exPlayer.playerId);
         });
-        io.to(game.pin).emit('hostDisconnect');
+        if(game.pin){
+          io.emit('hostDisconnect');
+        }
+        
         socket.leave(game.pin);
       }
     } else {
