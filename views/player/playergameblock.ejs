@@ -5,81 +5,88 @@
   <body>
     <!-- Answer Choices -->
     <h2 id="message"></h2>
-    <ul class="row" style="margin-top: 30px;" data-tag="Answers" id="ansContainer">
-      <li class="col-lg-6 row py-2 " data-question-id="" data-id="" >
-        <div class="col-12 align-self-center ">
-          <div class=" input-group px-2">
-            <i> <img src="/images/kirmizi.png" alt=""></i>
-            <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-1" id="answer1"
-              onclick="answerSubmitted(1)" readonly
-              style="background-color: #eb1c1c; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-          </div>
-        </div>
-      </li>
-      <li class="col-lg-6 row  py-2 " data-question-id="" data-id="" >
-        <div class="col-12 align-self-center ">
-          <div class="input-group  px-2">
-            <i><img src="/images/mavi.png" alt=""></i>
-            <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-2" id="answer2"
-              onclick="answerSubmitted(2)" readonly
-              style="background-color: rgb(3, 81, 182); color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-          </div>
-        </div>
-      </li>
-      <li class="col-lg-6 row py-2 " data-question-id="" data-id="" >
-        <div class="col-12 align-self-center">
-          <div class=" input-group px-2 ">
-            <i><img src="/images/sari.png" alt=""></i>
-            <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-3" id="answer3"
-              onclick="answerSubmitted(3)" readonly
-              style="background-color: #eec71a;; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-          </div>
-        </div>
-      </li>
-      <li class="col-lg-6 row py-2  " >
-        <div class="col-12 align-self-center">
-          <div class=" input-group px-2">
-            <i><img src="/images/yesil.png" alt=""></i>
-            <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-4" id="answer4"
-              onclick="answerSubmitted(4)" readonly
-              style="background-color: #228b03; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-          </div>
-        </div>
-        </div>
-      </li>
-    </ul>
-    <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
-      <li class="col-6  row  " id="ansContainer">
-        <div class="col-12 align-self-center">
-          <div class="input-group px-2">
-            <i><img src="/images/yesil.png" alt=""></i>
-            <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
-              style="background-color: #228b03; color: white; font-weight: 500; border: none;">
-          </div>
-        </div>
-      </li>
-      <li class="col-6 row " data-question-id="" data-id="" id="ansContainer">
-        <div class="col-12 align-self-center ">
-          <div class=" input-group px-2">
-            <i> <img src="/images/kirmizi.png" alt=""></i>
-            <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
-              style="background-color: #eb1c1c; color: white; font-weight: 500; border: none;">
-          </div>
-        </div>
-      </li>
-    </ul>
-
-    <!-- OLD STUFF -->
-    <!-- OLD STUFF -->
-
-
-    <div class="container">
+    <div class="mcontainer">
       <div id="stats">
         <h4 id="nameText">Name:</h4>
         <h4 id="scoreText">Score:</h4>
         <h4 id="rankText"></h4>
       </div>
     </div>
+    <div class="container" id="ansContainer">
+      <ul class="row" style="margin-top: 30px;" data-tag="Answers">
+        <li class="col-lg-6 row py-2" data-question-id="" data-id="">
+          <div class="col-12 align-self-center ">
+            <div class=" input-group px-2">
+              <i> <img src="/images/kirmizi.png" alt=""></i>
+              <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-1" id="answer1"
+                onclick="answerSubmitted(1)" readonly
+                style="background-color: #eb1c1c; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+            </div>
+          </div>
+        </li>
+        <li class="col-lg-6 row  py-2" data-question-id="" data-id="">
+          <div class="col-12 align-self-center ">
+            <div class="input-group  px-2">
+              <i><img src="/images/mavi.png" alt=""></i>
+              <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-2" id="answer2"
+                onclick="answerSubmitted(2)" readonly
+                style="background-color: rgb(3, 81, 182); color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+            </div>
+          </div>
+        </li>
+        <li class="col-lg-6 row py-2" data-question-id="" data-id="">
+          <div class="col-12 align-self-center"id="answer3">
+            <div class=" input-group px-2 ">
+              <i><img src="/images/sari.png" alt=""></i>
+              <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-3" 
+                onclick="answerSubmitted(3)" readonly
+                style="background-color: #eec71a;; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+            </div>
+          </div>
+        </li>
+        <li class="col-lg-6 row py-2">
+          <div class="col-12 align-self-center"id="answer4">
+            <div class=" input-group px-2">
+              <i><img src="/images/yesil.png" alt=""></i>
+              <input data-tag="text" class=" form-control form-control-lg" type="button" value="Answer-4" 
+                onclick="answerSubmitted(4)" readonly
+                style="background-color: #228b03; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+   
+   
+    
+    <!-- <div class="container" id="ansContainer2">
+      <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
+        <li class="col-6  row  ">
+          <div class="col-12 align-self-center">
+            <div class="input-group px-2">
+              <i><img src="/images/yesil.png" alt=""></i>
+              <input data-tag="text" class=" form-control form-control-lg" type="text" value="True" readonly
+                style="background-color: #228b03; color: white; font-weight: 500; border: none;">
+            </div>
+          </div>
+        </li>
+        <li class="col-6 row " data-question-id="" data-id="" id="ansContainer">
+          <div class="col-12 align-self-center ">
+            <div class=" input-group px-2">
+              <i> <img src="/images/kirmizi.png" alt=""></i>
+              <input data-tag="text" class=" form-control form-control-lg" type="text" value="False" readonly
+                style="background-color: #eb1c1c; color: white; font-weight: 500; border: none;">
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div> -->
+
+    <!-- OLD STUFF -->
+    <!-- OLD STUFF -->
+
+
+
     <%- include('../partials/footer') %>
 
       <script>
@@ -88,7 +95,7 @@
         var correct = false;
         var name;
         var score = 0;
-
+        var quetionType;
         var urlParams = new URLSearchParams(window.location.search);
 
         const params = {
@@ -99,7 +106,8 @@
         socket.on("connect", function () {
           //Tell server that it is host connection from game view
           socket.emit("player-join-game", params);
-          document.getElementById("ansContainer").style.visibility ="visible";
+          document.getElementById("ansContainer").style.visibility = "visible";
+          //document.getElementById("ansContainer2").style.visibility = "none";
           // document.getElementById("answer1").style.visibility = "visible";
           // document.getElementById("answer2").style.visibility = "visible";
           // document.getElementById("answer3").style.visibility = "visible";
@@ -118,6 +126,8 @@
 
             //Hiding buttons from user
             document.getElementById("ansContainer").style.visibility = "hidden";
+            //document.getElementById("ansContainer2").style.visibility = "hidden";
+
             // document.getElementById("answer2").style.visibility = "hidden";
             // document.getElementById("answer3").style.visibility = "hidden";
             // document.getElementById("answer4").style.visibility = "hidden";
@@ -148,6 +158,8 @@
             document.getElementById("message").innerHTML = "Incorrect!";
           }
           document.getElementById("ansContainer").style.visibility = "hidden";
+          //document.getElementById("ansContainer2").style.visibility = "hidden";
+
           // document.getElementById("answer2").style.visibility = "hidden";
           // document.getElementById("answer3").style.visibility = "hidden";
           // document.getElementById("answer4").style.visibility = "hidden";
@@ -158,20 +170,34 @@
           document.getElementById("scoreText").innerHTML = "Score: " + data;
         });
 
-        socket.on("nextQuestionPlayer", function () {
+        socket.on("nextQuestionPlayer", function (data) {
           correct = false;
           playerAnswered = false;
-          document.getElementById("ansContainer").style.visibility = "visible";
+          console.log("data!!!!!!", data)
+          if (data == 4) {
+            //document.getElementById("ansContainer2").style.visibility = "none";
+            document.getElementById("answer3").style.visibility = "visible";
+          document.getElementById("answer4").style.visibility = "visible";
+
+          }
+          if (data == 2) {
+            console.log("dadaatatatat222222")
+            document.getElementById("answer3").style.visibility = "hidden";
+          document.getElementById("answer4").style.visibility = "hidden";
+
+          }
+          //document.getElementById("ansContainer").style.visibility = "visible";
           // document.getElementById("answer1").style.visibility = "visible";
           // document.getElementById("answer2").style.visibility = "visible";
           // document.getElementById("answer3").style.visibility = "visible";
           // document.getElementById("answer4").style.visibility = "visible";
-          document.getElementById("message").style.display = "none";
+          //document.getElementById("message").style.display = "none";
           document.body.style.backgroundColor = "white";
+
         });
 
         socket.on("hostDisconnect", function () {
-          window.location.href = "../../";
+          window.location.href = "/";
         });
 
         socket.on("playerValues", function (data) {
@@ -188,13 +214,13 @@
         socket.on("GameOver", function () {
           console.log("gameover")
           document.body.style.backgroundColor = "#FFFFFF";
+          document.getElementById("message").style.display = "block";
+          document.getElementById("message").innerHTML = "GAME OVER";
+          document.getElementById("ansContainer").style.visibility = "hidden";
           // document.getElementById("answer1").style.visibility = "hidden";
           // document.getElementById("answer2").style.visibility = "hidden";
           // document.getElementById("answer3").style.visibility = "hidden";
           // document.getElementById("answer4").style.visibility = "hidden";
-          document.getElementById("ansContainer").style.visibility = "hidden";
-          document.getElementById("message").style.display = "block";
-          document.getElementById("message").innerHTML = "GAME OVER";
         });
       </script>
 

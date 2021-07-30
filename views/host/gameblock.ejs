@@ -370,7 +370,8 @@
                         }, 1000);
                     }
                     socket.on('GameOver', function (data) {
-                        window.location.href = "/podium"
+                        
+                        window.location.href = '/podium' + '?id=' + params.id;
                         console.log(data)
                         document.getElementById('nextQButton').style.display = "none";
                         document.getElementById('square1').style.display = "none";
