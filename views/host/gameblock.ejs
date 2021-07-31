@@ -42,7 +42,7 @@
     </style>
     <ol class=" container-fluid " type="none" id="questionList">
         <div class="row">
-            <div id="questionText" class=" col-10 col-md-11 py-3 px-3" style="align-items: center;">
+            <div id="divquestionText" class=" col-10 col-md-11 py-3 px-3" style="align-items: center;">
                 <p data-tag="text" class="qq border rounded  form-control-lg d-lg-flex "
                     style="margin-left: 10px; text-align: center; font-weight: 600; font-size:x-large;"
                     id="questionText">
@@ -182,6 +182,74 @@
 
         <script>
             $(document).ready(function () {
+            let playpause_btn = document.querySelector(".playpause-track");
+      let volume_slider = document.querySelector(".volume_slider");
+      // let track_index = 0;
+      let isPlaying = false;
+      // Create new audio element
+      let curr_track = document.createElement('audio');
+      $('div.playpause-track').on('click', playpauseTrack);
+      $('button.sound-icon').on('click', showDiv);
+      $('input#sound').on('change', setVolume);
+      $('button#cancelgame').on('click', endGame);
+      $('button#startgame').on('click', startGame);
+      curr_track.loop = true;
+      curr_track.src = "/audio/peritune-spook4.mp3" ;
+      curr_track.load();
+      // Define the tracks that have to be played
+      // let track_list = [
+      //   {
+      //     path: <%"/audio/rise-and-shine.mp3" %>
+      //   },
+
+      // ];
+
+      // function loadTrack(track_index) {
+      //   curr_track.src = track_list[track_index].path;
+      //   curr_track.load();
+      // }
+
+      // loadTrack(track_index);
+
+      function playpauseTrack() {
+        if (!isPlaying) playTrack();
+        else pauseTrack();
+      }
+
+      function playTrack() {
+        curr_track.play();
+        isPlaying = true;
+        playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-2x"></i>';
+      }
+
+      function pauseTrack() {
+        curr_track.pause();
+        isPlaying = false;
+        playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-2x"></i>';;
+      }
+
+      function setVolume() {
+        curr_track.volume = volume_slider.value / 100;
+      } <%# /* audio player section end */ %>
+
+      document.getElementById('sound').style.display = "none"
+
+      function showDiv() {
+        if (document.getElementById('sound').style.display === "none") {
+          document.getElementById('sound').style.display = "block";
+        } else {
+          document.getElementById('sound').style.display = "none";
+        }
+      }
+
+      function startGame(e) {
+        socket.emit('startGame');
+      }
+
+      function endGame() {
+        window.location.href = '/';
+      }
+
                 var socket = io();
                 const urlParams = new URLSearchParams(window.location.search);
                 const params = {
