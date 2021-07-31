@@ -715,6 +715,30 @@ class Query {
     }
   }
 
+  static async saveGame(gameId, quizId, userId, PIN) {
+    try {
+     const [game, created] = await Game.findOrCreate({
+        where: { id: gameId },
+        defaults: {
+          id: gameId,
+          quizId,
+          hostedBy: userId,
+          PIN
+        },
+      });
+      if (!created) {
+        game.update({
+          quizId,
+          hostedBy: userId,
+          PIN });
+      }
+      return true;
+    } catch (error) {
+      console.log("error :>> ", error);
+      return false;
+    }
+  }
+
   static async getPlayersQuestionScores(gameId, qNumber) {
     if (gameId == null) {
       throw new Error('no gameId is given');
