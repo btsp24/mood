@@ -366,7 +366,7 @@ io.on('connection', socket => {
 
     const playerList = players.getPlayers(theGame.hostId);
     const answersOfQuestion = await Query.getQuestionOfQuizByQNumberWithAnswers(
-      theGame.values.quizId.id,
+      theGame.values.quizId,
       theGame.values.questionNumber
     );
     const correctAnswers = answersOfQuestion.Answers.filter(a => {
@@ -458,7 +458,7 @@ io.on('connection', socket => {
     if (theGame.values.questionNumber <= theGame.values.questionCount) {
       const currentQuestion =
         await Query.getAnswersOfQuestionByQuizIdAndQNumber(
-          theGame.values.quizId.id,
+          theGame.values.quizId,
           theGame.values.questionNumber
         );
       console.log("currentQuestion#354 :>> ", currentQuestion);
