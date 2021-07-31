@@ -1,22 +1,123 @@
 <!DOCTYPE html>
 <html>
-  <%- include('../partials/header', {title}); %>
-  <body>
-    <h1><%= title %></h1>
-    <button id="cancel" type="button" class="btn btn-warning">Cancel Game</button>
-    <h2 id="title">Join this Game using the Game Pin:</h2>
-    <h1 id="gamePinText"></h1>
-    <textarea style="width: 700px; height: 500px" readonly id="players"></textarea>
-    <br />
-    <button id="start" type="button" class="btn btn-success" onclick="startGame()">Start Game</button>
-    <br />
-    <br />
-    <%- include('../partials/footer') %>
-    <script>
-      const socket = io({ transports: ['websocket'], upgrade: false });
+<%- include('../partials/headerlobby', {title}); %>
+
+<body>
+
+  <div class=" container-fluid colorless  ">
+    <div class="row d-flex ">
+      <div class=" col-2 ">
+      </div>
+      <div class="col-8">
+        <h2 id="title">Join this game using the Game Pin: </h2>
+        <h1 id="gamePinText" data-tag="PIN"></h1>
+      </div>
+      <div class="col-2 player">
+        <div class="pbuttons">
+          <div class="playpause-track"><i class="fas fa-play-circle fa-2x"></i></div>
+        </div>
+        <div class="slider_container">
+          <button class="sound-icon" onclick=showDiv()><i class="fas fa-volume-up " data-lobby-Music-id=""></i></button>
+          <input id="sound" type="range" min="0" max="100" value="50" class="volume_slider" onchange="setVolume()">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="gokyuzu" style="height: 84vh;">
+    <section class=" row container-fluid justify-content-center">
+      <div class="colorful">
+        <div class=" row d-flex justify-content-center " readonly id='players'>
+          <div class="col-2">
+            <button id="cancelgame" class="  btn btn-secondary ">Cancel Game</button>
+          </div>
+          <div class="col-8 d-flex justify-content-center">
+            <div>
+              <span class="pheader">PLAYERS</span>
+              <ul id="playersJoined" class="row" type="none">
+                <li><span class="badge badge-light py-3 px-3" data-tag="nickName">PLAYER1</span></li>
+                <li><span class="badge badge-light py-3 px-3" data-tag="nickName">PLAYER2</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-2">
+            <button id='startgame' class="btn btn-secondary" data-tag="QuizID">Start Game</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  </section>
+
+  <%- include('../partials/footer') %>
+  <script src="/javascripts/lobbyApp.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      let playpause_btn = document.querySelector(".playpause-track");
+      let volume_slider = document.querySelector(".volume_slider");
+      // let track_index = 0;
+      let isPlaying = false;
+      // Create new audio element
+      let curr_track = document.createElement('audio');
+      $('div.playpause-track').on('click', playpauseTrack);
+      $('button.sound-icon').on('click', showDiv);
+      $('input#sound').on('change', setVolume);
+      $('button#cancelgame').on('click', endGame);
+      $('button#startgame').on('click', startGame);
+      curr_track.loop = true;
+      curr_track.src = "<%= audio %>" ;
+      curr_track.load();
+      // Define the tracks that have to be played
+      // let track_list = [
+      //   {
+      //     path: <%"/audio/rise-and-shine.mp3" %>
+      //   },
+
+      // ];
+
+      // function loadTrack(track_index) {
+      //   curr_track.src = track_list[track_index].path;
+      //   curr_track.load();
+      // }
+
+      // loadTrack(track_index);
+
+      function playpauseTrack() {
+        if (!isPlaying) playTrack();
+        else pauseTrack();
+      }
+
+      function playTrack() {
+        curr_track.play();
+        isPlaying = true;
+        playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-2x"></i>';
+      }
+
+      function pauseTrack() {
+        curr_track.pause();
+        isPlaying = false;
+        playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-2x"></i>';;
+      }
+
+      function setVolume() {
+        curr_track.volume = volume_slider.value / 100;
+      } <%# /* audio player section end */ %>
+
+      document.getElementById('sound').style.display = "none"
+
+      function showDiv() {
+        if (document.getElementById('sound').style.display === "none") {
+          document.getElementById('sound').style.display = "block";
+        } else {
+          document.getElementById('sound').style.display = "none";
+        }
+      }
+      const socket = io({
+        transports: ['websocket'],
+        upgrade: false
+      });
       //var params = jQuery.deparam(window.location.search);
       const urlParams = new URLSearchParams(window.location.search);
-      
+
       // const params = {
       //   id: urlParams.get('quizId'),
       // };
@@ -39,12 +140,13 @@
 
       //Adds player's name to screen and updates player count
       socket.on('updatePlayerLobby', function (data) {
-        console.log("data!!!!!!!!!!!!",data);
+        // console.log("data!!!!!!!!!!!!", data);
         document.getElementById('players').value = '';
-
+        $('#playersJoined').html('');
         for (var i = 0; i < data.length; i++) {
-          console.log(data);
-          document.getElementById('players').value += data[i].name + '\n';
+          $("#playersJoined").prepend(`<li><h2><span class="badge badge-light py-3 px-3" data-tag="nickName">${data[i].name}</span></h2></li>`);
+          // console.log(data);
+          // document.getElementById('players').value += data[i].name + '\n';
         }
       });
 
@@ -52,6 +154,7 @@
       function startGame(e) {
         socket.emit('startGame');
       }
+
       function endGame() {
         window.location.href = '/';
       }
@@ -65,6 +168,8 @@
       // socket.on('noGameFound', function () {
       //   window.location.href = '../../'; //Redirect user to 'join game' page
       // });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

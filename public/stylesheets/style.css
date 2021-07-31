@@ -26,12 +26,15 @@ body {
   padding: 50px;
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  -webkit-animation: bgcolor 20s infinite;
-  animation: bgcolor 10s infinite;
+  /* -webkit-animation: bgcolor 20s infinite; */
+  /* animation: bgcolor 10s infinite; */
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
 }
 
+#truefalse, #multiple {
+  display: none;
+}
 
 #btn-settings {
   font-weight: bold ; letter-spacing: 0.1rem;
@@ -61,7 +64,8 @@ display: flex;
 
 .imgarea{
  justify-content: center;
-display: inline-flex;
+  display: inline-flex;
+  align-items: flex-end;
 }
 
 .ana{
