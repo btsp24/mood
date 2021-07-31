@@ -2,137 +2,110 @@
 <html>
 <%- include('../partials/header', {title}); %>
 
-    <head>
-        <title>
-            <%= title %>
-        </title>
-        <link rel='stylesheet' href='/stylesheets/styleBlock.css' />
-    </head>
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/styleBlock.css' />
+</head>
 
-    <body>
-<style>
+<body>
+    <style>
         #square1 {
-                background-color: #4CAF50;
-            }
+            background-color: #4CAF50;
+        }
 
-            #square2 {
-                background-color: #f94a1e;
-            }
+        #square2 {
+            background-color: #f94a1e;
+        }
 
-            #square3 {
-                background-color: #3399ff;
-            }
+        #square3 {
+            background-color: #3399ff;
+        }
 
-            #square4 {
-                background-color: #ff9933;
-            }
-            .square {
-                border: none;
-                padding: 15px 32px;
-                text-align: center;
-                text-decoration: none;
-                display: none;
-                font-size: 16px;
-                margin: 4px 2px;
-                width: 70px;
-                height: 0px;
-                font-size: 20px;
-            }
-</style>
-        <ol class=" container-fluid " type="none" id="questionList">
-            <div class="row">
-                <div class=" col-10 col-md-11 py-3 px-3" data-quiz-id="uuidv4-xxxxx" data-id="id"
-                    data-composer-id="uuidv4-xxxxx" data-question-order="questionOrder" style="align-items: center;">
+        #square4 {
+            background-color: #ff9933;
+        }
 
-                    <p data-tag="text" class="qq border rounded  form-control-lg d-lg-flex "
-                        style="margin-left: 10px; text-align: center; font-weight: 600; font-size:x-large;"
-                        id="questionText">
-                        Lorem ipsum dolor sit amet consectetur,
-                        adipisicing elit. Dolorum aut explicabo eligendi nam itaque voluptatum
-                        consectetur exercitationem, consequatur aliquid facere ea!
-                        Magnam amet fuga magni exercitationem deserunt at distinctio ut.
-
-                    </p>
-
-                </div>
-
-                <div class=" col-2 col-md-1  player">
-
-                    <div class="pbuttons">
-
-                        <div class="playpause-track" onclick="playpauseTrack()"><i class="fas fa-play-circle fa-2x"></i>
-                        </div>
-
-                    </div>
-
-                    <div class="slider_container">
-
-                        <button class="sound-icon" onclick=showDiv()><i class="fas fa-volume-up"></i></button>
-
-                        <!-- <i class=" control-2 fas fa-volume-down"></i> -->
-                        <input id="sound" type="range" min="0" max="100" value="75" class="volume_slider"
-                            onchange="setVolume()">
-                        <!-- <i class="control-1 fas fa-volume-up"></i> -->
-
-                    </div>
-                </div>
-
-
+        .square {
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: none;
+            font-size: 16px;
+            margin: 4px 2px;
+            width: 70px;
+            height: 0px;
+            font-size: 20px;
+        }
+    </style>
+    <ol class=" container-fluid " type="none" id="questionList">
+        <div class="row">
+            <div id="questionText" class=" col-10 col-md-11 py-3 px-3" style="align-items: center;">
+                <p data-tag="text" class="qq border rounded  form-control-lg d-lg-flex "
+                    style="margin-left: 10px; text-align: center; font-weight: 600; font-size:x-large;"
+                    id="questionText">
+                    Lorem ipsum dolor sit amet consectetur,
+                    adipisicing elit. Dolorum aut explicabo eligendi nam itaque voluptatum
+                    consectetur exercitationem, consequatur aliquid facere ea!
+                    Magnam amet fuga magni exercitationem deserunt at distinctio ut.
+                </p>
             </div>
-            <section class="ana">
-                <ul class="row qinfo col-12" style="margin-top: 25px" type="none">
 
-
-                    <div class=" col-3 px-0 countdown">
-
-
-                        <svg width="125" height="125">
-                            <circle cx="62.5" cy="62.5" r="50" fill="rgb(39, 1, 100)" />
-                            <text id="time" x="50%" y="50%" text-anchor="middle" fill="white" font-size="50px"
-                                font-family="Arial" dy=".3em"></text>
-                            Sorry, your browser does not support inline SVG.
-                        </svg>
-
-
+            <div class=" col-2 col-md-1  player">
+                <div class="pbuttons">
+                    <div class="playpause-track" onclick="playpauseTrack()"><i class="fas fa-play-circle fa-2x"></i>
                     </div>
+                </div>
 
-                    <div class=" col-6 border-success border-1 imgarea">
-                        <div class="square" id="square1"></div>
-                        <div class="square" id="square2"></div>
-                        <div class="square" id="square3"></div>
-                        <div class="square" id="square4"></div>
-                        <img src="./images/img.png" alt="" data-tag="imgURL" class="img-fluid " id="mainImage">
-                        <!-- <input type="file" name="myFile" class="drop-zone-input" data-tag="imgURL">
-            
-                                <span style="margin-top: 5px;" class="drop-zone-prompt">Drag and drop image from your computer or
-                                    click to upload</span> -->
-                    </div>
+                <div class="slider_container">
+                    <button class="sound-icon" onclick=showDiv()><i class="fas fa-volume-up"></i></button>
+                    <!-- <i class=" control-2 fas fa-volume-down"></i> -->
+                    <input id="sound" type="range" min="0" max="100" value="75" class="volume_slider"
+                        onchange="setVolume()">
+                    <!-- <i class="control-1 fas fa-volume-up"></i> -->
 
-                  
+                </div>
+            </div>
 
-                    <div class="col-3">
-                        <button onclick="nextQuestion()"
-                            class="btn btn-primary text-uppercase bg-primary bg-gradient border rounded shadow  "
-                            id="btn-settings" type="button" style="margin-left: 40%">
-                            Move
-                        </button>
 
-                    </div>
+        </div>
+        <section class="ana">
+            <ul class="row qinfo col-12" style="margin-top: 25px" type="none">
+                <div class=" col-3 px-0 countdown">
+                    <svg width="125" height="125">
+                        <circle cx="62.5" cy="62.5" r="50" fill="rgb(39, 1, 100)" />
+                        <text id="time" x="50%" y="50%" text-anchor="middle" fill="white" font-size="50px"
+                            font-family="Arial" dy=".3em"></text>
+                        Sorry, your browser does not support inline SVG.
+                    </svg>
+                </div>
 
-                </ul>
-
-                <!-- Answer Choices -->
-                <ul class="row" style="margin-top: 30px;" data-tag="Answers">
+                <div class="col-6 border-success border-1 imgarea">
+                    <div class="square" id="square1"></div>
+                    <div class="square" id="square2"></div>
+                    <div class="square" id="square3"></div>
+                    <div class="square" id="square4"></div>
+                    <img src="/images/img.png" alt="" data-tag="imgURL" class="img-fluid " id="mainImage">
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary text-uppercase bg-primary bg-gradient border rounded shadow  "
+                        id="btn-settings" type="button" style="margin-left: 40%">
+                        Next
+                    </button>
+                </div>
+            </ul>
+            <!-- Answer Choices -->
+            <div id='answers'>
+                <ul id='multiple' class="row" style="margin-top: 30px;" data-tag="Answers" hidden>
                     <li class="col-lg-6 row py-2 " data-question-id="" data-id="">
-
-
                         <div class="col-12 align-self-center ">
                             <div class=" input-group px-2">
-                                <i> <img src="./images/kirmizi.png" alt=""></i>
-                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                <i> <img src="/images/kirmizi.png" alt=""></i>
+                                <input data-tag="text" class="answer1text form-control form-control-lg" type="text"
                                     value="Answer-1" readonly id="answer1"
                                     style="background-color: #eb1c1c; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-
                             </div>
                         </div>
 
@@ -142,11 +115,10 @@
 
                         <div class="col-12 align-self-center ">
                             <div class="input-group  px-2">
-                                <i><img src="./images/mavi.png" alt=""></i>
-                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                <i><img src="/images/mavi.png" alt=""></i>
+                                <input data-tag="text" class="answer2text form-control form-control-lg" type="text"
                                     value="Answer-2" readonly id="answer2"
                                     style="background-color: rgb(3, 81, 182); color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-
                             </div>
                         </div>
                     </li>
@@ -155,264 +127,267 @@
 
                         <div class="col-12 align-self-center">
                             <div class=" input-group px-2 ">
-                                <i><img src="./images/sari.png" alt=""></i>
-                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                <i><img src="/images/sari.png" alt=""></i>
+                                <input data-tag="text" class="answer3text form-control form-control-lg" type="text"
                                     value="Answer-3" readonly id="answer3"
                                     style="background-color: #eec71a;; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-
-
                             </div>
                         </div>
 
                     </li>
 
                     <li class="col-lg-6 row py-2  ">
-
                         <div class="col-12 align-self-center">
                             <div class=" input-group px-2">
-                                <i><img src="./images/yesil.png" alt=""></i>
-                                <input data-tag="text" class=" form-control form-control-lg" type="text"
+                                <i><img src="/images/yesil.png" alt=""></i>
+                                <input data-tag="text" class="answer4text form-control form-control-lg" type="text"
                                     value="Answer-4" readonly id="answer4"
                                     style="background-color: #228b03; color: white; font-weight: 500; border: none; font-family:Arial, Helvetica, sans-serif">
-
                             </div>
                         </div>
-                        </div>
                     </li>
-
                 </ul>
+                <div id="truefalse" class="row" style="margin-top: 50px;" data-tag="Answers" hidden>
 
-                <ul class="row" style="margin-top: 50px;" data-tag="truefalse">
-
-                    <li class="col-6  row  ">
+                    <div class="col-6  ">
                         <div class="col-12 align-self-center">
                             <div class=" input-group px-2">
-                                <i><img src="./images/yesil.png" alt=""></i>
-                                <input data-tag="text" class=" form-control form-control-lg" type="text" value="True"
+                                <i><img src="/images/yesil.png" alt=""></i>
+                                <input data-tag="text" class="answer1text form-control form-control-lg" type="text" value="True"
                                     readonly
-                                    style="background-color: #228b03; color: white; font-weight: 500; border: none;"
-                                    </div>
-                            </div>
-
-                    </li>
-
-                    <li class="col-6 row " data-question-id="" data-id="">
-
-                        <div class="col-12 align-self-center ">
-
-                            <div class=" input-group px-2">
-                                <i> <img src="./images/kirmizi.png" alt=""></i>
-                                <input data-tag="text" class=" form-control form-control-lg" type="text" value="False"
-                                    readonly
-                                    style="background-color: #eb1c1c; color: white; font-weight: 500; border: none;">
+                                    style="background-color: #228b03; color: white; font-weight: 500; border: none;">
                             </div>
                         </div>
-                    </li>
-                </ul>
-            </section>
+    
+                    </div>
+    
+                    <div  class="col-6 " >
+    
+                        <div class="col-12 align-self-center ">
+                           
+                            <div class=" input-group px-2">
+                                <i> <img src="/images/kirmizi.png" alt=""></i>
+                                <input data-tag="text" class="answer2text form-control form-control-lg" type="text" value="False"
+                                    readonly
+                                    style="background-color: #eb1c1c; color: white; font-weight: 500; border: none;">          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- $('#answers .answer1text') -->
+        </section>
 
-            <%- include('../partials/footer') %>
+        <%- include('../partials/footer') %>
 
-                <script>
-                    var socket = io();
+        <script>
+            $(document).ready(function () {
+                var socket = io();
+                const urlParams = new URLSearchParams(window.location.search);
+                const params = {
+                    id: urlParams.get("id"),
+                }
+                $('#btn-settings').on('click', nextQuestion);
+                var timer;
+                var time;
+                console.log(params)
 
-                    const urlParams = new URLSearchParams(window.location.search);
+                //When host connects to server
+                socket.on('connect', function () {
+                    //Tell server that it is host connection from game view
+                    socket.emit('host-join-game', params);
+                });
 
-                    const params = {
-                        id: urlParams.get("id"),
+                // socket.on('noGameFound', function(){
+                //    window.location.href = '../../';//Redirect user to 'join game' page
+                // });
 
-                    }
-
-                    var timer;
-
-                    var time;
-                    console.log(params)
-
-                    //When host connects to server
-                    socket.on('connect', function () {
-
-                        //Tell server that it is host connection from game view
-                        socket.emit('host-join-game', params);
-                    });
-
-                    // socket.on('noGameFound', function(){
-                    //    window.location.href = '../../';//Redirect user to 'join game' page
-                    // });
-
-                    socket.on('gameQuestion', function (data) {
-                        console.log("xx", data)
-                        document.getElementById('questionText').innerHTML = data.question.text;
-                        document.getElementById('mainImage').src = data.question.imgURL;
-                        
-                        if (data.count == 2) {
-                            document.getElementById('answer1').value = data.rows[0].text;
-                            document.getElementById('answer2').value = data.rows[1].text;
-                            document.getElementById('answer3').value = "null"
-                            document.getElementById('answer4').value = "null"
-                        }
-                        if (data.count == 4) {
-                            document.getElementById('answer1').value = data.rows[0].text;
-                            document.getElementById('answer2').value = data.rows[1].text;
-                            document.getElementById('answer3').value = data.rows[2].text;
-                            document.getElementById('answer4').value = data.rows[3].text;
-
-                        }
-
-                        var correctAnswer = data.correct;
-                        //document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
-                        updateTimer(data.question.timer);
-                    });
-
-                    socket.on('updatePlayersAnswered', function (data) {
-                        //document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
-                    });
-
-                    socket.on('questionOver', function (playerData, correct) {
-                        console.log("45051", playerData, correct)
-                        clearInterval(timer);
-                        var answer1 = 0;
-                        var answer2 = 0;
-                        var answer3 = 0;
-                        var answer4 = 0;
-                        var total = 0;
-                        //Hide elements on page
-                        //document.getElementById('playersAnswered').style.display = "none";
-                        //document.getElementById('timerText').style.display = "none";
-
-                        //Shows user correct answer with effects on elements
-                        if (correct[0].answerOrder == 1) {
-                            document.getElementById('answer2').style.filter = "grayscale(80%)";
-                            document.getElementById('answer3').style.filter = "grayscale(80%)";
-                            document.getElementById('answer4').style.filter = "grayscale(80%)";
-                            var current = document.getElementById('answer1').innerHTML;
-                            document.getElementById('answer1').innerHTML = "&#10004" + " " + current;
-                        } else if (correct[0].answerOrder == 2) {
-                            document.getElementById('answer1').style.filter = "grayscale(80%)";
-                            document.getElementById('answer3').style.filter = "grayscale(80%)";
-                            document.getElementById('answer4').style.filter = "grayscale(80%)";
-                            var current = document.getElementById('answer2').innerHTML;
-                            document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
-                        } else if (correct[0].answerOrder == 3) {
-                            document.getElementById('answer1').style.filter = "grayscale(80%)";
-                            document.getElementById('answer2').style.filter = "grayscale(80%)";
-                            document.getElementById('answer4').style.filter = "grayscale(80%)";
-                            var current = document.getElementById('answer3').innerHTML;
-                            document.getElementById('answer3').innerHTML = "&#10004" + " " + current;
-                        } else if (correct[0].answerOrder == 4) {
-                            document.getElementById('answer1').style.filter = "grayscale(80%)";
-                            document.getElementById('answer2').style.filter = "grayscale(80%)";
-                            document.getElementById('answer3').style.filter = "grayscale(80%)";
-                            var current = document.getElementById('answer4').innerHTML;
-                            document.getElementById('answer4').innerHTML = "&#10004" + " " + current;
-                        }
-
-                        for (var i = 0; i < playerData.length; i++) {
-                            if (playerData[i].values.correctAnswerCount == 1) {
-                                answer1 += 1;
-                            } else if (playerData[i].values.correctAnswerCount == 2) {
-                                answer2 += 1;
-                            } else if (playerData[i].values.correctAnswerCount == 3) {
-                                answer3 += 1;
-                            } else if (playerData[i].values.correctAnswerCount == 4) {
-                                answer4 += 1;
-                            }
-                            total += 1;
-                        }
-
-                        //Gets values for graph
-                        answer1 = answer1 / total * 100;
-                        answer2 = answer2 / total * 100;
-                        answer3 = answer3 / total * 100;
-                        answer4 = answer4 / total * 100;
-                        document.getElementById('mainImage').style.display = "none";
-                        document.getElementById('square1').style.display = "inline-block";
-                        document.getElementById('square2').style.display = "inline-block";
-                        document.getElementById('square3').style.display = "inline-block";
-                        document.getElementById('square4').style.display = "inline-block";
-
-                        document.getElementById('square1').style.height = answer1 + "px";
-                        document.getElementById('square2').style.height = answer2 + "px";
-                        document.getElementById('square3').style.height = answer3 + "px";
-                        document.getElementById('square4').style.height = answer4 + "px";
-
-                        //document.getElementById('nextQButton').style.display = "block";
-
-                    });
-
-                    function nextQuestion() {
-                        console.log("alo")
-                        //document.getElementById('nextQButton').style.display = "none";
-                        document.getElementById('mainImage').style.display = "inline-block";
-                        document.getElementById('square1').style.display = "none";
-                        document.getElementById('square2').style.display = "none";
-                        document.getElementById('square3').style.display = "none";
-                        document.getElementById('square4').style.display = "none";
-
-                        document.getElementById('answer1').style.filter = "none";
-                        document.getElementById('answer2').style.filter = "none";
-                        document.getElementById('answer3').style.filter = "none";
-                        document.getElementById('answer4').style.filter = "none";
-
-                        //document.getElementById('playersAnswered').style.display = "block";
-                        //document.getElementById('timerText').style.display = "block";
-                        //document.getElementById('time').innerHTML = " 20";
-                        socket.emit('nextQuestion'); //Tell server to start new question
-                    }
-
-                    function updateTimer(timeVal) {
-                        time = timeVal
-                        timer = setInterval(function () {
-                            time -= 1;
-                            document.getElementById('time').textContent = " " + time;
-                            if (time == 0) {
-                                socket.emit('timeUp');
-                            }
-                        }, 1000);
-                    }
-                    socket.on('GameOver', function (data) {
-                        
-                        window.location.href = '/podium' + '?id=' + params.id;
-                        console.log(data)
-                        document.getElementById('nextQButton').style.display = "none";
-                        document.getElementById('square1').style.display = "none";
-                        document.getElementById('square2').style.display = "none";
-                        document.getElementById('square3').style.display = "none";
-                        document.getElementById('square4').style.display = "none";
-
-                        document.getElementById('answer1').style.display = "none";
-                        document.getElementById('answer2').style.display = "none";
-                        document.getElementById('answer3').style.display = "none";
-                        document.getElementById('answer4').style.display = "none";
-                        //document.getElementById('timerText').innerHTML = "";
-                        document.getElementById('question').innerHTML = "GAME OVER";
-                        //document.getElementById('playersAnswered').innerHTML = "";
-
-
-
-                        document.getElementById('winner1').style.display = "block";
-                        document.getElementById('winner2').style.display = "block";
-                        document.getElementById('winner3').style.display = "block";
-                        document.getElementById('winner4').style.display = "block";
-                        document.getElementById('winner5').style.display = "block";
-                        document.getElementById('winnerTitle').style.display = "block";
-
-                        document.getElementById('winner1').innerHTML = "1. " + data[0].name;
-                        document.getElementById('winner2').innerHTML = "2. " + data[1].name;
-                        document.getElementById('winner3').innerHTML = "3. " + data[2].name;
-                        document.getElementById('winner4').innerHTML = "4. " + data[3].name;
-                        document.getElementById('winner5').innerHTML = "5. " + data[4].name;
-                    });
-
-
-
-                    socket.on('getTime', function (player) {
-                        socket.emit('time', {
-                            player: player,
-                            time: time
+                socket.on('gameQuestion', function (data) {
+                    if (data.count == 2) {
+                        $('#multiple').css('display', 'none').prop('hidden', true);
+                        $('#truefalse').css('display', 'flex').prop('hidden', false);
+                    } else {
+                        $('#truefalse').css('display', 'none').prop('hidden', true);
+                        $.each(data.rows, function( index, value ) {
+                            $(`#multiple .answer${index+1}text`).val(value.text);
                         });
-                    });
-                </script>
+                        $('#multiple').css('display', 'flex').prop('hidden', false);
+                    }
+                    // playpauseTrack();
+                    console.log("xx", data)
+                    document.getElementById('questionText').innerHTML = data.question.text;
+                    document.getElementById('mainImage').src = data.question.imgURL;
 
-    </body>
+                    // if (data.count == 2) {
+                    //     document.getElementById('answer1').value = data.rows[0].text;
+                    //     document.getElementById('answer2').value = data.rows[1].text;
+                    //     document.getElementById('answer3').value = "null"
+                    //     document.getElementById('answer4').value = "null"
+                    // }
+                    // if (data.count == 4) {
+                    //     document.getElementById('answer1').value = data.rows[0].text;
+                    //     document.getElementById('answer2').value = data.rows[1].text;
+                    //     document.getElementById('answer3').value = data.rows[2].text;
+                    //     document.getElementById('answer4').value = data.rows[3].text;
+
+                    // }
+
+                    var correctAnswer = data.correct;
+                    //document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
+                    updateTimer(data.question.timer);
+                });
+
+                socket.on('updatePlayersAnswered', function (data) {
+                    //document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
+                });
+
+                socket.on('questionOver', function (playerData, correct) {
+                    console.log("45051", playerData, correct)
+                    clearInterval(timer);
+                    var answer1 = 0;
+                    var answer2 = 0;
+                    var answer3 = 0;
+                    var answer4 = 0;
+                    var total = 0;
+                    //Hide elements on page
+                    //document.getElementById('playersAnswered').style.display = "none";
+                    //document.getElementById('timerText').style.display = "none";
+
+                    //Shows user correct answer with effects on elements
+                    if (correct[0].answerOrder == 1) {
+                        document.getElementById('answer2').style.filter = "grayscale(80%)";
+                        document.getElementById('answer3').style.filter = "grayscale(80%)";
+                        document.getElementById('answer4').style.filter = "grayscale(80%)";
+                        var current = document.getElementById('answer1').innerHTML;
+                        document.getElementById('answer1').innerHTML = "&#10004" + " " + current;
+                    } else if (correct[0].answerOrder == 2) {
+                        document.getElementById('answer1').style.filter = "grayscale(80%)";
+                        document.getElementById('answer3').style.filter = "grayscale(80%)";
+                        document.getElementById('answer4').style.filter = "grayscale(80%)";
+                        var current = document.getElementById('answer2').innerHTML;
+                        document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
+                    } else if (correct[0].answerOrder == 3) {
+                        document.getElementById('answer1').style.filter = "grayscale(80%)";
+                        document.getElementById('answer2').style.filter = "grayscale(80%)";
+                        document.getElementById('answer4').style.filter = "grayscale(80%)";
+                        var current = document.getElementById('answer3').innerHTML;
+                        document.getElementById('answer3').innerHTML = "&#10004" + " " + current;
+                    } else if (correct[0].answerOrder == 4) {
+                        document.getElementById('answer1').style.filter = "grayscale(80%)";
+                        document.getElementById('answer2').style.filter = "grayscale(80%)";
+                        document.getElementById('answer3').style.filter = "grayscale(80%)";
+                        var current = document.getElementById('answer4').innerHTML;
+                        document.getElementById('answer4').innerHTML = "&#10004" + " " + current;
+                    }
+
+                    for (var i = 0; i < playerData.length; i++) {
+                        if (playerData[i].values.correctAnswerCount == 1) {
+                            answer1 += 1;
+                        } else if (playerData[i].values.correctAnswerCount == 2) {
+                            answer2 += 1;
+                        } else if (playerData[i].values.correctAnswerCount == 3) {
+                            answer3 += 1;
+                        } else if (playerData[i].values.correctAnswerCount == 4) {
+                            answer4 += 1;
+                        }
+                        total += 1;
+                    }
+
+                    //Gets values for graph
+                    answer1 = answer1 / total * 100;
+                    answer2 = answer2 / total * 100;
+                    answer3 = answer3 / total * 100;
+                    answer4 = answer4 / total * 100;
+                    document.getElementById('mainImage').style.display = "none";
+                    document.getElementById('square1').style.display = "inline-block";
+                    document.getElementById('square2').style.display = "inline-block";
+                    document.getElementById('square3').style.display = "inline-block";
+                    document.getElementById('square4').style.display = "inline-block";
+
+                    document.getElementById('square1').style.height = answer1 + "px";
+                    document.getElementById('square2').style.height = answer2 + "px";
+                    document.getElementById('square3').style.height = answer3 + "px";
+                    document.getElementById('square4').style.height = answer4 + "px";
+
+                    //document.getElementById('nextQButton').style.display = "block";
+
+                });
+
+                function nextQuestion() {
+                    console.log("alo")
+                    //document.getElementById('nextQButton').style.display = "none";
+                    document.getElementById('mainImage').style.display = "inline-block";
+                    document.getElementById('square1').style.display = "none";
+                    document.getElementById('square2').style.display = "none";
+                    document.getElementById('square3').style.display = "none";
+                    document.getElementById('square4').style.display = "none";
+
+                    document.getElementById('answer1').style.filter = "none";
+                    document.getElementById('answer2').style.filter = "none";
+                    document.getElementById('answer3').style.filter = "none";
+                    document.getElementById('answer4').style.filter = "none";
+
+                    //document.getElementById('playersAnswered').style.display = "block";
+                    //document.getElementById('timerText').style.display = "block";
+                    //document.getElementById('time').innerHTML = " 20";
+                    socket.emit('nextQuestion'); //Tell server to start new question
+                }
+
+                function updateTimer(timeVal) {
+                    time = timeVal
+                    timer = setInterval(function () {
+                        time -= 1;
+                        document.getElementById('time').textContent = " " + time;
+                        if (time == 0) {
+                            socket.emit('timeUp');
+                        }
+                    }, 1000);
+                }
+                socket.on('GameOver', function (data) {
+
+                    window.location.href = '/podium' + '?id=' + params.id;
+                    console.log(data)
+                    document.getElementById('nextQButton').style.display = "none";
+                    document.getElementById('square1').style.display = "none";
+                    document.getElementById('square2').style.display = "none";
+                    document.getElementById('square3').style.display = "none";
+                    document.getElementById('square4').style.display = "none";
+
+                    document.getElementById('answer1').style.display = "none";
+                    document.getElementById('answer2').style.display = "none";
+                    document.getElementById('answer3').style.display = "none";
+                    document.getElementById('answer4').style.display = "none";
+                    //document.getElementById('timerText').innerHTML = "";
+                    document.getElementById('question').innerHTML = "GAME OVER";
+                    //document.getElementById('playersAnswered').innerHTML = "";
+
+
+
+                    document.getElementById('winner1').style.display = "block";
+                    document.getElementById('winner2').style.display = "block";
+                    document.getElementById('winner3').style.display = "block";
+                    document.getElementById('winner4').style.display = "block";
+                    document.getElementById('winner5').style.display = "block";
+                    document.getElementById('winnerTitle').style.display = "block";
+
+                    document.getElementById('winner1').innerHTML = "1. " + data[0].name;
+                    document.getElementById('winner2').innerHTML = "2. " + data[1].name;
+                    document.getElementById('winner3').innerHTML = "3. " + data[2].name;
+                    document.getElementById('winner4').innerHTML = "4. " + data[3].name;
+                    document.getElementById('winner5').innerHTML = "5. " + data[4].name;
+                });
+
+
+
+                socket.on('getTime', function (player) {
+                    socket.emit('time', {
+                        player: player,
+                        time: time
+                    });
+                });
+            });
+        </script>
+
+</body>
 
 </html>
