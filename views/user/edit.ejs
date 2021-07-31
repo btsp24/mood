@@ -226,8 +226,8 @@
     </ul>
 
     <div class="btngroup ">
-      <button class="btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
-          style="font-weight:bold">Clone Question</span></button>
+    <%#   <!-- <button class="btn btn-success" type="button" style="margin-top: 10px;" data-tag="clone"> <span
+          style="font-weight:bold">Clone Question</span></button> --> %>
   
       <button class="btn btn-primary" type="button" style="margin-top: 10px;" data-tag="addquestion"> <span
           style="font-weight:bold">Add Question </span></button>
@@ -426,6 +426,17 @@
         const newQueNr = $(this).closest('li').data('questionOrder')+1;
         const hrClone = $(this).closest('li').next('hr').clone();
         const clone = $(this).closest('li').clone(true, true);
+        const newQId = uuid();
+
+        clone.prop('data-id', newQId);
+        clone.prop('id', `question${newQueNr}`);
+        clone.prop('data-quiz-id', newQId );
+        clone.find('li').data('questionId', newQId );
+        clone.find('li').data('id', function(index) {
+          const newAId = uuid();
+          return newAId;
+        });
+
         // clone.find('[data-tag="imgURL"]').prop('id',`my-dropzone${newQueNr}`);       
         const navClone = $(`#nav${$(this).closest('li').prop('id')}`).clone(true, true);
         $(`#nav${$(this).closest('li').prop('id')}`).after(navClone);
@@ -485,13 +496,17 @@
         // #questions
         $('#questions>li').each(function(index){
           $(this).prop('id',`question${index+1}`);
-          $(this).prop('data-question-order',`${index+1}`);
+          $(this).data('questionOrder',`${index+1}`);
+          // $(this).prop('data-question-order',`${index+1}`);
           $(this).children('input').prop('id', `question${index+1}text`);
           $(this).children('ul').find('[data-tag="timeLimitId"]').prop('id', `timeLimitId${index+1}`);
           $(this).children('ul').find('[data-tag="imgURL"]').prop('id', `my-dropzone${index+1}`);
           $(this).children('ul').find('[data-tag="questionTypeId"]').prop('id', `question${index+1}questionTypeId`);
           // $(this).children('ul').find('[data-tag="Answers"]').prop('id', `question${index+1}Answers`);
         });
+        $('#questions [data-tag="Answers"]').prop('id', function(index) {
+          return `question${index+1}Answers`
+        });        
         $('#questions [data-tag="Answers"]').each(function(i) {
           $(this).find('li').prop('id', function(j) {
             return `question${i+1}Answers${j+1}`
@@ -521,9 +536,7 @@
         // $('#questions li>ul [data-tag="questionTypeId"]').prop('id', function(index) {
           // return `question${index+1}questionTypeId`
         // });             
-        $('#questions [data-tag="Answers"]').prop('id', function(index) {
-          return `question${index+1}Answers`
-        });
+
       }
 
       // quiz detail page done button handler

@@ -255,14 +255,6 @@ class Query {
         },
       ],
       group: [
-        "Quiz.id",
-        "Quiz.text",
-        "Quiz.questionTypeId",
-        "Quiz.timeLimitId",
-        "Quiz.imgURL",
-        "Quiz.imgAltText",
-        "Quiz.imgCredit",
-        "Quiz.createdAt",
         "Question.quizId",
         "Question.id",
         "Question.questionOrder",
@@ -326,9 +318,7 @@ class Query {
       group: [
 
         "Quiz.id",
-        "Quiz.text",
-        "Quiz.questionTypeId",
-        "Quiz.timeLimitId",
+        "Quiz.title",
         "Quiz.imgURL",
         "Quiz.imgAltText",
         "Quiz.imgCredit",
