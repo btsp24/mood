@@ -10,7 +10,7 @@
   "test": {
     "username": "postgres",
     "password": "pgs",
-    "database": "database_moodv2",
+    "database": "database_mood",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

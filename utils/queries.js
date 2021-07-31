@@ -255,6 +255,14 @@ class Query {
         },
       ],
       group: [
+        "Quiz.id",
+        "Quiz.text",
+        "Quiz.questionTypeId",
+        "Quiz.timeLimitId",
+        "Quiz.imgURL",
+        "Quiz.imgAltText",
+        "Quiz.imgCredit",
+        "Quiz.createdAt",
         "Question.quizId",
         "Question.id",
         "Question.questionOrder",
@@ -314,6 +322,17 @@ class Query {
           model: LobbyMusic,
           attributes: [],
         }
+      ],
+      group: [
+
+        "Quiz.id",
+        "Quiz.text",
+        "Quiz.questionTypeId",
+        "Quiz.timeLimitId",
+        "Quiz.imgURL",
+        "Quiz.imgAltText",
+        "Quiz.imgCredit",
+        "Quiz.createdAt",
       ],
       raw: true }); /* .toJSON(); */
   }
