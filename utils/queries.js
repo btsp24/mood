@@ -14,6 +14,7 @@ const {
   PlayerQuestion,
   PlayerAnswer,
   Game,
+  LobbyMusic,
   sequelize,
 } = require("../db/models");
 const { Op } = require("sequelize");
@@ -302,7 +303,19 @@ class Query {
     if (quizId == null) {
       throw new Error('no quizId is given');
     }
-    return await Quiz.findByPk(quizId, { raw: true }); /* .toJSON(); */
+    return await Quiz.findByPk(quizId, {
+      attributes: {
+        include: [
+          [sequelize.fn('MAX', sequelize.col('LobbyMusic.audioURL')), 'audio'],
+        ]
+      },
+      include: [
+        {
+          model: LobbyMusic,
+          attributes: [],
+        }
+      ],
+      raw: true }); /* .toJSON(); */
   }
 
   static async cloneQuiz(dataset, newComposerId) {
@@ -672,7 +685,7 @@ class Query {
     }
   }
 
-  static async savePlayerGameScore(playerId, gameId, gameScore) {
+  static async savePlayerGameScore(playerId, nickName,  gameId, gameScore,) {
     try {
      const [player, created] = await Player.findOrCreate({
         where: { id: playerId, gameId },
@@ -680,6 +693,7 @@ class Query {
           id: playerId,
           gameId,
           gameScore,
+          nickName
         },
       });
       if (!created) {

@@ -3,6 +3,7 @@ const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('./isAuth');
 const { validate: uuidValidate } = require('uuid');
 const { Query } = require('../utils/queries');
+// const { QueryTypes } = require('sequelize/types');
 /* 
     hepsi quizId=uuid değeri alıyor
 */
@@ -17,9 +18,11 @@ router.get('/lobby/:quizId', ensureAuthenticated, async function (req, res, next
   const quizId = req.params.quizId;
   const userId = req.user.id;
   if (!!quizId && uuidValidate(quizId) && (await Query.quizExists(quizId))) {
+    const { audio } = await Query.getQuizDetails(quizId);
+    console.log('audio :>> ', audio);
     res.render('host/lobby', {
       title: 'quiz composer page',
-      audio: '/audio/peritune-spook4.mp3',
+      audio
     });
   }
   // console.log('data :>> ', data);
