@@ -188,7 +188,7 @@
                     id: urlParams.get("id"),
                 }
                 $('#btn-settings').on('click', nextQuestion);
-                var timer;
+                let timer;
                 var time;
                 console.log(params)
 
@@ -234,6 +234,7 @@
 
                     var correctAnswer = data.correct;
                     //document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
+                    clearInterval(timer);
                     updateTimer(data.question.timer);
                 });
 
@@ -243,6 +244,7 @@
 
                 socket.on('questionOver', function (playerData, correct) {
                     console.log("45051", playerData, correct)
+                    
                     clearInterval(timer);
                     var answer1 = 0;
                     var answer2 = 0;
