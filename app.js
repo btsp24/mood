@@ -180,7 +180,8 @@ io.on('connection', socket => {
       });
 
       if (game.pin) {
-        io.emit('gameStartedPlayer', socket.conn.id);
+        console.log("33333333333333333333333333333333",currentQuestion.question.numberOfChoices)
+        io.emit('gameStartedPlayer',currentQuestion.question.numberOfChoices);
       }
       game.values.questionLive = true;
     } else {
@@ -434,7 +435,8 @@ io.on('connection', socket => {
 
     if (theGame.pin) {
       if (currentQuestion) { /* <== */
-        io.to(theGame.pin).emit('nextQuestionPlayer', currentQuestion.numberOfChoices); 
+        
+            io.emit('nextQuestionPlayer', currentQuestion.question.numberOfChoices); 
         // io.emit('nextQuestionPlayer');
       }
     }

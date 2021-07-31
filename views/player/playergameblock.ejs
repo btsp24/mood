@@ -190,11 +190,12 @@
           $("#multiple").css("display", "none").prop("hidden", true);
           $("#truefalse").css("display", "flex").prop("hidden", false);
         } else {
-          $("#truefalse").css("display", "none").prop("hidden", true);
+          
           $(`#answer1`).on("click", 1, answerSubmitted);
           $(`#answer2`).on("click", 2, answerSubmitted);
           $(`#answer3`).on("click", 3, answerSubmitted);
           $(`#answer4`).on("click", 4, answerSubmitted);
+          $("#truefalse").css("display", "none").prop("hidden", true);
           $("#multiple").css("display", "flex").prop("hidden", false);
         }
 
@@ -218,9 +219,11 @@
             playerAnswered = true;
 
             socket.emit("playerAnswer", num); //Sends player answer to server
+            $("#multiple").css("display", "none").prop("hidden", true);
+            $("#truefalse").css("display", "none").prop("hidden", true);
 
             //Hiding buttons from user
-            document.getElementById("ansContainer").style.visibility = "hidden";
+            //document.getElementById("ansContainer").style.visibility = "hidden";
             //document.getElementById("ansContainer2").style.visibility = "hidden";
 
             // document.getElementById("answer2").style.visibility = "hidden";
@@ -242,7 +245,7 @@
 
         socket.on("questionOver", function (data) {
           console.log("questionOver", data);
-          if (correct == true) {
+          if (correct == true) {3
             document.body.style.backgroundColor = "#4CAF50";
             document.getElementById("message").style.display = "block";
             document.getElementById("message").innerHTML = "Correct!";
@@ -251,7 +254,7 @@
             document.getElementById("message").style.display = "block";
             document.getElementById("message").innerHTML = "Incorrect!";
           }
-          //document.getElementById("ansContainer").style.visibility = "hidden";
+          //document.getElementById("ansContainer").style.visibility = "visible";
           //document.getElementById("ansContainer2").style.visibility = "hidden";
 
           // document.getElementById("answer2").style.visibility = "hidden";
@@ -270,19 +273,26 @@
           console.log("data!!!!!!", count);
           //$('#message-container').css('display', 'none').prop('hidden', true);
           //$("#ansContainer").css("display", "flex").prop("hidden", false);
-          document.getElementById("ansContainer").style.visibility = "visible";
+          //document.getElementById("ansContainer").style.visibility = "visible";
           if (count == 2) {
+           // document.getElementById("ansContainer").style.visibility = "hidden";
+           $(`#answer1tf`).on("click", 1, answerSubmitted);
+           $(`#answer2tf`).on("click", 2, answerSubmitted);
             $("#multiple").css("display", "none").prop("hidden", true);
-            $(`#truefalse li`).each(function (index) {
-              $("this").on("click", index + 1, answerSubmitted);
-            });
+        
             $("#truefalse").css("display", "flex").prop("hidden", false);
+   
           } else {
+            //document.getElementById("truefalse").style.visibility = "hidden";
+            $(`#answer1`).on("click", 1, answerSubmitted);
+          $(`#answer2`).on("click", 2, answerSubmitted);
+          $(`#answer3`).on("click", 3, answerSubmitted);
+          $(`#answer4`).on("click", 4, answerSubmitted);
             $("#truefalse").css("display", "none").prop("hidden", true);
-            $(`#multiple li`).each(function (index) {
-              $("this").on("click", index + 1, answerSubmitted);
-            });
             $("#multiple").css("display", "flex").prop("hidden", false);
+            
+            //$("#truefalse").css("display", "flex").prop("hidden", false);
+      
           }
           //document.getElementById("ansContainer").style.visibility = "visible";
           // document.getElementById("answer1").style.visibility = "visible";
