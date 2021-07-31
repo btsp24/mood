@@ -263,7 +263,7 @@
           socket.emit("getScore");
         });
 
-        socket.on("newScore", function (data) {
+        socket.on("newScore", function (data = 0) {
           document.getElementById("scoreText").innerHTML = "Score: " + data;
         });
 
