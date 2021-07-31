@@ -3,11 +3,11 @@
     "storage": "./db/database.sqlite",
     "dialect": "sqlite"
   },
-  "test": {
+  "testsqlite": {
     "storage": "./db/database2.sqlite",
     "dialect": "sqlite"
   },
-  "testorig": {
+  "test": {
     "username": "postgres",
     "password": "pgs",
     "database": "database_moodv2",
@@ -15,10 +15,14 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "menlzkcshozhie",
+    "password": "0feacd9e513316ea881f78d56ae352b251a59c4d06fac03238262a77b33adf15",
+    "database": "dc5un0mki64gsg",
+    "host": "ec2-107-22-245-82.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "require": true,
+      "rejectUnauthorized": false
+    }
   }
 }
