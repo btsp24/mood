@@ -1,4 +1,4 @@
-<img src="./public/images/logo.png" alt="logo" style="zoom:10%;" /> 
+![logo](./public/images/logo2.png)
 
 <h1 align="center">MOOD METU Online Oyun Desteği</h1>
 <div align="center">
