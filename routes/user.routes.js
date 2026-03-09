@@ -37,20 +37,12 @@ const upload = multer({
   storage: storage
 });
 router.post('/upload', upload.single('file'), function (req, res, next) {
-  const img = req.file.filename;
-  console.log('img :>> ', img);
   if (!req.file) {
-    res.status(500).send({
-      error: 'error occured'
+    res.status(400).send({
+      error: 'No file uploaded'
     });
-    return next(req.originalUrl);
+    return;
   }
-
-  console.log(req.body)
-  console.log(req.files)
-  console.log(req.file)
-
-  // res.send('SUCCESS')
   return res.status(200).send(req.file);
 });
 
@@ -138,10 +130,12 @@ router.get('/register', forwardAuthenticated, (req, res) =>
   })
 );
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  req.flash('success_msg', 'You are logged out');
-  res.redirect('/login');
+router.get('/logout', (req, res, next) => {
+  req.logout(function (err) {
+    if (err) { return next(err); }
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/login');
+  });
 });
 
 router.put('/save/details',
@@ -172,10 +166,8 @@ router.put('/save/quiz',
       res.status(412).send('missing parameters');
       return;
     }
-    Query.deleteQuizQuestions(questionsToDelete);
-    Query.updateQuizQuestions(questionsToSave, quizIdToSave);
-    // Promise.all([Query.deleteQuizQuestions(questionsToDelete), Query.updateQuizQuestions(questionsToSave, quizIdToSave)]);
-    // Query.updateQuizQuestions(questionsToSave, quizIdToSave);
+    await Query.deleteQuizQuestions(questionsToDelete);
+    await Query.updateQuizQuestions(questionsToSave, quizIdToSave);
     res.end('{"success" : "Updated Successfully", "status" : 200}');
   })
 

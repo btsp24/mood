@@ -24,18 +24,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   PlayerQuestion.associate = function (models) {
-    PlayerQuestion.hasOne(models.PlayerAnswer, {
-      foreignKey: 'playerId',
-      target: 'playerId',
-      constraints: false,
-    });
-
-    PlayerQuestion.hasOne(models.PlayerAnswer, {
-      foreignKey: 'questionId',
-      target: 'questionId',
-      constraints: false,
-    });
-
     PlayerQuestion.belongsTo(models.Player, {
       foreignKey: 'playerId',
       target: 'id',

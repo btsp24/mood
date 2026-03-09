@@ -289,6 +289,9 @@ class Query {
 
   static async getQuestionOfQuizByQNumberWithAnswers(quizId, questionOrder, random = false) {
     const question = await this.getQuestionOfQuizByQNumber(quizId, questionOrder);
+    if (!question) {
+      return null;
+    }
     question.Answers = await this.getAnswersOfQuestion(question.id, random);
     return question;
   }

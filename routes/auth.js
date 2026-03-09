@@ -56,7 +56,9 @@ passport.deserializeUser(function (id, done) {
     if (user) {
       done(null, user.get());
     } else {
-      done(user.errors, null);
+      done(null, false);
     }
+  }).catch(function (err) {
+    done(err, null);
   });
 });
